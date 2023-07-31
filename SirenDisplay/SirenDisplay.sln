@@ -1,0 +1,16 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SirenDisplay", "SirenDisplay.csproj", "{65723906-C330-4FBF-AC53-4921EECAA027}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{65723906-C330-4FBF-AC53-4921EECAA027}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{65723906-C330-4FBF-AC53-4921EECAA027}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{65723906-C330-4FBF-AC53-4921EECAA027}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{65723906-C330-4FBF-AC53-4921EECAA027}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+EndGlobal
