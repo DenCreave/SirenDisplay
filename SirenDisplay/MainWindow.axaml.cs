@@ -1,6 +1,5 @@
 using Avalonia.Controls;
 using Avalonia.Interactivity;
-using SirenDisplay.Classes;
 using SirenDisplay.ViewModels;
 
 namespace SirenDisplay;
