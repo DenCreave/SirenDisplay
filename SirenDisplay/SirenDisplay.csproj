@@ -10,11 +10,60 @@
 
 
     <ItemGroup>
-        <PackageReference Include="Avalonia" Version="11.0.0"/>
-        <PackageReference Include="Avalonia.Desktop" Version="11.0.0"/>
-        <PackageReference Include="Avalonia.Themes.Fluent" Version="11.0.0"/>
-        <PackageReference Include="Avalonia.Fonts.Inter" Version="11.0.0"/>
+        <PackageReference Include="Avalonia" Version="11.0.0" />
+        <PackageReference Include="Avalonia.Desktop" Version="11.0.0" />
+        <PackageReference Include="Avalonia.Themes.Fluent" Version="11.0.0" />
+        <PackageReference Include="Avalonia.Fonts.Inter" Version="11.0.0" />
         <!--Condition below is needed to remove Avalonia.Diagnostics package from build output in Release configuration.-->
-        <PackageReference Condition="'$(Configuration)' == 'Debug'" Include="Avalonia.Diagnostics" Version="11.0.0"/>
+        <PackageReference Condition="'$(Configuration)' == 'Debug'" Include="Avalonia.Diagnostics" Version="11.0.0" />
+        <PackageReference Include="CommunityToolkit.Mvvm" Version="8.2.1" />
+    </ItemGroup>
+
+
+    <ItemGroup>
+      <Folder Include="Views" />
+    </ItemGroup>
+
+
+    <ItemGroup>
+      <None Remove="path10.svg" />
+    </ItemGroup>
+
+
+    <ItemGroup>
+      <AvaloniaResource Include="Assets\Images\path10.svg">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </AvaloniaResource>
+      <None Remove="Assets\Images\path10.png" />
+      <AvaloniaResource Include="Assets\Images\path10.png">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </AvaloniaResource>
+      <None Remove="Assets\Images\222.png" />
+      <AvaloniaResource Include="Assets\Images\222.png">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </AvaloniaResource>
+      <None Remove="Assets\Images\ch001003_full.png" />
+      <AvaloniaResource Include="Assets\Images\ch001003_full.png">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </AvaloniaResource>
+      <AvaloniaXaml Remove="Styles\Styles.axaml" />
+      <AvaloniaResource Include="Styles\Styles.axaml">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </AvaloniaResource>
+    </ItemGroup>
+
+
+    <ItemGroup>
+      <None Remove="Assets\Images\xjfiu.png" />
+      <AvaloniaResource Include="Assets\Images\xjfiu.png">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </AvaloniaResource>
+      <None Remove="Images\wtfdie.png" />
+    </ItemGroup>
+
+
+    <ItemGroup>
+      <None Remove="Assets\Images\wtfdie.png" />
+      <AvaloniaResource Include="Assets\Images\wtfdie.png" />
     </ItemGroup>
 </Project>

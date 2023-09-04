@@ -1,0 +1,28 @@
+~004 - 19:30
+might need to rename to png and also add it to avalonia resource 
+
+~005 - 
+Use templates cos its useful. Might use template for the window
+17:30 use nameof(SOMETHING) instead of "SOMETHING"
+
+
+~008 - view model
+18:30
+nuget package: CommunityToolkit.Mvvm
+-> ObserveableObject
+
+~011 -  animate in code
+//////////////////////////////////////////////////////////////////////////////////////////////////////////elejét újra nézni
+timer ticks + event lambda stuff, useful! will need
+keyword: Callback
+
+~012 - 
+Timer lambdas : use the Threading.timer
+
+~015 -
+14:20 : dependency injection/service initialization
+20:00 Observeableproperty private and public notify getter and such
+
+
+Points="0,480 700,480 800,380 800,0  100,0 0,100"
+Points="0,48 70,48 80,38 80,0  10,0 0,10"
