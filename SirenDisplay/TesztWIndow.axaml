@@ -1,0 +1,28 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+        x:Class="SirenDisplay.TesztWIndow"
+        Title="TesztWIndow">
+    
+    <Grid>
+        <Path Stroke="#ff901b" StrokeThickness="10" Margin="5" Stretch="Fill" >
+            <Path.Data>
+                <PathGeometry>
+                    <PathFigure StartPoint="0,380">
+                        <LineSegment Point="0,480"/>
+                        <LineSegment Point="700,480"/>
+                        <LineSegment Point="800,380"/>
+                    </PathFigure>
+                </PathGeometry>
+            </Path.Data>
+            <Path.Effect>
+                <DropShadowEffect Color="#ff901b" Opacity="1" BlurRadius="500"/>
+            </Path.Effect>
+            <Path.Fill>
+                <SolidColorBrush Color="#ff901b" Opacity=".05"  ></SolidColorBrush>
+            </Path.Fill>
+        </Path>
+    </Grid>
+</Window>

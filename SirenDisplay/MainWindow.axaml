@@ -2,8 +2,277 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+        xmlns:viewModels="clr-namespace:SirenDisplay.ViewModels"
+        mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="480"
+        Background="Black"
         x:Class="SirenDisplay.MainWindow"
-        Title="SirenDisplay">
-    Welcome to Avalonia!
+        Title="SirenDisplay"
+        x:DataType="viewModels:MainViewModel">
+    
+    
+    
+    <Design.DataContext>
+        <viewModels:MainViewModel></viewModels:MainViewModel>
+    </Design.DataContext>
+    <Window.Resources>
+        
+    </Window.Resources>
+    
+    
+    <!-- WindowState="Maximized"  -->
+    
+    
+    
+    <Grid x:Name="BaseGrid"   RowDefinitions="Auto,*,Auto" ColumnDefinitions="*">
+        <Button Grid.Row="0" Foreground="#ff901b" FontSize="25" HorizontalAlignment="Center"> erre lesz rá bindolva a song vagy playlist neve</Button>
+        <Path Grid.Row="0"   Stroke="#ff901b" StrokeThickness="10" Margin="5" Stretch="Fill">
+                
+            <Path.Data>
+                <PathGeometry>
+                    <PathFigure StartPoint="0,100">
+                        <LineSegment Point="800,100"/>
+                        <LineSegment Point="800,0"/>
+                        <LineSegment Point="100,0"/>
+                    </PathFigure>
+                </PathGeometry>
+            </Path.Data>
+            <Path.Effect>
+                <DropShadowEffect Color="#ff901b" Opacity="1" BlurRadius="500"/>
+            </Path.Effect>
+            <Path.Fill>
+                <SolidColorBrush Color="#ff901b" Opacity=".05"  ></SolidColorBrush>
+            </Path.Fill>
+        </Path>
+
+        <Grid Grid.Row="1" ColumnDefinitions="*,*,*,*,*">
+            
+        </Grid>
+        <Path Grid.Row="1"   Stroke="#ff901b" StrokeThickness="10" Margin="5" Stretch="Fill">
+                
+            <Path.Data>
+                <PathGeometry>
+                    <PathFigure StartPoint="0,100">
+                        <LineSegment Point="0,380"/>
+                        <LineSegment Point="800,380"/>
+                        <LineSegment Point="800,100"/>
+                    </PathFigure>
+                </PathGeometry>
+            </Path.Data>
+            <Path.Effect>
+                <DropShadowEffect Color="#ff901b" Opacity="1" BlurRadius="500"/>
+            </Path.Effect>
+            <Path.Fill>
+                <SolidColorBrush Color="#ff901b" Opacity=".05"  ></SolidColorBrush>
+            </Path.Fill>
+        </Path>
+        
+        <Path Grid.Row="1"  Stroke="#ff901b" Stretch="Fill"  StrokeThickness="1" Margin="5" >
+            <Path.Data>
+                
+                <PathGeometry> <!-- top coordinate-->
+                    <PathFigure StartPoint="20,0">
+                        <LineSegment Point="40,0"/>
+                        <LineSegment Point="50,10"/>
+                        <LineSegment Point="40,20"/>
+                        <LineSegment Point="20,20"/>
+                        <LineSegment Point="10,10"/>
+                        <LineSegment Point="20,0"/>
+                    </PathFigure>
+                
+                    <!-- mid coordinate-->
+                    <PathFigure StartPoint="20,40">
+                        <LineSegment Point="40,40"/>
+                        <LineSegment Point="50,50"/>
+                        <LineSegment Point="40,60"/>
+                        <LineSegment Point="20,60"/>
+                        <LineSegment Point="10,50"/>
+                        <LineSegment Point="20,40"/>
+                    </PathFigure>
+                    
+                    <!-- bottom coordinate-->
+                    <PathFigure StartPoint="20,80">
+                        <LineSegment Point="40,80"/>
+                        <LineSegment Point="50,90"/>
+                        <LineSegment Point="40,100"/>
+                        <LineSegment Point="20,100"/>
+                        <LineSegment Point="10,90"/>
+                        <LineSegment Point="20,80"/>
+                    </PathFigure>
+                    
+                    <!-- top left coordinate-->
+                    <PathFigure StartPoint="10,10">
+                        <LineSegment Point="20,20"/>
+                        <LineSegment Point="20,40"/>
+                        <LineSegment Point="10,50"/>
+                        <LineSegment Point="0,40"/>
+                        <LineSegment Point="0,20"/>
+                        <LineSegment Point="10,10"/>
+                    </PathFigure>
+                    
+                    <!-- top right coordinate-->
+                    <PathFigure StartPoint="50,10">
+                        <LineSegment Point="60,20"/>
+                        <LineSegment Point="60,40"/>
+                        <LineSegment Point="50,50"/>
+                        <LineSegment Point="40,40"/>
+                        <LineSegment Point="40,20"/>
+                        <LineSegment Point="50,10"/>
+                    </PathFigure>
+                    
+                    <!-- bottom right coordinate-->
+                    <PathFigure StartPoint="50,50">
+                        <LineSegment Point="60,60"/>
+                        <LineSegment Point="60,80"/>
+                        <LineSegment Point="50,90"/>
+                        <LineSegment Point="40,80"/>
+                        <LineSegment Point="40,60"/>
+                        <LineSegment Point="50,50"/>
+                    </PathFigure>
+                    
+                    
+                    <!-- bottom left coordinate-->
+                    <PathFigure StartPoint="10,50">
+                        <LineSegment Point="20,60"/>
+                        <LineSegment Point="20,80"/>
+                        <LineSegment Point="10,90"/>
+                        <LineSegment Point="0,80"/>
+                        <LineSegment Point="0,60"/>
+                        <LineSegment Point="10,50"/>
+                    </PathFigure>
+                    
+                 
+                 
+                 
+                </PathGeometry> <!-- a path geometrybe kell rakni  a path figureket -->
+            </Path.Data>
+            <Path.Effect>
+                <DropShadowEffect Color="#ff901b" Opacity="1" BlurRadius="500"/>
+            </Path.Effect>
+            <Path.Fill>
+                <SolidColorBrush Color="#ff901b" Opacity=".45"  ></SolidColorBrush>
+            </Path.Fill>
+        </Path>
+        
+        
+        
+        
+        
+        
+        
+        <!--<Path Grid.Row="1"  Stroke="#ff901b" Stretch="Fill"  StrokeThickness="1" Margin="5" >
+            <Path.Data>
+                
+                <PathGeometry> ~1~ top coordinate@1@
+                    <PathFigure StartPoint="20,0">
+                        <LineSegment Point="40,0"/>
+                        <LineSegment Point="50,10"/>
+                        <LineSegment Point="40,20"/>
+                        <LineSegment Point="20,20"/>
+                        <LineSegment Point="10,10"/>
+                        <LineSegment Point="20,0"/>
+                    </PathFigure>
+                
+                    ~1~ mid coordinate@1@
+                    <PathFigure StartPoint="20,40">
+                        <LineSegment Point="40,40"/>
+                        <LineSegment Point="50,50"/>
+                        <LineSegment Point="40,60"/>
+                        <LineSegment Point="20,60"/>
+                        <LineSegment Point="10,50"/>
+                        <LineSegment Point="20,40"/>
+                    </PathFigure>
+                    
+                    ~1~ bottom coordinate@1@
+                    <PathFigure StartPoint="20,80">
+                        <LineSegment Point="40,80"/>
+                        <LineSegment Point="50,90"/>
+                        <LineSegment Point="40,100"/>
+                        <LineSegment Point="20,100"/>
+                        <LineSegment Point="10,90"/>
+                        <LineSegment Point="20,80"/>
+                    </PathFigure>
+                    
+                    ~1~ top left coordinate@1@
+                    <PathFigure StartPoint="10,10">
+                        <LineSegment Point="20,20"/>
+                        <LineSegment Point="20,40"/>
+                        <LineSegment Point="10,50"/>
+                        <LineSegment Point="0,40"/>
+                        <LineSegment Point="0,20"/>
+                        <LineSegment Point="10,10"/>
+                    </PathFigure>
+                    
+                    ~1~ top right coordinate@1@
+                    <PathFigure StartPoint="50,10">
+                        <LineSegment Point="60,20"/>
+                        <LineSegment Point="60,40"/>
+                        <LineSegment Point="50,50"/>
+                        <LineSegment Point="40,40"/>
+                        <LineSegment Point="40,20"/>
+                        <LineSegment Point="50,10"/>
+                    </PathFigure>
+                    
+                    ~1~ bottom right coordinate@1@
+                    <PathFigure StartPoint="50,50">
+                        <LineSegment Point="60,60"/>
+                        <LineSegment Point="60,80"/>
+                        <LineSegment Point="50,90"/>
+                        <LineSegment Point="40,80"/>
+                        <LineSegment Point="40,60"/>
+                        <LineSegment Point="50,50"/>
+                    </PathFigure>
+                    
+                    
+                    ~1~ bottom left coordinate@1@
+                    <PathFigure StartPoint="10,50">
+                        <LineSegment Point="20,60"/>
+                        <LineSegment Point="20,80"/>
+                        <LineSegment Point="10,90"/>
+                        <LineSegment Point="0,80"/>
+                        <LineSegment Point="0,60"/>
+                        <LineSegment Point="10,50"/>
+                    </PathFigure>
+                    
+                 
+                 
+                 
+                </PathGeometry> ~1~ a path geometrybe kell rakni  a path figureket @1@
+            </Path.Data>
+            <Path.Effect>
+                <DropShadowEffect Color="#ff901b" Opacity="1" BlurRadius="500"/>
+            </Path.Effect>
+            <Path.Fill>
+                <SolidColorBrush Color="#ff901b" Opacity=".45"  ></SolidColorBrush>
+            </Path.Fill>
+        </Path>-->
+        
+        
+        <Path Grid.Row="2"  Stroke="#ff901b" StrokeThickness="10" Margin="5" Stretch="Fill">
+            <Path.Data>
+                <PathGeometry > <!-- talán ide tudok rakni majd a bindingot -->
+                    <PathFigure StartPoint="0,380">
+                        <LineSegment Point="0,480"/>
+                        <LineSegment Point="700,480"/>
+                        <LineSegment Point="800,380"/>
+                    </PathFigure>
+                </PathGeometry>
+            </Path.Data>
+            <Path.Effect>
+                <DropShadowEffect Color="#ff901b" Opacity="1" BlurRadius="500"/>
+            </Path.Effect>
+            <Path.Fill>
+                <SolidColorBrush Color="#ff901b" Opacity=".05"  ></SolidColorBrush>
+            </Path.Fill>
+        </Path>
+        <Label Grid.Row="1" Content="{Binding TesztNeked}"> </Label>
+        <Button Grid.Row="2" HorizontalAlignment="Center" Foreground="#ff901b" FontSize="24" Background="Transparent"  Content="{Binding TestObject}">
+            <Button.Effect>
+                <DropShadowEffect Color="#ff901b" Opacity="1" BlurRadius="50"/>
+            </Button.Effect>
+             
+        </Button> 
+        
+    </Grid>
+    
+    
 </Window>
