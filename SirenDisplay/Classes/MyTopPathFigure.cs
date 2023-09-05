@@ -15,8 +15,7 @@ public sealed class MyTopPathFigure : IMyPathfigure
         new LineSegment { Point = new Point(40,20) },
         new LineSegment { Point = new Point(20,20) },
         new LineSegment { Point = new Point(10,10) },
-        new LineSegment { Point = new Point(20,0) },
-        //todo innen folytatni, megvan 
+        new LineSegment { Point = new Point(20,0) }
     };
     
 
