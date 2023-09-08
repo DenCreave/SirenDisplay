@@ -6,7 +6,14 @@ namespace SirenDisplay.Interfaces;
 
 public interface IMyPathfigure
 {
-    public Point StartPoint { get; }
-    public LineSegment[] LineSegments { get; } 
+    
+    public PathFigure Figure { get; }
+    
+    
+    
+    
+    /*public Point StartPoint { get; }
+    public PathSegments Segments { get; }*/
+    //public LineSegment[] LineSegments { get; } 
 
 }
