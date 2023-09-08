@@ -69,77 +69,8 @@
         <Path Grid.Row="1"  Stroke="#ff901b" Stretch="Fill"  StrokeThickness="1" Margin="5" >
             <Path.Data>
                 
-                <PathGeometry> <!-- top coordinate-->
-                    <PathFigure StartPoint="20,0">
-                        <LineSegment Point="40,0"/>
-                        <LineSegment Point="50,10"/>
-                        <LineSegment Point="40,20"/>
-                        <LineSegment Point="20,20"/>
-                        <LineSegment Point="10,10"/>
-                        <LineSegment Point="20,0"/>
-                    </PathFigure>
-                
-                    <!-- mid coordinate-->
-                    <PathFigure StartPoint="20,40">
-                        <LineSegment Point="40,40"/>
-                        <LineSegment Point="50,50"/>
-                        <LineSegment Point="40,60"/>
-                        <LineSegment Point="20,60"/>
-                        <LineSegment Point="10,50"/>
-                        <LineSegment Point="20,40"/>
-                    </PathFigure>
-                    
-                    <!-- bottom coordinate-->
-                    <PathFigure StartPoint="20,80">
-                        <LineSegment Point="40,80"/>
-                        <LineSegment Point="50,90"/>
-                        <LineSegment Point="40,100"/>
-                        <LineSegment Point="20,100"/>
-                        <LineSegment Point="10,90"/>
-                        <LineSegment Point="20,80"/>
-                    </PathFigure>
-                    
-                    <!-- top left coordinate-->
-                    <PathFigure StartPoint="10,10">
-                        <LineSegment Point="20,20"/>
-                        <LineSegment Point="20,40"/>
-                        <LineSegment Point="10,50"/>
-                        <LineSegment Point="0,40"/>
-                        <LineSegment Point="0,20"/>
-                        <LineSegment Point="10,10"/>
-                    </PathFigure>
-                    
-                    <!-- top right coordinate-->
-                    <PathFigure StartPoint="50,10">
-                        <LineSegment Point="60,20"/>
-                        <LineSegment Point="60,40"/>
-                        <LineSegment Point="50,50"/>
-                        <LineSegment Point="40,40"/>
-                        <LineSegment Point="40,20"/>
-                        <LineSegment Point="50,10"/>
-                    </PathFigure>
-                    
-                    <!-- bottom right coordinate-->
-                    <PathFigure StartPoint="50,50">
-                        <LineSegment Point="60,60"/>
-                        <LineSegment Point="60,80"/>
-                        <LineSegment Point="50,90"/>
-                        <LineSegment Point="40,80"/>
-                        <LineSegment Point="40,60"/>
-                        <LineSegment Point="50,50"/>
-                    </PathFigure>
-                    
-                    
-                    <!-- bottom left coordinate-->
-                    <PathFigure StartPoint="10,50">
-                        <LineSegment Point="20,60"/>
-                        <LineSegment Point="20,80"/>
-                        <LineSegment Point="10,90"/>
-                        <LineSegment Point="0,80"/>
-                        <LineSegment Point="0,60"/>
-                        <LineSegment Point="10,50"/>
-                    </PathFigure>
-                    
+                <PathGeometry Figures="{Binding TestGeometry}"> <!-- top coordinate-->
+                   
                  
                  
                  
