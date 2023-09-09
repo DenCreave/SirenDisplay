@@ -20,6 +20,7 @@ public  partial class MainViewModel : ObservableObject
     [ObservableProperty] private string tesztNeked = " nukulalaalalkkakla";
 
     [ObservableProperty] private PathFigures _testGeometry = new PathFigures();
+    [ObservableProperty] private PathFigures _digitHelper = new MyDigit8().PathFigures;
 
     public MainViewModel()
     {
