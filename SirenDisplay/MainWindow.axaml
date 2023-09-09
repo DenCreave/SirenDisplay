@@ -23,7 +23,7 @@
     
     
     
-    <Grid x:Name="BaseGrid"   RowDefinitions="Auto,*,Auto" ColumnDefinitions="*">
+    <Grid x:Name="BaseGrid"   RowDefinitions="Auto,*,Auto" ColumnDefinitions="*" >
         <Button Grid.Row="0" Foreground="#ff901b" FontSize="25" HorizontalAlignment="Center"> erre lesz rá bindolva a song vagy playlist neve</Button>
         <Path Grid.Row="0"   Stroke="#ff901b" StrokeThickness="10" Margin="5" Stretch="Fill">
                 
@@ -44,9 +44,7 @@
             </Path.Fill>
         </Path>
 
-        <Grid Grid.Row="1" ColumnDefinitions="*,*,*,*,*">
-            
-        </Grid>
+        
         <Path Grid.Row="1"   Stroke="#ff901b" StrokeThickness="10" Margin="5" Stretch="Fill">
                 
             <Path.Data>
@@ -66,23 +64,112 @@
             </Path.Fill>
         </Path>
         
-        <Path Grid.Row="1"  Stroke="#ff901b" Stretch="Fill"  StrokeThickness="1" Margin="5" >
-            <Path.Data>
-                
-                <PathGeometry Figures="{Binding TestGeometry}"> <!-- top coordinate-->
-                   
+        <Grid Grid.Row="1" ColumnDefinitions="*,*,*,*,*" HorizontalAlignment="Center" VerticalAlignment="Center"  >
+            <Path Grid.Column="0"  Stroke="#ff901b" Stretch="Uniform" HorizontalAlignment="Right"  VerticalAlignment="Center" StrokeThickness="1"  >
+                <Path.Data>
+                    <PathGeometry Figures="{Binding  TestGeometry}"> <!-- top coordinate-->
                  
+                    </PathGeometry> <!-- a path geometrybe kell rakni  a path figureket -->
+                </Path.Data>
+                <Path.Effect>
+                    <DropShadowEffect Color="#ff901b" Opacity="1" BlurRadius="500"/>
+                </Path.Effect>
+                <Path.Fill>
+                    <SolidColorBrush Color="#ff901b" Opacity=".45"  ></SolidColorBrush>
+                </Path.Fill>
+            </Path>
+            <Path Grid.Column="0" Stroke="#ff901b" Stretch="Uniform" Margin="10,0" Opacity="0" HorizontalAlignment="Right"  VerticalAlignment="Center"  StrokeThickness="1">
+                <Path.Data>
+                    <PathGeometry Figures="{Binding DigitHelper}"> <!-- top coordinate-->
                  
+                    </PathGeometry> <!-- a path geometrybe kell rakni  a path figureket -->
+                </Path.Data>
+            </Path>
+            
+            
+            
+            
+            <Path Grid.Column="1"  HorizontalAlignment="Right"  VerticalAlignment="Center" Stroke="#ff901b" Stretch="Uniform"  StrokeThickness="1"  >
+                <Path.Data>
+                    <PathGeometry Figures="{Binding TestGeometry}"> <!-- top coordinate-->
                  
-                </PathGeometry> <!-- a path geometrybe kell rakni  a path figureket -->
-            </Path.Data>
-            <Path.Effect>
-                <DropShadowEffect Color="#ff901b" Opacity="1" BlurRadius="500"/>
-            </Path.Effect>
-            <Path.Fill>
-                <SolidColorBrush Color="#ff901b" Opacity=".45"  ></SolidColorBrush>
-            </Path.Fill>
-        </Path>
+                    </PathGeometry> <!-- a path geometrybe kell rakni  a path figureket -->
+                </Path.Data>
+                <Path.Effect>
+                    <DropShadowEffect Color="#ff901b" Opacity="1" BlurRadius="500"/>
+                </Path.Effect>
+                <Path.Fill>
+                    <SolidColorBrush Color="#ff901b" Opacity=".45"  ></SolidColorBrush>
+                </Path.Fill>
+            </Path>
+            <Path Grid.Column="1" Stroke="#ff901b" Stretch="Uniform" Margin="10,0" Opacity="0" HorizontalAlignment="Right"  VerticalAlignment="Center" StrokeThickness="1">
+                <Path.Data>
+                    <PathGeometry Figures="{Binding DigitHelper}"> <!-- top coordinate-->
+                 
+                    </PathGeometry> <!-- a path geometrybe kell rakni  a path figureket -->
+                </Path.Data>
+            </Path>
+            
+            
+            <Button Grid.Column="2" HorizontalAlignment="Right" Margin="10,0" VerticalAlignment="Center" Foreground="#ff901b" FontSize="24" Background="Transparent"  Content="{Binding TestObject}">
+                <Button.Effect>
+                    <DropShadowEffect Color="#ff901b" Opacity="1" BlurRadius="50"/>
+                </Button.Effect>
+             
+            </Button> 
+            
+            
+            
+            
+            
+            <Path Grid.Column="3" HorizontalAlignment="Right"  VerticalAlignment="Center" Stroke="#ff901b" Stretch="Uniform"  StrokeThickness="1"  >
+                <Path.Data>
+                    <PathGeometry Figures="{Binding TestGeometry}"> <!-- top coordinate-->
+                 
+                    </PathGeometry> <!-- a path geometrybe kell rakni  a path figureket -->
+                </Path.Data>
+                <Path.Effect>
+                    <DropShadowEffect Color="#ff901b" Opacity="1" BlurRadius="500"/>
+                </Path.Effect>
+                <Path.Fill>
+                    <SolidColorBrush Color="#ff901b" Opacity=".45"  ></SolidColorBrush>
+                </Path.Fill>
+            </Path>
+            <Path Grid.Column="3" HorizontalAlignment="Right" Margin="10,0" VerticalAlignment="Center" Stroke="#ff901b" Stretch="Uniform" Opacity="0"  StrokeThickness="1">
+                <Path.Data>
+                    <PathGeometry Figures="{Binding DigitHelper}"> <!-- top coordinate-->
+                 
+                    </PathGeometry> <!-- a path geometrybe kell rakni  a path figureket -->
+                </Path.Data>
+            </Path>
+            
+            
+            
+            <Path Grid.Column="4" HorizontalAlignment="Right"  VerticalAlignment="Center" Stroke="#ff901b" Stretch="Uniform"  StrokeThickness="1"  >
+                <Path.Data>
+                    <PathGeometry Figures="{Binding TestGeometry}"> <!-- top coordinate-->
+                 
+                    </PathGeometry> <!-- a path geometrybe kell rakni  a path figureket -->
+                </Path.Data>
+                <Path.Effect>
+                    <DropShadowEffect Color="#ff901b" Opacity="1" BlurRadius="500"/>
+                </Path.Effect>
+                <Path.Fill>
+                    <SolidColorBrush Color="#ff901b" Opacity=".45"  ></SolidColorBrush>
+                </Path.Fill>
+            </Path>
+            <Path Grid.Column="4" HorizontalAlignment="Right" Margin="10,0"  VerticalAlignment="Center" Stroke="#ff901b" Stretch="Uniform" Opacity="0"  StrokeThickness="1">
+                <Path.Data>
+                    <PathGeometry Figures="{Binding DigitHelper}"> <!-- top coordinate-->
+                 
+                    </PathGeometry> <!-- a path geometrybe kell rakni  a path figureket -->
+                </Path.Data>
+            </Path>
+            
+            
+            
+        </Grid>
+        
         
         
         
@@ -195,7 +282,6 @@
                 <SolidColorBrush Color="#ff901b" Opacity=".05"  ></SolidColorBrush>
             </Path.Fill>
         </Path>
-        <Label Grid.Row="1" Content="{Binding TesztNeked}"> </Label>
         <Button Grid.Row="2" HorizontalAlignment="Center" Foreground="#ff901b" FontSize="24" Background="Transparent"  Content="{Binding TestObject}">
             <Button.Effect>
                 <DropShadowEffect Color="#ff901b" Opacity="1" BlurRadius="50"/>
