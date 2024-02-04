@@ -78,7 +78,7 @@
                     <SolidColorBrush Color="#ff901b" Opacity=".45"  ></SolidColorBrush>
                 </Path.Fill>
             </Path>
-            <Path Grid.Column="0" Stroke="#ff901b" Stretch="Uniform" Margin="10,0" Opacity="0" HorizontalAlignment="Right"  VerticalAlignment="Center"  StrokeThickness="1">
+            <Path Grid.Column="0" Stroke="#ff901b" Stretch="Uniform" Opacity="0" HorizontalAlignment="Right"  VerticalAlignment="Center"  StrokeThickness="1">
                 <Path.Data>
                     <PathGeometry Figures="{Binding DigitHelper}"> <!-- top coordinate-->
                  
