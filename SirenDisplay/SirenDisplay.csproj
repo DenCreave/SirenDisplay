@@ -19,9 +19,11 @@
             <IncludeAssets Condition="'$(Configuration)' != 'Debug'">None</IncludeAssets>
             <PrivateAssets Condition="'$(Configuration)' != 'Debug'">All</PrivateAssets>
         </PackageReference>
+        <PackageReference Include="CommunityToolkit.Mvvm" Version="8.4.0" />
     </ItemGroup>
 
     <ItemGroup>
+      <Folder Include="Model\" />
       <Folder Include="Styles\" />
     </ItemGroup>
 
@@ -30,5 +32,12 @@
       <AvaloniaResource Include="Assets\Images\exit_icon.svg">
         <CopyToOutputDirectory>Always</CopyToOutputDirectory>
       </AvaloniaResource>
+    </ItemGroup>
+
+    <ItemGroup>
+      <Compile Update="Views\ClockView.axaml.cs">
+        <DependentUpon>MainWindow.axaml</DependentUpon>
+        <SubType>Code</SubType>
+      </Compile>
     </ItemGroup>
 </Project>
