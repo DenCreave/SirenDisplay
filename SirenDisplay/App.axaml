@@ -8,4 +8,8 @@
         <FluentTheme />
         <StyleInclude Source="Styles/DefaultStyles.axaml"></StyleInclude>
     </Application.Styles>
+    
+    <Application.Resources>
+        <SolidColorBrush x:Key="PrimaryBackground">#1b1b1b</SolidColorBrush>
+    </Application.Resources>
 </Application>
