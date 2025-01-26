@@ -5,7 +5,9 @@
       <map>
         <entry key="App.axaml" value="SirenDisplay.csproj" />
         <entry key="MainWindow.axaml" value="SirenDisplay.csproj" />
+        <entry key="Styles/DefaultStyles.axaml" value="SirenDisplay.csproj" />
         <entry key="Styles/Styles.axaml" value="SirenDisplay.csproj" />
+        <entry key="Views/ClockView.axaml" value="SirenDisplay.csproj" />
       </map>
     </option>
   </component>

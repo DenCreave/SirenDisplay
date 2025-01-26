@@ -8,6 +8,6 @@ public partial class ClockView : Window
     public ClockView()
     {
         InitializeComponent();
-        DataContext = new ClockViewModel();
+        //DataContext = new ClockViewModel();
     }
 }

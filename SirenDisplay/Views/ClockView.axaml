@@ -2,10 +2,22 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+        xmlns:viewModels="clr-namespace:SirenDisplay.ViewModels"
+        mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="480"
         x:Class="SirenDisplay.ClockView"
-        Title="SirenDisplay">
-    <Grid Background="{DynamicResource PrimaryBackground}">
-        <Image Source="{SvgImage Assets/Images/exit_icon.svg} "/>
+        Title="SirenDisplay"
+        x:DataType="viewModels:ClockViewModel">
+    <Window.DataContext>
+        <viewModels:ClockViewModel/> 
+    </Window.DataContext> 
+    
+    
+    <Grid x:Name="BackGroundGrid"  Background="{DynamicResource PrimaryBackground}">
+        <ContentControl Content="{Binding Path=MypathFigures}" /> 
+        
+        <!-- <Image Source="{SvgImage /Assets/Images/exit_icon.svg} "/>-->
+       <Grid x:Name="MainGrid" RowDefinitions="*,6*,*" ColumnDefinitions="*">
+           
+       </Grid>
     </Grid>
 </Window>
