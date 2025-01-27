@@ -12,12 +12,21 @@
     </Window.DataContext> 
     
     
-    <Grid x:Name="BackGroundGrid"  Background="{DynamicResource PrimaryBackground}">
-        <ContentControl Content="{Binding Path=MypathFigures}" /> 
-        
-        <!-- <Image Source="{SvgImage /Assets/Images/exit_icon.svg} "/>-->
-       <Grid x:Name="MainGrid" RowDefinitions="*,6*,*" ColumnDefinitions="*">
-           
-       </Grid>
-    </Grid>
+        <Grid  x:Name="BackGroundGrid"  Background="{DynamicResource PrimaryBackground}">
+            <ContentControl Content="{Binding Path=MypathFigures}" /> 
+            
+            <!-- <Image Source="{SvgImage /Assets/Images/exit_icon.svg} "/>-->
+           <Grid x:Name="MainGrid" RowDefinitions="*,3*,*" ColumnDefinitions="*">
+               <Button Grid.Row="0"   Foreground="#ff901b" FontSize="40" HorizontalAlignment="Center" VerticalAlignment="Center" HorizontalContentAlignment="Center" > song or playlist name</Button>
+               <Grid Grid.Row="1" RowDefinitions="*" ColumnDefinitions="*,*,*,*,*">
+                   <ContentControl  Grid.Column="0"  Content="{Binding Path=HourDecimalDigit}" /> 
+                   <ContentControl Grid.Column="1" Content="{Binding Path=HourDigit}" /> 
+                   <Button Grid.Column="2">activate</Button>
+                   <ContentControl Grid.Column="3" Content="{Binding Path=MinuteDecimalDigit}" /> 
+                   <ContentControl Grid.Column="4" Content="{Binding Path=MinuteDigit}" /> 
+               </Grid>
+               <Button Grid.Row="2"  Foreground="#ff901b" FontSize="40" HorizontalAlignment="Center" VerticalAlignment="Center" HorizontalContentAlignment="Center"> set time for alarm</Button>
+           </Grid>
+        </Grid>
+    
 </Window>
