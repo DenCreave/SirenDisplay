@@ -1,6 +1,6 @@
 using Avalonia.Media;
 
-namespace SirenDisplay.Assets.Polygons.Frames;
+namespace SirenDisplay.Interfaces;
 
 public interface IFrames
 {
