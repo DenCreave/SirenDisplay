@@ -1,27 +1,42 @@
 using System;
+using System.ComponentModel;
+using System.IO;
+using System.Reactive;
+using System.Reflection;
 using System.Runtime.InteropServices.JavaScript;
+using System.Windows.Input;
 using Avalonia;
 using Avalonia.Controls;
-using Avalonia.Controls.Shapes;
+using Avalonia.Interactivity;
 using Avalonia.Layout;
 using Avalonia.Media;
+using Avalonia.Media.Imaging;
+using Avalonia.Platform;
+using Avalonia.Svg.Skia;
 using Avalonia.Threading;
 using CommunityToolkit.Mvvm.ComponentModel;
+using CommunityToolkit.Mvvm.Input;
 using ExCSS;
+using ReactiveUI;
 using SirenDisplay.Assets.Polygons.Buttons;
 using SirenDisplay.Assets.Polygons.Frames;
 using SirenDisplay.Classes.Digits;
+using SirenDisplay.Controllers;
+using SkiaSharp;
+using Svg.Skia;
 using Color = Avalonia.Media.Color;
 using FontStretch = Avalonia.Media.FontStretch;
 using FontStyle = Avalonia.Media.FontStyle;
 using FontWeight = Avalonia.Media.FontWeight;
 using HorizontalAlignment = Avalonia.Layout.HorizontalAlignment;
+using Path = Avalonia.Controls.Shapes.Path;
 using VerticalAlignment = Avalonia.Layout.VerticalAlignment;
 
 namespace SirenDisplay.ViewModels;
 
 public sealed partial class ClockViewModel : ObservableObject
 {
+    
     
     [ObservableProperty] private Path _mypathFigures;
     [ObservableProperty] private Path _hourDecimalDigit;
@@ -30,16 +45,79 @@ public sealed partial class ClockViewModel : ObservableObject
     [ObservableProperty] private Path _minuteDigit;
     private DigitLoader _digitLoader;
     private DispatcherTimer _timer;
-    [ObservableProperty] private Button _alarmButton;
+    //todo put this to a different controller class, maybe make it a singleton
+    
+    [ObservableProperty]
+    [NotifyPropertyChangedFor( nameof(TimeImagenda))]
+    private bool _isGoodMorning;
+
+    public SvgImage TimeImagenda => new SvgImage
+        { Source = SvgSource.Load($"avares://SirenDisplay/Assets/Images/{(IsGoodMorning ? "alarmbuttonver1" : "clockbuttonclock")}.svg") };
+    
+    
+    //[ObservableProperty] private Path _alarmButton;
+    [ObservableProperty] private SvgImage _alarmButtonOff;
+    [ObservableProperty] private SvgImage _alarmButtonOn;
     
     public ClockViewModel()
     {
         FrameInitializer();
         ClockInitializer();
-        ButtonInitializer();
+        AlarmButtonInitializer();
+        
+        
+        // string path = "avares://Assets/Images/clockbuttonclock.svg"; 
+        
+        //string path = "avares://Assets/Images/clockbuttonclock.svg";
+        //Source = new SvgSource(new Uri("/Assets/Images/clockbuttonclock.svg");
+        
+       
+        
+        
+        
+        /*
+         *
+         *<Image Source="{Binding Imageitself}"/>
+         *<Button Command="{Binding Path=ActivateAlarmButton}" Grid.Column="2" Margin="20,0,20,0" HorizontalAlignment="Center"  >
+               <!-- <ContentControl  Content="{Binding Path=Imageitself}" /> -->
+               
+           </Button>
+         *
+         *<ContentControl PointerPressed="{Binding Path= DoTheThing}" Margin="50" Grid.Column="2" HorizontalContentAlignment="Right" HorizontalAlignment="Right" Content="{Binding Path=AlarmButton}" /> 
+                             
+         *
+         * 
+         */
+        
+        /*TestImage = new SvgImage()
+        {
+            Source = new SvgSource(new Uri("avares://SirenDisplay/Assets/Images/clockbuttonclock.svg"))
+        };*/
+        //SvgSource tmp = new SvgSource(new Uri("avares://Assets/Images/clockbuttonclock.svg"));
+        //TestImage.Source = tmp;
+        //TestImage.Load("Assets/Images/clockbuttonclock.svg"); //now it probably could load
+        Console.WriteLine("Current Directory:");
+        Console.WriteLine( Directory.GetCurrentDirectory());
+        string assemblyName = Assembly.GetExecutingAssembly().GetName().Name; 
+
+        Console.WriteLine($"the assembly name:\n{assemblyName}");
+        //string svgPath = "Assets/Images/clockbuttonclock.svg"; 
+        string svgPath = "avares://Assets/Images/clockbuttonclock.svg"; 
+        //Marsu
+        //Uristring="avares://SirenDisplay/Assets/Images/clockbuttonclock.svg";
+        
+        //TestImage.Source.ReLoad();
+        //TestImage.Source.Path
+        // TestImage2 = new SKSvg();
+        //TestImage2.Load("avares://SirenDisplay/Assets/Images/clockbuttonclock.svg");
+        // TestImage2.Load("Assets/Images/clockbuttonclock.svg");
+        //TestImage2.
+
 
         Console.WriteLine("ClockViewModel constructor complete");
     }
+    
+    
 
     private void FrameInitializer()
     {
@@ -107,10 +185,10 @@ public sealed partial class ClockViewModel : ObservableObject
         
         _timer.Tick += (sender, args) =>
         {
-            int hours = DateTime.Now.Hour;
-            int hoursDecimal = hours / 10;
-            int minutes = DateTime.Now.Minute;
-            int minutesDecimal = minutes / 10;
+            hours = DateTime.Now.Hour;
+            hoursDecimal = hours / 10;
+            minutes = DateTime.Now.Minute;
+            minutesDecimal = minutes / 10;
             if (hoursDecimal == 0)
             {
                 HourDecimalDigit.Data=_digitLoader.ReturnPathGeometry(10); 
@@ -126,41 +204,30 @@ public sealed partial class ClockViewModel : ObservableObject
         _timer.Start();
     }
     
-    private void ButtonInitializer()
+    private void AlarmButtonInitializer()
     {
-        PathGeometry pathGeometry = new PathGeometry()
+        
+        /*AlarmButton = new Path()
         {
-            Figures = new ActivateAlarm().Rectangles
-        };
-        Button tryme= new Button
-        {
-           // Transitions = null,
-           // Name = null,
-           // DataContext = null,
-           // Resources = null,
-           // Theme = null,
-            Opacity = 1,
-           // OpacityMask = null,
-          //  Effect = null,
-            Focusable = false,
-           // IsEnabled = false,
-            Background = new DrawingBrush
+            Stroke =  new SolidColorBrush(Color.FromArgb(255, 0xff, 0x90, 0x1b)),
+            StrokeThickness = 10,
+            //Margin = new Thickness(),
+            Stretch = Stretch.Uniform,
+            Data = new PathGeometry()
             {
-                Drawing = new DrawingGroup()pathGeometry
-            },
-            BackgroundSizing = BackgroundSizing.InnerBorderEdge,
-           // BorderBrush = null,
-           // BorderThickness = default,
-           // CornerRadius = default,
-           // FontFamily = null,
-           // FontFeatures = null,
-            FontSize = 0,
-            FontStyle = FontStyle.Normal,
-            FontWeight = (FontWeight)0,
-            FontStretch = (FontStretch)0,
-           // Foreground = null,
-           
-        };
+                Figures = new ActivateAlarm().Rectangles,
+            }
+        }; */
+    }
+
+
+
+
+    public void ActivateAlarmButton()
+    {
+        //AlarmButton.SwitchImage();
+        Console.WriteLine($"AlarmButton pressed");
+        IsGoodMorning = !IsGoodMorning;
 
     }
 }
