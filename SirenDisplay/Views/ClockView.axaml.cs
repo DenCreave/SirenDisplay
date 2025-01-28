@@ -12,4 +12,10 @@ public partial class ClockView : Window
         InitializeComponent();
         //DataContext = new ClockViewModel();
     }
+
+    private void ToggleAlarm(object? sender, PointerPressedEventArgs e)
+    {
+        //var tmp = DataContext as ClockViewModel;
+        (DataContext as ClockViewModel)?.ActivateAlarmButton();
+    }
 }

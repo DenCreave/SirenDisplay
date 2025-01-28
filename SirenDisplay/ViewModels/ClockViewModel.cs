@@ -84,6 +84,14 @@ public sealed partial class ClockViewModel : ObservableObject
            </Button>
          *
          *<ContentControl PointerPressed="{Binding Path= DoTheThing}" Margin="50" Grid.Column="2" HorizontalContentAlignment="Right" HorizontalAlignment="Right" Content="{Binding Path=AlarmButton}" /> 
+              
+              <Button Command="{Binding Path=ActivateAlarmButton}" Grid.Column="2" Margin="20,0,20,0" HorizontalAlignment="Center"  >
+               <!-- <ContentControl  Content="{Binding Path=Imageitself}" /> -->
+               <Image Source="{Binding TimeImagenda}"/>
+           </Button>
+              
+              
+              
                              
          *
          * 
