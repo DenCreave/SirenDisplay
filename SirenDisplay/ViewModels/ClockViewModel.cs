@@ -64,17 +64,6 @@ public sealed partial class ClockViewModel : ObservableObject
         FrameInitializer();
         ClockInitializer();
         AlarmButtonInitializer();
-        
-        
-        // string path = "avares://Assets/Images/clockbuttonclock.svg"; 
-        
-        //string path = "avares://Assets/Images/clockbuttonclock.svg";
-        //Source = new SvgSource(new Uri("/Assets/Images/clockbuttonclock.svg");
-        
-       
-        
-        
-        
         /*
          *
          *<Image Source="{Binding Imageitself}"/>
@@ -88,40 +77,11 @@ public sealed partial class ClockViewModel : ObservableObject
               <Button Command="{Binding Path=ActivateAlarmButton}" Grid.Column="2" Margin="20,0,20,0" HorizontalAlignment="Center"  >
                <!-- <ContentControl  Content="{Binding Path=Imageitself}" /> -->
                <Image Source="{Binding TimeImagenda}"/>
-           </Button>
-              
-              
-              
+           </Button>   
                              
          *
          * 
          */
-        
-        /*TestImage = new SvgImage()
-        {
-            Source = new SvgSource(new Uri("avares://SirenDisplay/Assets/Images/clockbuttonclock.svg"))
-        };*/
-        //SvgSource tmp = new SvgSource(new Uri("avares://Assets/Images/clockbuttonclock.svg"));
-        //TestImage.Source = tmp;
-        //TestImage.Load("Assets/Images/clockbuttonclock.svg"); //now it probably could load
-        Console.WriteLine("Current Directory:");
-        Console.WriteLine( Directory.GetCurrentDirectory());
-        string assemblyName = Assembly.GetExecutingAssembly().GetName().Name; 
-
-        Console.WriteLine($"the assembly name:\n{assemblyName}");
-        //string svgPath = "Assets/Images/clockbuttonclock.svg"; 
-        string svgPath = "avares://Assets/Images/clockbuttonclock.svg"; 
-        //Marsu
-        //Uristring="avares://SirenDisplay/Assets/Images/clockbuttonclock.svg";
-        
-        //TestImage.Source.ReLoad();
-        //TestImage.Source.Path
-        // TestImage2 = new SKSvg();
-        //TestImage2.Load("avares://SirenDisplay/Assets/Images/clockbuttonclock.svg");
-        // TestImage2.Load("Assets/Images/clockbuttonclock.svg");
-        //TestImage2.
-
-
         Console.WriteLine("ClockViewModel constructor complete");
     }
     

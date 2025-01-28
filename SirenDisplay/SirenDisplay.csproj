@@ -44,6 +44,26 @@
         <CopyToOutputDirectory>Always</CopyToOutputDirectory>
       </AvaloniaResource>
       <None Remove="Assets\Images\clockbuttonclock.png" />
+      <None Remove="Assets\Fonts\Phosphor.ttf" />
+      <AvaloniaResource Include="Assets\Fonts\Phosphor.ttf">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </AvaloniaResource>
+      <None Remove="Assets\Fonts\Phosphor-Bold.ttf" />
+      <AvaloniaResource Include="Assets\Fonts\Phosphor-Bold.ttf">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </AvaloniaResource>
+      <None Remove="Assets\Fonts\Phosphor-Duotone.ttf" />
+      <AvaloniaResource Include="Assets\Fonts\Phosphor-Duotone.ttf">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </AvaloniaResource>
+      <None Remove="Assets\Fonts\Phosphor-Fill.ttf" />
+      <AvaloniaResource Include="Assets\Fonts\Phosphor-Fill.ttf">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </AvaloniaResource>
+      <None Remove="Assets\Fonts\Phosphor-Thin.ttf" />
+      <AvaloniaResource Include="Assets\Fonts\Phosphor-Thin.ttf">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </AvaloniaResource>
     </ItemGroup>
 
     <ItemGroup>

@@ -25,7 +25,9 @@
                    <ContentControl  Grid.Column="3" HorizontalContentAlignment="Right" HorizontalAlignment="Right" Content="{Binding Path=MinuteDecimalDigit}" /> 
                    <ContentControl Margin="20,0,0,0" Grid.Column="4" HorizontalContentAlignment="Right" HorizontalAlignment="Right" Content="{Binding Path=MinuteDigit}" /> 
                </Grid>
-               <Button Grid.Row="2"  Foreground="#ff901b" FontSize="40" HorizontalAlignment="Center" VerticalAlignment="Center" HorizontalContentAlignment="Center"> set time for alarm</Button>
+               <Button Grid.Row="2"  Foreground="#ff901b" FontSize="40" HorizontalAlignment="Center" VerticalAlignment="Center" HorizontalContentAlignment="Center">
+                   <Label Classes="icon" Content="&#xE9B8;"></Label>
+               </Button>
            </Grid>
         </Grid>
     
