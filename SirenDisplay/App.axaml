@@ -10,7 +10,35 @@
     </Application.Styles>
     
     <Application.Resources>
-        <SolidColorBrush x:Key="PrimaryBackground">#1b1b1b</SolidColorBrush>
+        <SolidColorBrush x:Key="PrimaryBackground">#000000</SolidColorBrush>
+        <SolidColorBrush x:Key="B1">#ff901b</SolidColorBrush>
+
+        <SolidColorBrush x:Key="A1">#ff6533</SolidColorBrush>
+        <SolidColorBrush x:Key="A2">#ff0090</SolidColorBrush>
+
+        <SolidColorBrush x:Key="S2">#e45e00</SolidColorBrush>
+        <SolidColorBrush x:Key="S1">#9e0022</SolidColorBrush>
+
+
+        <LinearGradientBrush x:Key="OffColor" StartPoint="0%,100%" Opacity="0.8" EndPoint="100%,0%">
+            <GradientStop Color="#ff0090" Offset="0.0"/>
+            <GradientStop Color="#ff6533" Offset="1.0"/>
+        </LinearGradientBrush>
+        
+        <LinearGradientBrush x:Key="SirenColor" StartPoint="0%,100%" EndPoint="100%,0%">
+            <GradientStop Color="#9e0022" Offset="0.0"/>
+            <GradientStop Color="#e45e00" Offset="1.0"/>
+        </LinearGradientBrush>
+        
+        <LinearGradientBrush x:Key="SirenColor2" StartPoint="0%,100%" EndPoint="100%,0%">
+            <GradientStop Color="#9e0022" Offset="0.0"/>
+            <GradientStop Color="#9e0012" Offset="1.0"/>
+        </LinearGradientBrush>
+        
+        <DropShadowEffect x:Key="OffEffect" Color="#ff6533" Opacity="1" BlurRadius="500"/>
+        <DropShadowEffect x:Key="SirenEffect" Color="#9e0022" Opacity="1" BlurRadius="500"/>
+        
+        
         
         <FontFamily x:Key="Phosphor">/Assets/Fonts/Phosphor.ttf#Phosphor</FontFamily>
         <FontFamily x:Key="Phosphor-Bold">/Assets/Fonts/Phosphor-Bold.ttf#Phosphor-Bold</FontFamily>

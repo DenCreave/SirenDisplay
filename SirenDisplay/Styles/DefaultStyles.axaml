@@ -11,7 +11,12 @@
     </Design.PreviewWith>
     <!-- Add Styles Here -->
     
-    <Style Selector="Label.icon" > <!-- make a label that can do icons, nothing else tho --> 
+    
+    <!-- make a label that can do icons, nothing else tho --> 
+    <Style Selector="Label.icon" > 
         <Setter Property="FontFamily" Value="{DynamicResource Phosphor}"></Setter>
     </Style>
+    
+    
+    
 </Styles>

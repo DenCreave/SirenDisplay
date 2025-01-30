@@ -1,6 +1,7 @@
 using System;
 using System.ComponentModel;
 using System.IO;
+using System.Net.Mime;
 using System.Reactive;
 using System.Reflection;
 using System.Runtime.InteropServices.JavaScript;
@@ -22,7 +23,9 @@ using SirenDisplay.Assets.Polygons.Buttons;
 using SirenDisplay.Assets.Polygons.Frames;
 using SirenDisplay.Classes.Digits;
 using SirenDisplay.Controllers;
+using SirenDisplay.Model;
 using SkiaSharp;
+using Splat;
 using Svg.Skia;
 using Color = Avalonia.Media.Color;
 using FontStretch = Avalonia.Media.FontStretch;
@@ -38,50 +41,61 @@ public sealed partial class ClockViewModel : ObservableObject
 {
     
     
-    [ObservableProperty] private Path _mypathFigures;
+    [ObservableProperty] private Path _mainFrame;
     [ObservableProperty] private Path _hourDecimalDigit;
     [ObservableProperty] private Path _minuteDecimalDigit;
     [ObservableProperty] private Path _hourDigit;
     [ObservableProperty] private Path _minuteDigit;
     private DigitLoader _digitLoader;
     private DispatcherTimer _timer;
+    private LabelData _labelData;
     //todo put this to a different controller class, maybe make it a singleton
-    
-    [ObservableProperty]
-    [NotifyPropertyChangedFor( nameof(TimeImagenda))]
-    private bool _isGoodMorning;
 
-    public SvgImage TimeImagenda => new SvgImage
-        { Source = SvgSource.Load($"avares://SirenDisplay/Assets/Images/{(IsGoodMorning ? "alarmbuttonver1" : "clockbuttonclock")}.svg") };
+    //[NotifyPropertyChangedFor( nameof(TimeImagenda))]
+    [ObservableProperty]
+    [NotifyPropertyChangedFor( nameof(EnabledMe))]
+    private bool _isGoodMorning;
+    //public SvgImage TimeImagenda => new SvgImag { Source = SvgSource.Load($"avares://SirenDisplay/Assets/Images/{(IsGoodMorning ? "alarmbuttonver1" : "clockbuttonclock")}.svg") };
+    public bool EnabledMe => !IsGoodMorning;
+                    
+    [ObservableProperty]
+    [NotifyPropertyChangedFor( nameof(ClockButton))]
+    public AlarmState _alarmState;
     
     
-    //[ObservableProperty] private Path _alarmButton;
-    [ObservableProperty] private SvgImage _alarmButtonOff;
-    [ObservableProperty] private SvgImage _alarmButtonOn;
-    
+    public string ClockButton
+    {
+        get {
+            switch (AlarmState)
+            {
+                case AlarmState.Off:
+                {
+                    return _labelData.OffLabel;
+                }
+                case AlarmState.Pending:
+                {
+                    return _labelData.PendingLabel;
+                }
+                case AlarmState.Sirens:
+                {
+                    return _labelData.SirenLabel;
+                }
+                default:
+                {
+                    Console.WriteLine("Unknown alarm state");
+                    return "\uE4E0";
+                }
+            }
+        }
+    }
+
+
     public ClockViewModel()
     {
+        AlarmState = AlarmState.Off;
         FrameInitializer();
         ClockInitializer();
         AlarmButtonInitializer();
-        /*
-         *
-         *<Image Source="{Binding Imageitself}"/>
-         *<Button Command="{Binding Path=ActivateAlarmButton}" Grid.Column="2" Margin="20,0,20,0" HorizontalAlignment="Center"  >
-               <!-- <ContentControl  Content="{Binding Path=Imageitself}" /> -->
-               
-           </Button>
-         *
-         *<ContentControl PointerPressed="{Binding Path= DoTheThing}" Margin="50" Grid.Column="2" HorizontalContentAlignment="Right" HorizontalAlignment="Right" Content="{Binding Path=AlarmButton}" /> 
-              
-              <Button Command="{Binding Path=ActivateAlarmButton}" Grid.Column="2" Margin="20,0,20,0" HorizontalAlignment="Center"  >
-               <!-- <ContentControl  Content="{Binding Path=Imageitself}" /> -->
-               <Image Source="{Binding TimeImagenda}"/>
-           </Button>   
-                             
-         *
-         * 
-         */
         Console.WriteLine("ClockViewModel constructor complete");
     }
     
@@ -89,10 +103,9 @@ public sealed partial class ClockViewModel : ObservableObject
 
     private void FrameInitializer()
     {
-        MypathFigures = new Path
+        MainFrame = new Path
         {
-
-            Stroke =  new SolidColorBrush(Color.FromArgb(255, 0xff, 0x90, 0x1b)),
+            Stroke =  Application.Current.FindResource("OffColor") as LinearGradientBrush,
             StrokeThickness = 10,
             Stretch = Stretch.Fill,
             Data = new PathGeometry
@@ -104,12 +117,7 @@ public sealed partial class ClockViewModel : ObservableObject
                     new BottomFrame().PathFigure
                 }
             },
-            Effect = new DropShadowEffect
-            {
-                Color = Color.FromArgb(255, 0xff, 0x90, 0x1b),
-                Opacity = 1,
-                BlurRadius = 500
-            },
+            Effect = Application.Current.FindResource("OffEffect") as DropShadowEffect
         };
     }
 
@@ -120,17 +128,11 @@ public sealed partial class ClockViewModel : ObservableObject
             return new Path
             {
                 //todo, generate a class for managing style and effects to make it responsive
-                Stroke =  new SolidColorBrush(Color.FromArgb(255, 0xff, 0x90, 0x1b)),
+                Stroke =  Application.Current.FindResource("OffColor") as LinearGradientBrush,
+                Fill = Application.Current.FindResource("SirenColor") as LinearGradientBrush,
                 StrokeThickness = 10,
-                //Margin = new Thickness(),
                 Stretch = Stretch.Uniform,
                 Data = _digitLoader.ReturnPathGeometry(10),
-                /*Effect = new DropShadowEffect
-                {
-                    Color = Color.FromArgb(255, 0xff, 0x90, 0x1b),
-                    Opacity = 1,
-                    BlurRadius = 500
-                }*/
             };
         }
 
@@ -174,7 +176,12 @@ public sealed partial class ClockViewModel : ObservableObject
     
     private void AlarmButtonInitializer()
     {
+        _labelData = new LabelData();
         
+
+
+
+
         /*AlarmButton = new Path()
         {
             Stroke =  new SolidColorBrush(Color.FromArgb(255, 0xff, 0x90, 0x1b)),
@@ -185,7 +192,7 @@ public sealed partial class ClockViewModel : ObservableObject
             {
                 Figures = new ActivateAlarm().Rectangles,
             }
-        }; */
+        };*/
     }
 
 
@@ -195,7 +202,8 @@ public sealed partial class ClockViewModel : ObservableObject
     {
         //AlarmButton.SwitchImage();
         Console.WriteLine($"AlarmButton pressed");
-        IsGoodMorning = !IsGoodMorning;
+        AlarmState++;
+        
 
     }
 }

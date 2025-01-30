@@ -13,19 +13,29 @@
     
     
         <Grid  x:Name="BackGroundGrid"  Background="{DynamicResource PrimaryBackground}">
-            <ContentControl Content="{Binding Path=MypathFigures}" /> 
+            <ContentControl Classes="main-frame" Content="{Binding Path=MainFrame}" /> 
             <Image Source=""/>
             <!-- <Image  Source="{SvgImage /Assets/Images/clockbuttonclock.svg} "/> -->
            <Grid x:Name="MainGrid" RowDefinitions="*,3*,*" ColumnDefinitions="*">
                <Button Grid.Row="0"   Foreground="#ff901b" FontSize="40" HorizontalAlignment="Center" VerticalAlignment="Center" HorizontalContentAlignment="Center" > song or playlist name</Button>
                <Grid Grid.Row="1" Margin="30,30,30,30" RowDefinitions="*" ColumnDefinitions="*,*,*,*,*">
                    <ContentControl Grid.Column="0" Margin="0,0,20,0"    HorizontalContentAlignment="Right" HorizontalAlignment="Right" Content="{Binding Path=HourDecimalDigit}" /> 
-                   <ContentControl  Grid.Column="1" HorizontalContentAlignment="Right" HorizontalAlignment="Right" Content="{Binding Path=HourDigit}" /> 
-                   <Image Grid.Column="2" PointerPressed="ToggleAlarm" Source="{Binding TimeImagenda}"/>
+                   <ContentControl  Grid.Column="1" HorizontalContentAlignment="Right" HorizontalAlignment="Right" Content="{Binding Path=HourDigit}" />
+                   <StackPanel Grid.Column="2" Orientation="Vertical" Margin="20">
+                       <Viewbox >
+                           <Label  Foreground="#ff901b"  Classes="icon" Content="{Binding ClockButton}" ></Label>
+                           <!--<Label  Foreground="#ff901b"  Classes="icon" Content="&#xE9B8;" ></Label> -->
+                       </Viewbox>
+                       <Viewbox >
+                           <Label  Foreground="#ff901b"  Classes="icon" Content="{Binding ClockButton}" ></Label>
+                       </Viewbox>
+                   </StackPanel>
+                   
+                   
                    <ContentControl  Grid.Column="3" HorizontalContentAlignment="Right" HorizontalAlignment="Right" Content="{Binding Path=MinuteDecimalDigit}" /> 
                    <ContentControl Margin="20,0,0,0" Grid.Column="4" HorizontalContentAlignment="Right" HorizontalAlignment="Right" Content="{Binding Path=MinuteDigit}" /> 
                </Grid>
-               <Button Grid.Row="2"  Foreground="#ff901b" FontSize="40" HorizontalAlignment="Center" VerticalAlignment="Center" HorizontalContentAlignment="Center">
+               <Button Grid.Row="2"  Foreground="#ff901b" FontSize="50" HorizontalAlignment="Center" VerticalAlignment="Center" HorizontalContentAlignment="Center">
                    <Label Classes="icon" Content="&#xE9B8;"></Label>
                </Button>
            </Grid>
