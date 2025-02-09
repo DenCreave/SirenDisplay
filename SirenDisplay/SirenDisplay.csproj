@@ -66,11 +66,4 @@
       <None Remove="Assets\conf.json" />
       <AvaloniaResource Include="Assets\conf.json" />
     </ItemGroup>
-
-    <ItemGroup>
-      <Compile Update="Views\ClockView.axaml.cs">
-        <DependentUpon>MainWindow.axaml</DependentUpon>
-        <SubType>Code</SubType>
-      </Compile>
-    </ItemGroup>
 </Project>

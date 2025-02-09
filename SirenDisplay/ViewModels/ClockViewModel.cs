@@ -5,6 +5,7 @@ using System.Net.Mime;
 using System.Reactive;
 using System.Reflection;
 using System.Runtime.InteropServices.JavaScript;
+using System.Threading.Tasks;
 using System.Windows.Input;
 using Avalonia;
 using Avalonia.Controls;
@@ -37,7 +38,7 @@ using VerticalAlignment = Avalonia.Layout.VerticalAlignment;
 
 namespace SirenDisplay.ViewModels;
 
-public sealed partial class ClockViewModel : ObservableObject
+public sealed partial class ClockViewModel : ViewModelBase
 {
     
     
@@ -50,17 +51,18 @@ public sealed partial class ClockViewModel : ObservableObject
     private DispatcherTimer _timer;
     private LabelData _labelData;
     //todo put this to a different controller class, maybe make it a singleton
-
     //[NotifyPropertyChangedFor( nameof(TimeImagenda))]
     [ObservableProperty]
     [NotifyPropertyChangedFor( nameof(EnabledMe))]
     private bool _isGoodMorning;
     //public SvgImage TimeImagenda => new SvgImag { Source = SvgSource.Load($"avares://SirenDisplay/Assets/Images/{(IsGoodMorning ? "alarmbuttonver1" : "clockbuttonclock")}.svg") };
     public bool EnabledMe => !IsGoodMorning;
-                    
-    [ObservableProperty]
-    [NotifyPropertyChangedFor( nameof(ClockButton))]
-    public AlarmState _alarmState;
+
+    public CacheVM CacheVM { get; set; }
+    
+    [ObservableProperty] 
+    [NotifyPropertyChangedFor(nameof(ClockButton))]
+    private AlarmState _alarmState;
     
     
     public string ClockButton
@@ -90,8 +92,8 @@ public sealed partial class ClockViewModel : ObservableObject
     }
 
 
-    public ClockViewModel()
-    {
+    public ClockViewModel() 
+    { 
         AlarmState = AlarmState.Off;
         FrameInitializer();
         ClockInitializer();
@@ -120,7 +122,7 @@ public sealed partial class ClockViewModel : ObservableObject
             Effect = Application.Current.FindResource("OffEffect") as DropShadowEffect
         };
     }
-
+    
     private void ClockInitializer()
     {
         Path GeneratePathDefaults()
@@ -178,21 +180,6 @@ public sealed partial class ClockViewModel : ObservableObject
     {
         _labelData = new LabelData();
         
-
-
-
-
-        /*AlarmButton = new Path()
-        {
-            Stroke =  new SolidColorBrush(Color.FromArgb(255, 0xff, 0x90, 0x1b)),
-            StrokeThickness = 10,
-            //Margin = new Thickness(),
-            Stretch = Stretch.Uniform,
-            Data = new PathGeometry()
-            {
-                Figures = new ActivateAlarm().Rectangles,
-            }
-        };*/
     }
 
 
@@ -200,10 +187,11 @@ public sealed partial class ClockViewModel : ObservableObject
 
     public void ActivateAlarmButton()
     {
-        //AlarmButton.SwitchImage();
-        Console.WriteLine($"AlarmButton pressed");
+        Console.WriteLine($"alarm state was: {AlarmState}");
         AlarmState++;
-        
+        Console.WriteLine($"alarm state is : {AlarmState}");
 
     }
+    
+    
 }

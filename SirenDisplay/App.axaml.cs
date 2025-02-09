@@ -1,6 +1,9 @@
 using Avalonia;
 using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia.Markup.Xaml;
+using SirenDisplay.Controllers;
+using SirenDisplay.Interfaces;
+using SirenDisplay.Views;
 
 namespace SirenDisplay;
 
@@ -15,9 +18,8 @@ public partial class App : Application
     {
         if (ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop)
         {
-            desktop.MainWindow = new ClockView();
+            desktop.MainWindow = new InitView();
         }
-
         base.OnFrameworkInitializationCompleted();
     }
 }
