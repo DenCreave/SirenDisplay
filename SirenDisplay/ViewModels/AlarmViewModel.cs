@@ -20,12 +20,16 @@ public sealed partial class AlarmViewModel : ViewModelBase, IAlarmTimeController
     [ObservableProperty] private Path _hourDigit;
     [ObservableProperty] private Path _minuteDigit;
     private DigitLoader _digitLoader;
-    public CacheVM CacheVM { get; set; }
+    public CacheReferences CacheReferences { get; set; }
+    public LabelData LabelData { get; }
+
+
     [ObservableProperty] 
     [NotifyPropertyChangedFor(nameof(ClockButton))]
     private AlarmState _alarmState;
+
     private LabelData _labelData;
-    
+
     public string ClockButton
     {
         get {
@@ -56,9 +60,45 @@ public sealed partial class AlarmViewModel : ViewModelBase, IAlarmTimeController
     {
         //todo constructor
     }
-    
-    
-    
-    
-    
+
+
+    public void IncreaseMinute()
+    {
+        throw new NotImplementedException();
+    }
+
+    public void DecreaseMinute()
+    {
+        throw new NotImplementedException();
+    }
+
+    public void IncreaseMinuteDecimal()
+    {
+        throw new NotImplementedException();
+    }
+
+    public void DecreaseMinuteDecimal()
+    {
+        throw new NotImplementedException();
+    }
+
+    public void IncreaseHour()
+    {
+        throw new NotImplementedException();
+    }
+
+    public void DecreaseHour()
+    {
+        throw new NotImplementedException();
+    }
+
+    public void IncreaseHourDecimal()
+    {
+        throw new NotImplementedException();
+    }
+
+    public void DecreaseHourDecimal()
+    {
+        throw new NotImplementedException();
+    }
 }

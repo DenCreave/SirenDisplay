@@ -1,5 +1,6 @@
 using System.Threading.Tasks;
 using CommunityToolkit.Mvvm.ComponentModel;
+using SirenDisplay.Controllers;
 using SirenDisplay.Model;
 
 namespace SirenDisplay.ViewModels;
@@ -7,23 +8,27 @@ namespace SirenDisplay.ViewModels;
 public sealed partial class InitViewModel : ViewModelBase
 {
     [ObservableProperty] private ViewModelBase _currentView;
+    private CacheReferences _cacheReferences;
     private ClockViewModel _clockViewModel;
     private AlarmViewModel _alarmViewModel;
-    private CacheVM _cacheVM;
+    private AlarmTimerController _alarmTimerController;
+
     public InitViewModel()
     {
         _clockViewModel = new ClockViewModel();
         _alarmViewModel = new AlarmViewModel();
-
-        _cacheVM = new CacheVM()
+        _alarmTimerController = new AlarmTimerController();
+        
+        _cacheReferences = new CacheReferences()
         {
             InitViewModel = this,
             clockViewModel = _clockViewModel,
-            alarmViewModel = _alarmViewModel
+            alarmViewModel = _alarmViewModel,
+            alarmTimerController = _alarmTimerController
         };
         
-        _clockViewModel.CacheVM = _cacheVM;
-        _alarmViewModel.CacheVM = _cacheVM;
+        _clockViewModel.CacheReferences = _cacheReferences;
+        _alarmViewModel.CacheReferences = _cacheReferences;
         
         SwitchToClockView(this, _clockViewModel);
     }

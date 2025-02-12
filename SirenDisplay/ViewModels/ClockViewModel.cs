@@ -58,7 +58,7 @@ public sealed partial class ClockViewModel : ViewModelBase
     //public SvgImage TimeImagenda => new SvgImag { Source = SvgSource.Load($"avares://SirenDisplay/Assets/Images/{(IsGoodMorning ? "alarmbuttonver1" : "clockbuttonclock")}.svg") };
     public bool EnabledMe => !IsGoodMorning;
 
-    public CacheVM CacheVM { get; set; }
+    public CacheReferences CacheReferences { get; set; }
     
     [ObservableProperty] 
     [NotifyPropertyChangedFor(nameof(ClockButton))]
