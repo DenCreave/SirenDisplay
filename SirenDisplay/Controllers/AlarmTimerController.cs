@@ -1,5 +1,6 @@
 using System;
 using System.Threading;
+using SirenDisplay.Model;
 
 namespace SirenDisplay.Controllers;
 
@@ -8,30 +9,31 @@ public sealed class AlarmTimerController
     
     public Timer? Timer { get; set; }
     public DateTimeOffset SirenTime { get; set; }
+    
+    public ConfData SirenData { get; set; }
 
-    public TimeSpan LoadConf()
+    public AlarmTimerController()
     {
-        //return new TimeSpan(7, 36, 30); //todo load conf
-        throw new NotImplementedException("bruh you forgot something: AlarmTimerController.LoadConf()");
+        SirenData = new ConfController().LoadConf();
+        if (SirenData.IsPending)
+        {
+            Start();
+        }
     }
-
+    
     public void Start()
     {
         DateTimeOffset tmpTime = DateTimeOffset.Now;
-        
-
         TimeSpan dueTimeSpan;
         TimeSpan nowSpan = new TimeSpan(tmpTime.Hour, tmpTime.Minute, tmpTime.Second);
-        TimeSpan AlarmTime = LoadConf();
-        
-        if (!(nowSpan < AlarmTime))
+        if (!(nowSpan < SirenData.UsualTime))
         {
             //add a day so if its new years or new month it would still correctly work
             tmpTime = tmpTime.AddDays(1);
         }
         SirenTime = new DateTimeOffset(tmpTime.Year, tmpTime.Month, tmpTime.Day,
-            AlarmTime.Hours, AlarmTime.Minutes,
-            AlarmTime.Seconds, tmpTime.Offset); //todo check if this offset works
+            SirenData.UsualTime.Hours, SirenData.UsualTime.Minutes,
+            SirenData.UsualTime.Seconds, tmpTime.Offset); 
         
         dueTimeSpan = SirenTime - DateTimeOffset.Now;
         
@@ -49,7 +51,7 @@ public sealed class AlarmTimerController
     }
 
     private void SirenMe(object state)
-    {
+    {//todo implement music
         throw new NotImplementedException("implement playing music"); //async task
         Stop();
     }

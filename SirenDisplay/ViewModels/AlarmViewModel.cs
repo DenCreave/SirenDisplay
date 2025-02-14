@@ -8,6 +8,7 @@ using CommunityToolkit.Mvvm.ComponentModel;
 using SirenDisplay.Assets.Polygons.Frames;
 using SirenDisplay.Classes.Digits;
 using SirenDisplay.Controllers;
+using SirenDisplay.Interfaces;
 using SirenDisplay.Model;
 
 namespace SirenDisplay.ViewModels;
@@ -59,8 +60,16 @@ public sealed partial class AlarmViewModel : ViewModelBase, IAlarmTimeController
     public AlarmViewModel()
     {
         //todo constructor
+        TimeSpan tmp = new TimeSpan(0, 0, 0);
+        //todo loadconf alarm time and set iarthours
     }
-
+    
+    
+    
+    
+    #region IAlarmTimeController
+    public int IATCHours { get; set; }
+    public int IATCMinutes { get; set; }
 
     public void IncreaseMinute()
     {
@@ -101,4 +110,5 @@ public sealed partial class AlarmViewModel : ViewModelBase, IAlarmTimeController
     {
         throw new NotImplementedException();
     }
+    #endregion IAlarmTimeController
 }

@@ -8,5 +8,5 @@ public sealed class ConfData
     public bool IsPending;
     public List<string> MusicPaths;
     public TimeSpan UsualTime; //like 7:30
-    public DateTimeOffset NextSirenTime; //like 2025.02.24 7:30
+    public DateTimeOffset? NextSirenTime; //like 2025.02.24 7:30
 }
