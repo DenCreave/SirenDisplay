@@ -5,7 +5,9 @@ namespace SirenDisplay.Interfaces;
 public interface IAlarmTimeController
 {
     public int IATCHours { get; set; }
+    public int IATCHoursDecimal { get; set; }
     public int IATCMinutes { get; set; }
+    public int IATCMinutesDecimal { get; set; }
     public void LoadIATC();
     public void SaveIATC();
     public void IncreaseMinute();

@@ -24,7 +24,7 @@ public sealed class DigitLoader
         Assembly asm= Assembly.GetAssembly(typeof(DigitLoader));
         if (asm==null)
         {
-            throw new NullReferenceException("Skill loader assembly was NULL");
+            throw new NullReferenceException("DigitLoader assembly was NULL");
         }
 
         var types = asm.GetTypes()
