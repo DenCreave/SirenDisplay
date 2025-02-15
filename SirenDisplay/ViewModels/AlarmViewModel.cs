@@ -59,18 +59,25 @@ public sealed partial class AlarmViewModel : ViewModelBase, IAlarmTimeController
 
     public AlarmViewModel()
     {
-        //todo constructor
-        TimeSpan tmp = new TimeSpan(0, 0, 0);
-        //todo loadconf alarm time and set iarthours
+        //todo constructor, tho might not even need it
     }
-    
-    
-    
-    
+
+    public void LoadIATC()
+    {
+        IATCHours = CacheReferences.alarmTimerController.SirenData.UsualTime.Hours; //damn its so long
+        IATCMinutes = CacheReferences.alarmTimerController.SirenData.UsualTime.Minutes; 
+    }
+
+    public void SaveIATC()
+    {
+        throw new NotImplementedException();
+    }
+
+    //todo continue from here:hours minutes decimal to show up on ui with digitloader and such
     #region IAlarmTimeController
     public int IATCHours { get; set; }
     public int IATCMinutes { get; set; }
-
+    
     public void IncreaseMinute()
     {
         throw new NotImplementedException();
@@ -111,4 +118,6 @@ public sealed partial class AlarmViewModel : ViewModelBase, IAlarmTimeController
         throw new NotImplementedException();
     }
     #endregion IAlarmTimeController
+    
+    //todo make a save and exit button and function
 }

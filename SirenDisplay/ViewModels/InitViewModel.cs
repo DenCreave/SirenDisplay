@@ -12,9 +12,9 @@ public sealed partial class InitViewModel : ViewModelBase
     private ClockViewModel _clockViewModel;
     private AlarmViewModel _alarmViewModel;
     private AlarmTimerController _alarmTimerController;
-
     public InitViewModel()
     {
+        #region inits
         _clockViewModel = new ClockViewModel();
         _alarmViewModel = new AlarmViewModel();
         _alarmTimerController = new AlarmTimerController();
@@ -29,7 +29,12 @@ public sealed partial class InitViewModel : ViewModelBase
         
         _clockViewModel.CacheReferences = _cacheReferences;
         _alarmViewModel.CacheReferences = _cacheReferences;
+        #endregion inits
         
+        #region post_init_settings
+        _alarmViewModel.LoadIATC();
+        
+        #endregion post_init_settings
         SwitchToClockView(this, _clockViewModel);
     }
     

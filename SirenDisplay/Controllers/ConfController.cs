@@ -14,15 +14,15 @@ namespace SirenDisplay.Controllers;
 public sealed class ConfController
 {
     
-    private string _confPath => "conf.json";
+    private static string _confPath => "conf.json";
 
-    public void SaveConf(ConfData data)
+    public static void SaveConf(ConfData data)
     {
         string serializeMe = JsonSerializer.Serialize(data);
         File.WriteAllText(_confPath, serializeMe);
     }
 
-    public ConfData LoadConf()
+    public static ConfData LoadConf()
     {
         ConfData data = new ConfData();
         if (File.Exists(_confPath))

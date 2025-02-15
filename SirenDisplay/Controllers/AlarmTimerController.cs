@@ -14,7 +14,7 @@ public sealed class AlarmTimerController
 
     public AlarmTimerController()
     {
-        SirenData = new ConfController().LoadConf();
+        SirenData = ConfController.LoadConf();
         if (SirenData.IsPending)
         {
             Start();
