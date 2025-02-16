@@ -23,8 +23,6 @@ public partial class ClockView : UserControl
     private void SetAlarm(object? sender, RoutedEventArgs e)
     {
         var tmp = DataContext as ClockViewModel;
-        //(DataContext as ClockViewModel)?.SwitchToAlarmView((DataContext as ClockViewModel).CacheReferences);
-        tmp.SwitchToAlarmView(tmp.CacheReferences.InitViewModel,tmp.CacheReferences.alarmViewModel);
-        Console.WriteLine("im called");
+        tmp.SwitchToAlarmView(tmp.CacheReferences);
     }
 }

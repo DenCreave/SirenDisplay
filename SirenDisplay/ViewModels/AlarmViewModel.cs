@@ -32,6 +32,7 @@ public sealed partial class AlarmViewModel : ViewModelBase, IAlarmTimeController
         LabelData = new LabelData();
         InitDefaultDigits();
         FrameInitializer();
+        
     }
 
     private void InitDefaultDigits()
@@ -67,7 +68,7 @@ public sealed partial class AlarmViewModel : ViewModelBase, IAlarmTimeController
                 {
                     new TopFrame().PathFigure,
                     new MiddleFrame().PathFigure,
-                    new BottomFrame().PathFigure
+                    new BottomFrameSquare().PathFigure
                 }
             },
             Effect = Application.Current.FindResource("OffEffect") as DropShadowEffect
@@ -160,7 +161,13 @@ public sealed partial class AlarmViewModel : ViewModelBase, IAlarmTimeController
     {
         ++IATCHoursDecimal;
         IATCHoursDecimal %= 3;
+        
         HourDecimalDigit.Data = _digitLoader.ReturnPathGeometry(IATCHoursDecimal);
+        if (IATCHours>3)
+        {
+            IATCHours = 3;
+            HourDigit.Data = _digitLoader.ReturnPathGeometry(IATCHours);
+        }
     }
 
     public void DecreaseHourDecimal()
@@ -171,6 +178,11 @@ public sealed partial class AlarmViewModel : ViewModelBase, IAlarmTimeController
             IATCHoursDecimal = 2;
         }
         HourDecimalDigit.Data = _digitLoader.ReturnPathGeometry(IATCHoursDecimal);
+        if (IATCHours>3)
+        {
+            IATCHours = 3;
+            HourDigit.Data = _digitLoader.ReturnPathGeometry(IATCHours);
+        }
     }
     #endregion IAlarmTimeController
     

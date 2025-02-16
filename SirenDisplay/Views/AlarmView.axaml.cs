@@ -19,7 +19,7 @@ public partial class AlarmView : UserControl
     {
         var tmp = this.DataContext as AlarmViewModel;
         tmp.SaveIATC();
-        tmp.SwitchToClockView(tmp.CacheReferences.InitViewModel,tmp.CacheReferences.clockViewModel);
+        tmp.SwitchToClockView(tmp.CacheReferences);
     }
 
     private void IncreaseHourDecimal(object? sender, PointerPressedEventArgs e)
