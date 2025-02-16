@@ -18,8 +18,9 @@ public sealed class ConfController
 
     public static void SaveConf(ConfData data)
     {
-        string serializeMe = JsonSerializer.Serialize(data);
+        var serializeMe = JsonSerializer.Serialize(data);
         File.WriteAllText(_confPath, serializeMe);
+        Console.WriteLine($"Conf saved to {_confPath} at {Path.GetFullPath(Directory.GetCurrentDirectory())}\n data was: {serializeMe}");
     }
 
     public static ConfData LoadConf()

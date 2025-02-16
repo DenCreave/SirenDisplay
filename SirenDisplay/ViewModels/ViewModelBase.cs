@@ -15,7 +15,8 @@ public partial class ViewModelBase : ObservableObject
         {
             CacheReferences = references
         };
-        Console.WriteLine("SwitchToClockView");
+        var tmp = references.InitViewModel.CurrentView as ClockViewModel;
+        tmp.PostLoad();
     }
     
 
@@ -28,13 +29,5 @@ public partial class ViewModelBase : ObservableObject
          var tmp = references.InitViewModel.CurrentView as AlarmViewModel;
          tmp.LoadIATC();
      }
-    /*public void SwitchToClockView(InitViewModel currentViewref, ClockViewModel clockViewModelref )
-    {
-        currentViewref.CurrentView = clockViewModelref;
-    }*/
-
-   /* public void SwitchToAlarmView(InitViewModel currentViewref, AlarmViewModel alarmViewModelref )
-    {
-        currentViewref.CurrentView = alarmViewModelref;
-    }*/
+    
 }

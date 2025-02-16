@@ -49,7 +49,7 @@ public sealed partial class ClockViewModel : ViewModelBase
     [ObservableProperty] private Path _minuteDigit;
     private DigitLoader _digitLoader;
     private DispatcherTimer _timer;
-    private LabelData _labelData;
+    public LabelData LabelData { get; set; }
     //todo put this to a different controller class, maybe make it a singleton
     //[NotifyPropertyChangedFor( nameof(TimeImagenda))]
     [ObservableProperty]
@@ -57,13 +57,12 @@ public sealed partial class ClockViewModel : ViewModelBase
     private bool _isGoodMorning;
     //public SvgImage TimeImagenda => new SvgImag { Source = SvgSource.Load($"avares://SirenDisplay/Assets/Images/{(IsGoodMorning ? "alarmbuttonver1" : "clockbuttonclock")}.svg") };
     public bool EnabledMe => !IsGoodMorning;
-
+    
     public CacheReferences CacheReferences { get; set; }
     
     [ObservableProperty] 
     [NotifyPropertyChangedFor(nameof(ClockButton))]
     private AlarmState _alarmState;
-    
     
     public string ClockButton
     {
@@ -72,15 +71,15 @@ public sealed partial class ClockViewModel : ViewModelBase
             {
                 case AlarmState.Off:
                 {
-                    return _labelData.OffLabel;
+                    return LabelData.OffLabel;
                 }
                 case AlarmState.Pending:
                 {
-                    return _labelData.PendingLabel;
+                    return LabelData.PendingLabel;
                 }
                 case AlarmState.Sirens:
                 {
-                    return _labelData.SirenLabel;
+                    return LabelData.SirenLabel;
                 }
                 default:
                 {
@@ -91,6 +90,8 @@ public sealed partial class ClockViewModel : ViewModelBase
         }
     }
 
+    [ObservableProperty]
+    private string _alarmString;
 
     public ClockViewModel() 
     { 
@@ -178,7 +179,7 @@ public sealed partial class ClockViewModel : ViewModelBase
     
     private void AlarmButtonInitializer()
     {
-        _labelData = new LabelData();
+        LabelData = new LabelData();
         
     }
 
@@ -192,6 +193,12 @@ public sealed partial class ClockViewModel : ViewModelBase
         Console.WriteLine($"alarm state is : {AlarmState}");
 
     }
-    
+
+    public void PostLoad()
+    {
+        var tmp=CacheReferences.alarmTimerController.SirenData;
+        AlarmString = $"{tmp.UsualTime.Hours}:{tmp.UsualTime.Minutes}";
+        //todo playl$ist name
+    }
     
 }

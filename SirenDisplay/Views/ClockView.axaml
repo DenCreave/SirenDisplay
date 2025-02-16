@@ -43,10 +43,9 @@
                 <ContentControl Margin="20,0,0,0" Grid.Column="4" HorizontalContentAlignment="Right"
                                 HorizontalAlignment="Right" Content="{Binding Path=MinuteDigit}" />
             </Grid>
-            <Button Grid.Row="2" Click="SetAlarm" Foreground="#ff901b" FontSize="50" HorizontalAlignment="Center"
-                    VerticalAlignment="Center" HorizontalContentAlignment="Center">
-                <Label Classes="icon" Content="&#xE9B8;"></Label>
-            </Button>
+            <Viewbox Grid.Row="2" PointerPressed="SetAlarm">
+                <Label Foreground="#ff901b" Content="{Binding AlarmString}"></Label>
+            </Viewbox>
         </Grid>
     </Grid>
 </UserControl>
