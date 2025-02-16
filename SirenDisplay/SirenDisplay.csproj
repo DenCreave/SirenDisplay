@@ -64,6 +64,5 @@
         <CopyToOutputDirectory>Always</CopyToOutputDirectory>
       </AvaloniaResource>
       <None Remove="Assets\conf.json" />
-      <AvaloniaResource Include="Assets\conf.json" />
     </ItemGroup>
 </Project>
