@@ -16,4 +16,5 @@ public interface ILabelData
     public string StopLabel {get;}
     public string ExitUpleftLabel {get;}
     public string ExitDownRightLabel {get;}
+    public string SaveLabel {get;}
 }

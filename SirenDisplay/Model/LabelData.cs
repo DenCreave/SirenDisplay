@@ -21,4 +21,5 @@ public sealed class LabelData : ILabelData
     public string StopLabel => "\uE46C";
     public string ExitUpleftLabel => "\uE090";
     public string ExitDownRightLabel => "\uE042";
+    public string SaveLabel => "\uE428";
 }

@@ -23,12 +23,12 @@
                 <ContentControl Grid.Column="1" HorizontalContentAlignment="Right" HorizontalAlignment="Right"
                                 Content="{Binding Path=HourDigit}" />
                 <Grid Grid.Column="2" ColumnDefinitions="*" RowDefinitions="*,*" Margin="20">
-                    <Viewbox Grid.Row="0">
-                        <Label Foreground="#ff901b" Classes="icon" Content="{Binding ClockButton}"></Label>
+                    <Viewbox Grid.Row="0" PointerPressed="SaveAndExit">
+                        <Label Foreground="#39FF14" Classes="icon" Content="{Binding LabelData.SaveLabel}"></Label>
                         <!--<Label  Foreground="#ff901b"  Classes="icon" Content="&#xE9B8;" ></Label> -->
                     </Viewbox>
-                    <Viewbox Grid.Row="1">
-                        <Label Foreground="#ff901b" Classes="icon" Content="{Binding ClockButton}"></Label>
+                    <Viewbox Grid.Row="1" PointerPressed="SaveAndExit">
+                        <Label Foreground="#39FF14" Classes="icon" Content="{Binding LabelData.SaveLabel}"></Label>
                     </Viewbox>
                 </Grid>
                 <ContentControl Grid.Column="3" HorizontalContentAlignment="Right" HorizontalAlignment="Right"
@@ -36,19 +36,40 @@
                 <ContentControl Margin="20,0,0,0" Grid.Column="4" HorizontalContentAlignment="Right"
                                 HorizontalAlignment="Right" Content="{Binding Path=MinuteDigit}" />
             </Grid>
-            <Grid  Grid.Row="2" ColumnDefinitions="*,*,*,*,*">
-                <Grid Grid.Column="0" ColumnDefinitions="*,*">
-                    <Viewbox PointerPressed="" Grid.Column="0">
-                        <Label Foreground="#ff901b" Classes="icon" Content="{Binding LabelData.UpLabel}"></Label>
+            <Grid Grid.Row="2" ColumnDefinitions="*,*,*,*,*">
+                <Grid Grid.Column="0" ColumnDefinitions="*,*"> <!-- honestly, i should really just style it in app.axaml-->
+                    <Viewbox Grid.Column="0" PointerPressed="IncreaseHourDecimal">
+                        <Label Foreground="#ff0090" Classes="icon" Content="{Binding LabelData.UpLabel}"></Label>
                     </Viewbox>
-                    <Viewbox  Grid.Column="1">
-                        <Label Foreground="#ff901b" Classes="icon" Content="{Binding LabelData.DownLabel}"></Label>
+                    <Viewbox Grid.Column="1" PointerPressed="DecreaseHourDecimal">
+                        <Label Foreground="#ff0090" Classes="icon" Content="{Binding LabelData.DownLabel}"></Label>
                     </Viewbox>
                 </Grid>
-                <Grid Grid.Column="1"></Grid>
+                <Grid Grid.Column="1" ColumnDefinitions="*,*">
+                    <Viewbox Grid.Column="0" PointerPressed="IncreaseHour">
+                        <Label Foreground="#ff0090" Classes="icon" Content="{Binding LabelData.UpLabel}"></Label>
+                    </Viewbox>
+                    <Viewbox Grid.Column="1" PointerPressed="DecreaseHour">
+                        <Label Foreground="#ff0090" Classes="icon" Content="{Binding LabelData.DownLabel}"></Label>
+                    </Viewbox>
+                </Grid>
                 <!--<Grid Grid.Column="2"></Grid> -->
-                <Grid Grid.Column="3"></Grid>
-                <Grid Grid.Column="4"></Grid>
+                <Grid Grid.Column="3" ColumnDefinitions="*,*">
+                    <Viewbox Grid.Column="0" PointerPressed="IncreaseMinuteDecimal">
+                        <Label Foreground="#ff0090" Classes="icon" Content="{Binding LabelData.UpLabel}"></Label>
+                    </Viewbox>
+                    <Viewbox Grid.Column="1" PointerPressed="DecreaseMinuteDecimal">
+                        <Label Foreground="#ff0090" Classes="icon" Content="{Binding LabelData.DownLabel}"></Label>
+                    </Viewbox>
+                </Grid>
+                <Grid Grid.Column="4" ColumnDefinitions="*,*">
+                    <Viewbox Grid.Column="0" PointerPressed="IncreaseMinute">
+                        <Label Foreground="#ff0090" Classes="icon" Content="{Binding LabelData.UpLabel}"></Label>
+                    </Viewbox>
+                    <Viewbox Grid.Column="1" PointerPressed="DecreaseMinute">
+                        <Label Foreground="#ff0090" Classes="icon" Content="{Binding LabelData.DownLabel}"></Label>
+                    </Viewbox>
+                </Grid>
             </Grid>
         </Grid>
     </Grid>

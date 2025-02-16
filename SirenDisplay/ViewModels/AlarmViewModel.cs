@@ -73,7 +73,7 @@ public sealed partial class AlarmViewModel : ViewModelBase, IAlarmTimeController
             Effect = Application.Current.FindResource("OffEffect") as DropShadowEffect
         };
     }
-
+    
     public void LoadIATC()
     {
         IATCHours = CacheReferences.alarmTimerController.SirenData.UsualTime.Hours; //damn its so long

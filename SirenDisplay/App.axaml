@@ -16,6 +16,7 @@
     
     <Application.Resources>
         <SolidColorBrush x:Key="PrimaryBackground">#000000</SolidColorBrush>
+        <SolidColorBrush x:Key="G1">#39FF14</SolidColorBrush>
         <SolidColorBrush x:Key="B1">#ff901b</SolidColorBrush>
 
         <SolidColorBrush x:Key="A1">#ff6533</SolidColorBrush>
@@ -23,7 +24,7 @@
 
         <SolidColorBrush x:Key="S2">#e45e00</SolidColorBrush>
         <SolidColorBrush x:Key="S1">#9e0022</SolidColorBrush>
-
+        
 
         <LinearGradientBrush x:Key="OffColor" StartPoint="0%,100%" Opacity="0.8" EndPoint="100%,0%">
             <GradientStop Color="#ff0090" Offset="0.0"/>
