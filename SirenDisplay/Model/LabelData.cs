@@ -15,11 +15,17 @@ public sealed class LabelData : ILabelData
     public string SirenLabel => "\uE9B8";
     public string UpLabel => "\uE13C";
     public string DownLabel => "\uE136";
-      public string RightLabel => "\uE12A";
-    public string LeftLabel => "\uE128";
+    public string DoubleRightLabel => "\uE12A";
+    public string DoubleLeftLabel => "\uE128";
     public string PlayLabel => "\uE3D0";
     public string StopLabel => "\uE46C";
-    public string ExitUpleftLabel => "\uE090";
-    public string ExitDownRightLabel => "\uE042";
     public string SaveLabel => "\uE428";
+    public string BackLabel => "\uE3D4";
+    public string AddLabel => "\uE07E";
+    public string EditLabel => "\uE3B2";
+    public string DeleteLabel => "\uE4F6";
+    public string LeftLabel => "\uE138";
+    public string RightLabel => "\uE13A";
+    public string FolderLabel => "\uE24A";
+    public string MusicLabel => "\uE802";
 }

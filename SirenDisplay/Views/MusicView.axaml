@@ -11,38 +11,58 @@
     </UserControl.DataContext>
     <Grid x:Name="BackGroundGrid" Background="{DynamicResource PrimaryBackground}">
         <ContentControl Classes="main-frame" Content="{Binding Path=MainFrame}" />
-        <!-- <Image  Source="{SvgImage /Assets/Images/clockbuttonclock.svg} "/> -->
         <Grid x:Name="MainGrid" RowDefinitions="*,3*,*" ColumnDefinitions="*">
-            <Button Grid.Row="0" Foreground="#ff901b" FontSize="40" HorizontalAlignment="Center"
-                    VerticalAlignment="Center" HorizontalContentAlignment="Center">
-                song or playlist name
-            </Button>
-            <Grid Grid.Row="1" Margin="30,30,30,30" RowDefinitions="*" ColumnDefinitions="*,*,*,*,*"
+            <Grid Grid.Row="0" ColumnDefinitions="*,*">
+                    
+                <!-- todo figure out the content switching thing-->
+            </Grid>
+            <Grid Grid.Row="1" Margin="30,30,30,30" RowDefinitions="*" ColumnDefinitions="3*,*,3*"
                   VerticalAlignment="Center">
+                
+                <!--todo directory list-->
                 <ContentControl Grid.Column="0" Margin="0,0,20,0" HorizontalContentAlignment="Right"
                                 HorizontalAlignment="Right" Content="{Binding Path=HourDecimalDigit}" />
-                <ContentControl Grid.Column="1" HorizontalContentAlignment="Right" HorizontalAlignment="Right"
-                                Content="{Binding Path=HourDigit}" />
-                <Grid Grid.Column="2" ColumnDefinitions="*" RowDefinitions="*,*" Margin="20"
-                      PointerPressed="ToggleAlarm">
-                    <Viewbox Grid.Row="0">
-                        <Label Foreground="#ff901b" Classes="icon" Content="{Binding ClockButton}"></Label>
-                        <!--<Label  Foreground="#ff901b"  Classes="icon" Content="&#xE9B8;" ></Label> -->
+                
+                <!--todo buttons-->
+                <Grid Grid.Column="1" ColumnDefinitions="*" RowDefinitions="*,*,*" Margin="20" PointerPressed="ToggleAlarm">
+                    <Viewbox Grid.Row="0" PointerPressed="DecreaseHour">
+                        <Label Foreground="#ff901b" Classes="icon" Content="{Binding LabelData.DoubleRightLabel}"></Label>
                     </Viewbox>
-                    <Viewbox Grid.Row="1">
-                        <Label Foreground="#ff901b" Classes="icon" Content="{Binding ClockButton}"></Label>
+                    <Viewbox Grid.Row="1" PointerPressed="DecreaseHour"> <!-- todo responsive playpause button-->
+                        <Label Foreground="#ff901b" Classes="icon" Content="{Binding_RESPONSIVEPLAYPAUSEBUTTON}"></Label>
+                    </Viewbox>                                  <!-- todo another class for handling audio, and this button -->
+                    <Viewbox Grid.Row="2" PointerPressed="DecreaseHour">
+                        <Label Foreground="#ff901b" Classes="icon" Content="{Binding LabelData.DoubleLeftLabel}"></Label>
                     </Viewbox>
                 </Grid>
-                <!--todo, continue from here, that list view thingie
-
-                <ContentControl Grid.Column="3" HorizontalContentAlignment="Right" HorizontalAlignment="Right"
+                
+                <!--todo playlist list-->
+                
+                <ContentControl Grid.Column="2" HorizontalContentAlignment="Right" HorizontalAlignment="Right"
                                 Content="{Binding Path=MinuteDecimalDigit}" />
-                <ContentControl Margin="20,0,0,0" Grid.Column="4" HorizontalContentAlignment="Right"
-                                HorizontalAlignment="Right" Content="{Binding Path=MinuteDigit}" />
+                
             </Grid>
-            <Viewbox Grid.Row="2" PointerPressed="SetAlarm">
-                <Label Foreground="#ff901b" Content="{Binding AlarmString}"></Label>
-            </Viewbox>
+            <Grid Grid.Row="2" ColumnDefinitions="3*,*,3*">
+                <Grid Column="0" ColumnDefinitions="*,*">
+                    <Viewbox Grid.Column="0" PointerPressed="DecreaseHour">
+                        <Label Foreground="#ff0090" Classes="icon" Content="{Binding LabelData.UpLabel}"></Label>
+                    </Viewbox>
+                    <Viewbox Grid.Column="1" PointerPressed="DecreaseHour">
+                        <Label Foreground="#ff0090" Classes="icon" Content="{Binding LabelData.DownLabel}"></Label>
+                    </Viewbox>
+                </Grid>
+                <Viewbox Grid.Column="1" PointerPressed="DecreaseHour">
+                    <Label Foreground="#39FF14" Classes="icon" Content="{Binding LabelData.SaveLabel}"></Label>
+                </Viewbox>
+                <Grid Column="2" ColumnDefinitions="*,*">
+                    <Viewbox Grid.Column="0" PointerPressed="DecreaseHour">
+                        <Label Foreground="#ff0090" Classes="icon" Content="{Binding LabelData.UpLabel}"></Label>
+                    </Viewbox>
+                    <Viewbox Grid.Column="1" PointerPressed="DecreaseHour">
+                        <Label Foreground="#ff0090" Classes="icon" Content="{Binding LabelData.DownLabel}"></Label>
+                    </Viewbox>
+                </Grid>
+            </Grid>
         </Grid>
     </Grid>
 </UserControl>
