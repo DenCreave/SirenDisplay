@@ -51,11 +51,9 @@ public sealed partial class ClockViewModel : ViewModelBase
     private DispatcherTimer _timer;
     public LabelData LabelData { get; set; }
     //todo put this to a different controller class, maybe make it a singleton
-    //[NotifyPropertyChangedFor( nameof(TimeImagenda))]
     [ObservableProperty]
     [NotifyPropertyChangedFor( nameof(EnabledMe))]
-    private bool _isGoodMorning;
-    //public SvgImage TimeImagenda => new SvgImag { Source = SvgSource.Load($"avares://SirenDisplay/Assets/Images/{(IsGoodMorning ? "alarmbuttonver1" : "clockbuttonclock")}.svg") };
+    private bool _isGoodMorning; 
     public bool EnabledMe => !IsGoodMorning;
     
     public CacheReferences CacheReferences { get; set; }

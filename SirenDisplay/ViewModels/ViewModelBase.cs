@@ -29,5 +29,13 @@ public partial class ViewModelBase : ObservableObject
          var tmp = references.InitViewModel.CurrentView as AlarmViewModel;
          tmp.LoadIATC();
      }
-    
+
+     public void SwitchToMusicView(CacheReferences references)
+     {
+         references.InitViewModel.CurrentView = new MusicViewModel()
+         {
+             CacheReferences = references
+         };
+         
+     }
 }
