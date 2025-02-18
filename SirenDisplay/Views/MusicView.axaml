@@ -13,8 +13,10 @@
         <ContentControl Classes="main-frame" Content="{Binding Path=MainFrame}" />
         <Grid x:Name="MainGrid" RowDefinitions="*,3*,*" ColumnDefinitions="*">
             <Grid Grid.Row="0" ColumnDefinitions="*,*">
-                    
-                <!-- todo figure out the content switching thing-->
+                <Viewbox Grid.Column="0">
+                    <Label />
+                </Viewbox>
+                <ContentControl Grid.Column="1" Content="{Binding PlaylistViewGrid}"/>
             </Grid>
             <Grid Grid.Row="1" Margin="30,30,30,30" RowDefinitions="*" ColumnDefinitions="3*,*,3*"
                   VerticalAlignment="Center">

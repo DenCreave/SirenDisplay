@@ -37,7 +37,7 @@ public sealed class ConfController
             data = new ConfData()
             {
                 IsPending = false,
-                MusicPaths = new List<string>(),
+                MusicPaths = new Dictionary<string, List<string>>(),
                 UsualTime = new TimeSpan(17,0,0),
                 NextSirenTime = null 
             };
