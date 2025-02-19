@@ -38,6 +38,7 @@ public sealed class ConfController
             {
                 IsPending = false,
                 MusicPaths = new Dictionary<string, List<string>>(),
+                SelectedPlaylist = "",
                 UsualTime = new TimeSpan(17,0,0),
                 NextSirenTime = null 
             };
