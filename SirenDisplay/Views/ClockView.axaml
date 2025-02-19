@@ -14,12 +14,10 @@
 
     <Grid x:Name="BackGroundGrid" Background="{DynamicResource PrimaryBackground}">
         <ContentControl Classes="main-frame" Content="{Binding Path=MainFrame}" />
-        <!-- <Image  Source="{SvgImage /Assets/Images/clockbuttonclock.svg} "/> -->
         <Grid x:Name="MainGrid" RowDefinitions="*,3*,*" ColumnDefinitions="*">
-            <Button Grid.Row="0" Foreground="#ff901b" FontSize="40" HorizontalAlignment="Center"
-                    VerticalAlignment="Center" HorizontalContentAlignment="Center">
-                song or playlist name
-            </Button>
+            <Viewbox Grid.Row="0" PointerPressed="SetPlayList">
+                <Label Foreground="#ff901b" Content="{Binding SelectedPlaylist}"></Label>
+            </Viewbox>
             <Grid Grid.Row="1" Margin="30,30,30,30" RowDefinitions="*" ColumnDefinitions="*,*,*,*,*"
                   VerticalAlignment="Center">
                 <ContentControl Grid.Column="0" Margin="0,0,20,0" HorizontalContentAlignment="Right"
@@ -30,14 +28,11 @@
                       PointerPressed="ToggleAlarm">
                     <Viewbox Grid.Row="0">
                         <Label Foreground="#ff901b" Classes="icon" Content="{Binding ClockButton}"></Label>
-                        <!--<Label  Foreground="#ff901b"  Classes="icon" Content="&#xE9B8;" ></Label> -->
                     </Viewbox>
                     <Viewbox Grid.Row="1">
                         <Label Foreground="#ff901b" Classes="icon" Content="{Binding ClockButton}"></Label>
                     </Viewbox>
                 </Grid>
-
-
                 <ContentControl Grid.Column="3" HorizontalContentAlignment="Right" HorizontalAlignment="Right"
                                 Content="{Binding Path=MinuteDecimalDigit}" />
                 <ContentControl Margin="20,0,0,0" Grid.Column="4" HorizontalContentAlignment="Right"

@@ -5,7 +5,6 @@ using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Controls.Shapes;
 using Avalonia.Input;
-using Avalonia.Layout;
 using Avalonia.Media;
 using CommunityToolkit.Mvvm.ComponentModel;
 using DynamicData;
@@ -32,6 +31,9 @@ public sealed partial class MusicViewModel : ViewModelBase
     {
         FrameInitializer();
         LoadPlayListNames(); //we might not have Cache references by that time
+        LoadPlaylistTitleNameGrid();
+        LoadPlayListOptionsGrid();
+        LoadPlaylistRenameGrid();
     }
     private void FrameInitializer()
     {
@@ -53,8 +55,7 @@ public sealed partial class MusicViewModel : ViewModelBase
         };
     }
 
-    
-    
+    #region DynamicBar
     private void LoadPlaylistTitleNameGrid()
     {
         //todo check if it works at all
@@ -200,6 +201,7 @@ public sealed partial class MusicViewModel : ViewModelBase
             --_playlistNameIndex;
         }
         CurrentPlaylistTitle.Content = _playlistNames[_playlistNameIndex];
+        LoadMusicPaths();
     }
 
     public void NextPlaylist(object sender, PointerPressedEventArgs e)
@@ -207,6 +209,7 @@ public sealed partial class MusicViewModel : ViewModelBase
         ++_playlistNameIndex;
         _playlistNameIndex%=_playlistNames.Length;
         CurrentPlaylistTitle.Content = _playlistNames[_playlistNameIndex];
+        LoadMusicPaths();
     }
 
     public void SwapToOptionsMode(object sender, PointerPressedEventArgs e)
@@ -265,8 +268,57 @@ public sealed partial class MusicViewModel : ViewModelBase
         SwapToNavigationMode(sender, e);
     }
 
+    #endregion DynamicBar
+    //i just realized its almost 300 lines here, this is going to be a godclass ffs, i definitely break pattern
+    
+    
     public void LoadMusicPaths()
     {//into the right side of the2nd gridrow
         throw new NotImplementedException("oopsie");
     }
+    
+    #region MusicHandlingButtons
+
+    public void DirectoryUp()
+    {
+        throw new NotImplementedException("oopsie");    
+    }
+
+    public void DirectoryDown()
+    {
+        throw new NotImplementedException("oopsie");
+    }
+
+    public void MusicPathUp()
+    {
+        throw new NotImplementedException("oopsie");
+    }
+
+    public void MusicPathDown()
+    {
+        throw new NotImplementedException("oopsie");
+    }
+
+    public void SaveAndExit()
+    {
+        throw new NotImplementedException("oopsie");
+    }
+
+    public void AddToPlaylist()
+    {
+        throw new NotImplementedException("oopsie");
+    }
+
+    public void RemoveFromPlaylist()
+    {
+        throw new NotImplementedException("oopsie");
+    }
+
+    public void PlayStopMedia()
+    {
+        throw new NotImplementedException("oopsie");
+    }
+        
+        
+    #endregion MusicHandlingButtons
 }

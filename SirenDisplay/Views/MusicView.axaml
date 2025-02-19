@@ -26,14 +26,14 @@
                                 HorizontalAlignment="Right" Content="{Binding Path=HourDecimalDigit}" />
                 
                 <!--todo buttons-->
-                <Grid Grid.Column="1" ColumnDefinitions="*" RowDefinitions="*,*,*" Margin="20" PointerPressed="ToggleAlarm">
-                    <Viewbox Grid.Row="0" PointerPressed="DecreaseHour">
+                <Grid Grid.Column="1" ColumnDefinitions="*" RowDefinitions="*,*,*" Margin="20" >
+                    <Viewbox Grid.Row="0" PointerPressed="AddToPlaylist">
                         <Label Foreground="#ff901b" Classes="icon" Content="{Binding LabelData.DoubleRightLabel}"></Label>
                     </Viewbox>
-                    <Viewbox Grid.Row="1" PointerPressed="DecreaseHour"> <!-- todo responsive playpause button-->
+                    <Viewbox Grid.Row="1" PointerPressed="PlayStopMedia"> <!-- todo responsive playpause button-->
                         <Label Foreground="#ff901b" Classes="icon" Content="{Binding_RESPONSIVEPLAYPAUSEBUTTON}"></Label>
                     </Viewbox>                                  <!-- todo another class for handling audio, and this button -->
-                    <Viewbox Grid.Row="2" PointerPressed="DecreaseHour">
+                    <Viewbox Grid.Row="2" PointerPressed="RemoveFromPlaylist">
                         <Label Foreground="#ff901b" Classes="icon" Content="{Binding LabelData.DoubleLeftLabel}"></Label>
                     </Viewbox>
                 </Grid>
@@ -46,21 +46,21 @@
             </Grid>
             <Grid Grid.Row="2" ColumnDefinitions="3*,*,3*">
                 <Grid Column="0" ColumnDefinitions="*,*">
-                    <Viewbox Grid.Column="0" PointerPressed="DecreaseHour">
+                    <Viewbox Grid.Column="0" PointerPressed="DirectoryUp">
                         <Label Foreground="#ff0090" Classes="icon" Content="{Binding LabelData.UpLabel}"></Label>
                     </Viewbox>
-                    <Viewbox Grid.Column="1" PointerPressed="DecreaseHour">
+                    <Viewbox Grid.Column="1" PointerPressed="DirectoryDown">
                         <Label Foreground="#ff0090" Classes="icon" Content="{Binding LabelData.DownLabel}"></Label>
                     </Viewbox>
                 </Grid>
-                <Viewbox Grid.Column="1" PointerPressed="DecreaseHour">
+                <Viewbox Grid.Column="1" PointerPressed="SaveAndExit">
                     <Label Foreground="#39FF14" Classes="icon" Content="{Binding LabelData.SaveLabel}"></Label>
                 </Viewbox>
                 <Grid Column="2" ColumnDefinitions="*,*">
-                    <Viewbox Grid.Column="0" PointerPressed="DecreaseHour">
+                    <Viewbox Grid.Column="0" PointerPressed="MusicPathUp">
                         <Label Foreground="#ff0090" Classes="icon" Content="{Binding LabelData.UpLabel}"></Label>
                     </Viewbox>
-                    <Viewbox Grid.Column="1" PointerPressed="DecreaseHour">
+                    <Viewbox Grid.Column="1" PointerPressed="MusicPathDown">
                         <Label Foreground="#ff0090" Classes="icon" Content="{Binding LabelData.DownLabel}"></Label>
                     </Viewbox>
                 </Grid>

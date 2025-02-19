@@ -1,40 +1,13 @@
 using System;
-using System.ComponentModel;
-using System.IO;
-using System.Net.Mime;
-using System.Reactive;
-using System.Reflection;
-using System.Runtime.InteropServices.JavaScript;
-using System.Threading.Tasks;
-using System.Windows.Input;
 using Avalonia;
 using Avalonia.Controls;
-using Avalonia.Interactivity;
-using Avalonia.Layout;
 using Avalonia.Media;
-using Avalonia.Media.Imaging;
-using Avalonia.Platform;
-using Avalonia.Svg.Skia;
 using Avalonia.Threading;
 using CommunityToolkit.Mvvm.ComponentModel;
-using CommunityToolkit.Mvvm.Input;
-using ExCSS;
-using ReactiveUI;
-using SirenDisplay.Assets.Polygons.Buttons;
 using SirenDisplay.Assets.Polygons.Frames;
 using SirenDisplay.Classes.Digits;
-using SirenDisplay.Controllers;
 using SirenDisplay.Model;
-using SkiaSharp;
-using Splat;
-using Svg.Skia;
-using Color = Avalonia.Media.Color;
-using FontStretch = Avalonia.Media.FontStretch;
-using FontStyle = Avalonia.Media.FontStyle;
-using FontWeight = Avalonia.Media.FontWeight;
-using HorizontalAlignment = Avalonia.Layout.HorizontalAlignment;
 using Path = Avalonia.Controls.Shapes.Path;
-using VerticalAlignment = Avalonia.Layout.VerticalAlignment;
 
 namespace SirenDisplay.ViewModels;
 
@@ -90,6 +63,8 @@ public sealed partial class ClockViewModel : ViewModelBase
 
     [ObservableProperty]
     private string _alarmString;
+    
+    [ObservableProperty] private string _selectedPlaylist ;
 
     public ClockViewModel() 
     { 
@@ -196,7 +171,7 @@ public sealed partial class ClockViewModel : ViewModelBase
     {
         var tmp=CacheReferences.alarmTimerController.SirenData;
         AlarmString = $"{tmp.UsualTime.Hours}:{tmp.UsualTime.Minutes}";
-        //todo playl$ist name
+        SelectedPlaylist = tmp.SelectedPlaylist;
     }
     
 }

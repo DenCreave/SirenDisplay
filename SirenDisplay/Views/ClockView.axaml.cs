@@ -16,7 +16,6 @@ public partial class ClockView : UserControl
     }
     private void ToggleAlarm(object? sender, PointerPressedEventArgs e)
     {
-        //var tmp = DataContext as ClockViewModel;
         (DataContext as ClockViewModel)?.ActivateAlarmButton();
     }
 
@@ -24,5 +23,11 @@ public partial class ClockView : UserControl
     {
         var tmp = DataContext as ClockViewModel;
         tmp.SwitchToAlarmView(tmp.CacheReferences);
+    }
+
+    private void SetPlayList(object? sender, PointerPressedEventArgs e)
+    {
+        var tmp = DataContext as ClockViewModel;
+        tmp.SwitchToMusicView(tmp.CacheReferences);
     }
 }
