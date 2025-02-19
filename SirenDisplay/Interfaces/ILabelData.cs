@@ -23,4 +23,5 @@ public interface ILabelData
     public string RightLabel { get; }
     public string FolderLabel { get; }
     public string MusicLabel { get; }
+    public string CheckLabel { get; }
 }

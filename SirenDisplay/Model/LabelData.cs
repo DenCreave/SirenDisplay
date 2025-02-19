@@ -28,4 +28,6 @@ public sealed class LabelData : ILabelData
     public string RightLabel => "\uE13A";
     public string FolderLabel => "\uE24A";
     public string MusicLabel => "\uE802";
+    public string CheckLabel => "\uE182";
+        
 }

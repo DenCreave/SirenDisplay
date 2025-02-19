@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using Avalonia;
 using Avalonia.Controls;
@@ -22,10 +23,11 @@ public sealed partial class MusicViewModel : ViewModelBase
     [ObservableProperty] private Grid _playlistViewGrid;
     private Grid _playlistTitleNameGrid {get; set;}
     private Grid _playlisTitleOptionsGrid { get; set;}
+    private Grid _playlisTitleRenameGrid { get; set;}
     [ObservableProperty] private Label _currentPlaylistTitle;
     private string[] _playlistNames { get; set; }
     private int _playlistNameIndex { get; set; }
-    private bool _isToggled { get; set; }
+    private TextBox _renameBox { get; set; }
     public MusicViewModel()
     {
         FrameInitializer();
@@ -73,7 +75,7 @@ public sealed partial class MusicViewModel : ViewModelBase
         Viewbox viewbox2 = new Viewbox();
         LoadPlayListNames();
         viewbox2.Child = CurrentPlaylistTitle;
-        viewbox2.PointerPressed += SwapToEditMode;
+        viewbox2.PointerPressed += SwapToOptionsMode;
         Viewbox viewbox3 = new Viewbox();
         Label arrowRight = new Label()
         {
@@ -86,7 +88,7 @@ public sealed partial class MusicViewModel : ViewModelBase
 
     }
 
-    private void LoadPlayListEditGrid()
+    private void LoadPlayListOptionsGrid()
     {
         _playlisTitleOptionsGrid = new Grid()
         {
@@ -109,7 +111,6 @@ public sealed partial class MusicViewModel : ViewModelBase
             Content = LabelData.AddLabel
         };
         viewbox2.Child = addnew;
-        //todo add new playslist, then a rename aaand a delete
         viewbox2.PointerPressed += AddNewPlaylist;
         Viewbox viewbox3 = new Viewbox();
         Label edit = new Label()
@@ -119,7 +120,7 @@ public sealed partial class MusicViewModel : ViewModelBase
             Content = LabelData.EditLabel
         };
         viewbox3.Child = edit;
-        viewbox3.PointerPressed += RenamePlaylist;
+        viewbox3.PointerPressed += SwapToRenameMode;
         Viewbox viewbox4 = new Viewbox();
         Label delete = new Label()
         {
@@ -129,6 +130,38 @@ public sealed partial class MusicViewModel : ViewModelBase
         };
         viewbox4.Child = delete;
         viewbox4.PointerPressed += DeletePlaylist;
+    }
+
+    public void LoadPlaylistRenameGrid()
+    {
+        _playlisTitleRenameGrid = new Grid()
+        {
+            ColumnDefinitions = new ColumnDefinitions("*,*,*")
+        };
+        Viewbox viewbox1 = new Viewbox();
+        Label back = new Label()
+        {
+            Foreground = Application.Current.FindResource("B1") as LinearGradientBrush,
+            Classes = { "icon" },
+            Content = LabelData.BackLabel
+        };
+        viewbox1.Child = back;
+        viewbox1.PointerPressed += SwapToNavigationMode; 
+        Viewbox viewbox2 = new Viewbox();
+        _renameBox = new TextBox()
+        {
+            Text = _playlistNames[_playlistNameIndex] //todo remember to refresh it when switching playlists 
+        };
+        viewbox2.Child = _renameBox;
+        Viewbox viewbox3 = new Viewbox();
+        Label accept = new Label()
+        {
+            Foreground = Application.Current.FindResource("G1") as LinearGradientBrush,
+            Classes = { "icon" },
+            Content = LabelData.CheckLabel
+        };
+        viewbox3.Child = accept;
+        viewbox3.PointerPressed += ConfirmRename;
     }
 
     public void LoadPlayListNames()
@@ -144,16 +177,16 @@ public sealed partial class MusicViewModel : ViewModelBase
         {
             _playlistNames = ["Siren Display"];
             _playlistNameIndex = 0;
+            CacheReferences.alarmTimerController.SirenData.SelectedPlaylist = _playlistNames[_playlistNameIndex];
             Console.WriteLine("no playlist found, loading as Siren Display");
         }
-
+        
         CurrentPlaylistTitle = new Label()
         {
             Content = _playlistNames[_playlistNameIndex],
             Foreground = Application.Current.FindResource("B1") as LinearGradientBrush
         };
         Console.WriteLine($"for debug reason\tname:{_playlistNames}\tindex:{_playlistNameIndex}");
-        _isToggled = false;
 
     }
     public void PreviousPlaylist(object sender, PointerPressedEventArgs e)
@@ -176,28 +209,64 @@ public sealed partial class MusicViewModel : ViewModelBase
         CurrentPlaylistTitle.Content = _playlistNames[_playlistNameIndex];
     }
 
-    public void SwapToEditMode(object sender, PointerPressedEventArgs e)
+    public void SwapToOptionsMode(object sender, PointerPressedEventArgs e)
     {
-        throw new NotImplementedException("oopsie");
+        PlaylistViewGrid = _playlisTitleOptionsGrid;
     }
 
     public void SwapToNavigationMode(object sender, PointerPressedEventArgs e)
     {
-        throw new NotImplementedException("oopsie");
+        PlaylistViewGrid = _playlistTitleNameGrid;
+    }
+
+    public void SwapToRenameMode(object sender, PointerPressedEventArgs e)
+    {
+        PlaylistViewGrid = _playlisTitleRenameGrid;
     }
 
     public void AddNewPlaylist(object sender, PointerPressedEventArgs e)
     {
-        throw new NotImplementedException("oopsie");
+        string tmp = $"Siren Display {_playlistNames.Length}";
+        CacheReferences.alarmTimerController.SirenData.MusicPaths.Add(tmp,new List<string>());
+        CacheReferences.alarmTimerController.SirenData.SelectedPlaylist = tmp;
+        _playlistNames = CacheReferences.alarmTimerController.SirenData.MusicPaths.Keys.ToArray();
+        _playlistNameIndex = _playlistNames.IndexOf(CacheReferences.alarmTimerController.SirenData.SelectedPlaylist);
+        CurrentPlaylistTitle.Content = _playlistNames[_playlistNameIndex];
     }
-
-    public void RenamePlaylist(object sender, PointerPressedEventArgs e)
-    {
-        throw new NotImplementedException("oopsie");
-    }
+    
 
     public void DeletePlaylist(object sender, PointerPressedEventArgs e)
     {
+        CacheReferences.alarmTimerController.SirenData.MusicPaths.Remove(_playlistNames[_playlistNameIndex]);
+        _playlistNames = CacheReferences.alarmTimerController.SirenData.MusicPaths.Keys.ToArray();
+        if (_playlistNames.Length == 0)
+        {
+            _playlistNames = ["Siren Display"];
+            CacheReferences.alarmTimerController.SirenData.MusicPaths.Add(_playlistNames[0],new List<string>());
+        }
+        
+        _playlistNameIndex = 0;
+        CacheReferences.alarmTimerController.SirenData.SelectedPlaylist = _playlistNames[_playlistNameIndex];
+        _playlistNameIndex = _playlistNames.IndexOf(CacheReferences.alarmTimerController.SirenData.SelectedPlaylist);
+    }
+
+    public void ConfirmRename(object sender, PointerPressedEventArgs e)
+    {
+        //todo maybe i should do a regex also
+        if (_renameBox.Text is null)
+        {
+            throw new NullReferenceException("_renameBox was null after confirmation");
+        }
+        CacheReferences.alarmTimerController.SirenData.MusicPaths.Add(_renameBox.Text, CacheReferences.alarmTimerController.SirenData.MusicPaths[_playlistNames[_playlistNameIndex]]);
+        CacheReferences.alarmTimerController.SirenData.MusicPaths.Remove(_playlistNames[_playlistNameIndex]);
+        CacheReferences.alarmTimerController.SirenData.SelectedPlaylist = _renameBox.Text;
+        _playlistNames[_playlistNameIndex] = _renameBox.Text;
+        CurrentPlaylistTitle.Content = _playlistNames[_playlistNameIndex];
+        SwapToNavigationMode(sender, e);
+    }
+
+    public void LoadMusicPaths()
+    {//into the right side of the2nd gridrow
         throw new NotImplementedException("oopsie");
     }
 }
