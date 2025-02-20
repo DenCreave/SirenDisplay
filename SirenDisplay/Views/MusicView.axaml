@@ -3,6 +3,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:viewModels="clr-namespace:SirenDisplay.ViewModels"
+             xmlns:model="clr-namespace:SirenDisplay.Model"
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="480"
              x:DataType="viewModels:MusicViewModel"
              x:Class="SirenDisplay.Views.MusicView">
@@ -22,8 +23,16 @@
                   VerticalAlignment="Center">
                 
                 <!--todo directory list-->
-                <ContentControl Grid.Column="0" Margin="0,0,20,0" HorizontalContentAlignment="Right"
-                                HorizontalAlignment="Right" Content="{Binding Path=HourDecimalDigit}" />
+                <ListBox ItemsSource="{Binding DirectoryItems}" Grid.Column="1" SelectionMode="Single">
+                    <ListBox.ItemTemplate>
+                        <DataTemplate x:DataType="model:DirectoryItem">
+                            <Grid ColumnDefinitions="Auto,*">
+                                <Label Grid.Column="0" Foreground="#ff901b" Classes="icon" Content="{Binding Label}"></Label>
+                                <Label Grid.Column="1" Foreground="#ff901b" Content="{Binding Name}"></Label>
+                            </Grid>
+                        </DataTemplate>
+                    </ListBox.ItemTemplate>
+                </ListBox>
                 
                 <!--todo buttons-->
                 <Grid Grid.Column="1" ColumnDefinitions="*" RowDefinitions="*,*,*" Margin="20" >

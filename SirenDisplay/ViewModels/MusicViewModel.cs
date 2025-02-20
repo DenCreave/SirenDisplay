@@ -1,15 +1,17 @@
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.IO;
 using System.Linq;
 using Avalonia;
 using Avalonia.Controls;
-using Avalonia.Controls.Shapes;
 using Avalonia.Input;
 using Avalonia.Media;
 using CommunityToolkit.Mvvm.ComponentModel;
 using DynamicData;
 using SirenDisplay.Assets.Polygons.Frames;
 using SirenDisplay.Model;
+using Path = Avalonia.Controls.Shapes.Path;
 
 namespace SirenDisplay.ViewModels;
 
@@ -27,6 +29,14 @@ public sealed partial class MusicViewModel : ViewModelBase
     private string[] _playlistNames { get; set; }
     private int _playlistNameIndex { get; set; }
     private TextBox _renameBox { get; set; }
+    
+    private string _rootDir => Environment.GetFolderPath(Environment.SpecialFolder.MyMusic);
+
+    private string _currentDir { get; set; }
+
+    
+    public ObservableCollection<DirectoryItem> DirectoryItems { get; set; } = new ();
+
     public MusicViewModel()
     {
         FrameInitializer();
@@ -34,7 +44,11 @@ public sealed partial class MusicViewModel : ViewModelBase
         LoadPlaylistTitleNameGrid();
         LoadPlayListOptionsGrid();
         LoadPlaylistRenameGrid();
+        InitDirPaths();
     }
+
+    
+
     private void FrameInitializer()
     {
         MainFrame = new Path
@@ -56,6 +70,7 @@ public sealed partial class MusicViewModel : ViewModelBase
     }
 
     #region DynamicBar
+
     private void LoadPlaylistTitleNameGrid()
     {
         //todo check if it works at all
@@ -190,6 +205,7 @@ public sealed partial class MusicViewModel : ViewModelBase
         Console.WriteLine($"for debug reason\tname:{_playlistNames}\tindex:{_playlistNameIndex}");
 
     }
+
     public void PreviousPlaylist(object sender, PointerPressedEventArgs e)
     {
         if (_playlistNameIndex==0)
@@ -236,7 +252,6 @@ public sealed partial class MusicViewModel : ViewModelBase
         _playlistNameIndex = _playlistNames.IndexOf(CacheReferences.alarmTimerController.SirenData.SelectedPlaylist);
         CurrentPlaylistTitle.Content = _playlistNames[_playlistNameIndex];
     }
-    
 
     public void DeletePlaylist(object sender, PointerPressedEventArgs e)
     {
@@ -269,14 +284,72 @@ public sealed partial class MusicViewModel : ViewModelBase
     }
 
     #endregion DynamicBar
+
     //i just realized its almost 300 lines here, this is going to be a godclass ffs, i definitely break pattern
-    
-    
+    #region dircaller
+
+    public void InitDirPaths()
+    {
+        _currentDir=_rootDir;
+        LoadDirectoryItems();
+    }
+
+    private void LoadDirectoryItems()
+    {
+        List<DirectoryItem> coll = new();
+        coll.Add(DirectoryLoader());
+        coll.Add(MusicLoader());
+        DirectoryItems.Clear();
+        DirectoryItems.AddRange(coll.OrderBy(x=>x.Name).ToArray());
+    }
+
+    private List<DirectoryItem> DirectoryLoader()
+    {
+        string[] dirs = Directory.GetDirectories(_currentDir);
+        List<DirectoryItem> coll = new();
+        foreach (var item in dirs)
+        {
+            coll.Add(new DirectoryItem()
+            {
+                IsMusic = false,
+                Label = LabelData.FolderLabel,
+                Name = System.IO.Path.GetFileName(item),
+                FullPath = item
+            });
+        }
+
+        return coll;
+    }
+
+    private List<DirectoryItem> MusicLoader()
+    {
+        string[] music = Directory.GetFiles(_currentDir);
+        List<DirectoryItem> coll = new();
+        foreach (var item in music)
+        {
+            coll.Add(new DirectoryItem()
+            {
+                IsMusic = true,
+                Label = LabelData.MusicLabel,
+                Name = System.IO.Path.GetFileName(item),
+                FullPath = item
+            });
+        }
+
+        return coll;
+    }
+
+    #endregion dircaller
+
+    #region musiccaller
+
     public void LoadMusicPaths()
     {//into the right side of the2nd gridrow
         throw new NotImplementedException("oopsie");
     }
-    
+
+    #endregion musiccaller
+
     #region MusicHandlingButtons
 
     public void DirectoryUp()
