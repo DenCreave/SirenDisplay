@@ -22,8 +22,8 @@
             <Grid Grid.Row="1" Margin="30,30,30,30" RowDefinitions="*" ColumnDefinitions="3*,*,3*"
                   VerticalAlignment="Center">
                 
-                <!--todo directory list-->
-                <ListBox ItemsSource="{Binding DirectoryItems}" Grid.Column="1" SelectionMode="Single">
+                <!--todo directory list--><!-- we will see if this works or not...i wonder if touching the list will also select it-->
+                <ListBox Grid.Column="0" ItemsSource="{Binding DirectoryItems}"  SelectionMode="Single" SelectedItem="{Binding SelectedDir}">
                     <ListBox.ItemTemplate>
                         <DataTemplate x:DataType="model:DirectoryItem">
                             <Grid ColumnDefinitions="Auto,*">
@@ -39,8 +39,8 @@
                     <Viewbox Grid.Row="0" PointerPressed="AddToPlaylist">
                         <Label Foreground="#ff901b" Classes="icon" Content="{Binding LabelData.DoubleRightLabel}"></Label>
                     </Viewbox>
-                    <Viewbox Grid.Row="1" PointerPressed="PlayStopMedia"> <!-- todo responsive playpause button-->
-                        <Label Foreground="#ff901b" Classes="icon" Content="{Binding_RESPONSIVEPLAYPAUSEBUTTON}"></Label>
+                    <Viewbox Grid.Row="1" PointerPressed="PlayStopMedia"> 
+                        <Label Foreground="#ff901b" Classes="icon" Content="{Binding PlayButton}"></Label>
                     </Viewbox>                                  <!-- todo another class for handling audio, and this button -->
                     <Viewbox Grid.Row="2" PointerPressed="RemoveFromPlaylist">
                         <Label Foreground="#ff901b" Classes="icon" Content="{Binding LabelData.DoubleLeftLabel}"></Label>
@@ -49,8 +49,16 @@
                 
                 <!--todo playlist list-->
                 
-                <ContentControl Grid.Column="2" HorizontalContentAlignment="Right" HorizontalAlignment="Right"
-                                Content="{Binding Path=MinuteDecimalDigit}" />
+                <ListBox Grid.Column="0" ItemsSource="{Binding MusicItems}"  SelectionMode="Single" SelectedItem="{Binding SelectedMusic}">
+                <ListBox.ItemTemplate>
+                    <DataTemplate x:DataType="model:DirectoryItem">
+                        <Grid ColumnDefinitions="Auto,*">
+                            <Label Grid.Column="0" Foreground="#ff901b" Classes="icon" Content="{Binding Label}"></Label>
+                            <Label Grid.Column="1" Foreground="#ff901b" Content="{Binding Name}"></Label>
+                        </Grid>
+                    </DataTemplate>
+                </ListBox.ItemTemplate>
+                </ListBox>
                 
             </Grid>
             <Grid Grid.Row="2" ColumnDefinitions="3*,*,3*">

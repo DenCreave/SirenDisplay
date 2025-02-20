@@ -1,26 +1,29 @@
 using System;
 using System.Threading;
+using System.Threading.Tasks;
 using SirenDisplay.Model;
 
 namespace SirenDisplay.Controllers;
 
 public sealed class AlarmTimerController
 {
-    
     public Timer? Timer { get; set; }
     public DateTimeOffset SirenTime { get; set; }
-    
+
     public ConfData SirenData { get; set; }
+
+    public AudioController AudioController { get; set; }
 
     public AlarmTimerController()
     {
         SirenData = ConfController.LoadConf();
+        AudioController = new AudioController();
         if (SirenData.IsPending)
         {
             Start();
         }
     }
-    
+
     public void Start()
     {
         DateTimeOffset tmpTime = DateTimeOffset.Now;
@@ -31,33 +34,34 @@ public sealed class AlarmTimerController
             //add a day so if its new years or new month it would still correctly work
             tmpTime = tmpTime.AddDays(1);
         }
+
         SirenTime = new DateTimeOffset(tmpTime.Year, tmpTime.Month, tmpTime.Day,
             SirenData.UsualTime.Hours, SirenData.UsualTime.Minutes,
-            SirenData.UsualTime.Seconds, tmpTime.Offset); 
-        
+            SirenData.UsualTime.Seconds, tmpTime.Offset);
+
         dueTimeSpan = SirenTime - DateTimeOffset.Now;
-        
-        Console.WriteLine("duetimesapn "+dueTimeSpan);
-        
+
+        Console.WriteLine("duetimesapn " + dueTimeSpan);
+
         if (Timer != null)
         {
             Stop();
         }
 
 
-        Timer = new Timer(SirenMe, null,dueTimeSpan, Timeout.InfiniteTimeSpan);
-        
-
+        Timer = new Timer(SirenMe, null, dueTimeSpan, Timeout.InfiniteTimeSpan);
     }
 
-    private void SirenMe(object state)
-    {//todo implement music
-        throw new NotImplementedException("implement playing music"); //async task
+    private async void SirenMe(object state)
+    {
+        await AudioController.PlaySirenDisplay(SirenData.MusicPaths[SirenData.SelectedPlaylist]);
         Stop();
     }
-    
+
+
     public void Stop()
     {
         Timer?.Dispose();
+        Console.WriteLine("for whatever reason, Timer.dispose, hope it got awaited");
     }
 }

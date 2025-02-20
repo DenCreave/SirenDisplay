@@ -10,6 +10,7 @@ using Avalonia.Media;
 using CommunityToolkit.Mvvm.ComponentModel;
 using DynamicData;
 using SirenDisplay.Assets.Polygons.Frames;
+using SirenDisplay.Controllers;
 using SirenDisplay.Model;
 using Path = Avalonia.Controls.Shapes.Path;
 
@@ -29,14 +30,22 @@ public sealed partial class MusicViewModel : ViewModelBase
     private string[] _playlistNames { get; set; }
     private int _playlistNameIndex { get; set; }
     private TextBox _renameBox { get; set; }
-    
+
     private string _rootDir => Environment.GetFolderPath(Environment.SpecialFolder.MyMusic);
 
     private string _currentDir { get; set; }
-
     
-    public ObservableCollection<DirectoryItem> DirectoryItems { get; set; } = new ();
+    [ObservableProperty] private DirectoryItem? _selected2Listen;
+    [ObservableProperty] private DirectoryItem? _selectedDir;
+    [ObservableProperty] private DirectoryItem? _selectedMusic;
+    [ObservableProperty] private ObservableCollection<DirectoryItem> _directoryItems;
+    [ObservableProperty] private ObservableCollection<DirectoryItem> _musicItems;
 
+    public string PlayButton => IsPlayButton ? LabelData.PlayLabel : LabelData.StopLabel;
+
+    [ObservableProperty] 
+    [NotifyPropertyChangedFor(nameof(PlayButton))]
+    private bool _isPlayButton;
     public MusicViewModel()
     {
         FrameInitializer();
@@ -45,6 +54,8 @@ public sealed partial class MusicViewModel : ViewModelBase
         LoadPlayListOptionsGrid();
         LoadPlaylistRenameGrid();
         InitDirPaths();
+        InitMusicPaths();
+        IsPlayButton = true;
     }
 
     
@@ -294,6 +305,11 @@ public sealed partial class MusicViewModel : ViewModelBase
         LoadDirectoryItems();
     }
 
+    public void InitMusicPaths()
+    {
+        LoadMusicPaths();
+    }
+
     private void LoadDirectoryItems()
     {
         List<DirectoryItem> coll = new();
@@ -301,6 +317,7 @@ public sealed partial class MusicViewModel : ViewModelBase
         coll.Add(MusicLoader());
         DirectoryItems.Clear();
         DirectoryItems.AddRange(coll.OrderBy(x=>x.Name).ToArray());
+        SelectedMusic = null;
     }
 
     private List<DirectoryItem> DirectoryLoader()
@@ -336,6 +353,8 @@ public sealed partial class MusicViewModel : ViewModelBase
             });
         }
 
+        SelectedMusic = null;
+        throw new NotImplementedException("helo, where do i filter music?bruh");
         return coll;
     }
 
@@ -344,8 +363,8 @@ public sealed partial class MusicViewModel : ViewModelBase
     #region musiccaller
 
     public void LoadMusicPaths()
-    {//into the right side of the2nd gridrow
-        throw new NotImplementedException("oopsie");
+    {
+        CacheReferences.alarmTimerController.SirenData = ConfController.LoadConf();
     }
 
     #endregion musiccaller
@@ -354,42 +373,127 @@ public sealed partial class MusicViewModel : ViewModelBase
 
     public void DirectoryUp()
     {
-        throw new NotImplementedException("oopsie");    
+        if (DirectoryItems.Count>0)
+        {
+            if (SelectedDir == null )
+            {
+                SelectedDir = DirectoryItems.First();
+                Selected2Listen = DirectoryItems.First();
+            }
+            else
+            {
+                int index = DirectoryItems.IndexOf(SelectedDir);
+                ++index;
+                index %= DirectoryItems.Count;
+                SelectedDir=DirectoryItems[index];
+                Selected2Listen=DirectoryItems[index];
+            }
+        }
     }
 
     public void DirectoryDown()
     {
-        throw new NotImplementedException("oopsie");
+        if (DirectoryItems.Count>0)
+        {
+            if (SelectedDir == null )
+            {
+                SelectedDir = DirectoryItems.Last();
+                Selected2Listen = DirectoryItems.Last();
+            }
+            else
+            {
+                int index = DirectoryItems.IndexOf(SelectedDir);
+                --index;
+                if (index < 0)
+                {
+                    index = DirectoryItems.Count - 1;
+                }
+                SelectedDir=DirectoryItems[index];
+                Selected2Listen=DirectoryItems[index];
+            }
+        }
     }
 
     public void MusicPathUp()
     {
-        throw new NotImplementedException("oopsie");
+        if (MusicItems.Count>0)
+        {
+            if (SelectedMusic == null )
+            {
+                SelectedMusic = MusicItems.First();
+                Selected2Listen = MusicItems.First();
+            }
+            else
+            {
+                int index = MusicItems.IndexOf(SelectedMusic);
+                ++index;
+                index %= MusicItems.Count;
+                SelectedMusic=MusicItems[index];
+                Selected2Listen=MusicItems[index];
+            }
+        }
     }
 
     public void MusicPathDown()
     {
-        throw new NotImplementedException("oopsie");
+        if (MusicItems.Count>0)
+        {
+            if (SelectedMusic == null )
+            {
+                SelectedMusic = MusicItems.First();
+                Selected2Listen = MusicItems.First();
+            }
+            else
+            {
+                int index = MusicItems.IndexOf(SelectedMusic);
+                --index;
+                if (index < 0)
+                {
+                    index = MusicItems.Count - 1;
+                }
+                SelectedMusic=MusicItems[index];
+                Selected2Listen=MusicItems[index];
+            }
+        }
     }
 
     public void SaveAndExit()
     {
-        throw new NotImplementedException("oopsie");
+        //todo modify the conf to actually save it
+        fjalskjfq
+        ConfController.SaveConf(CacheReferences.alarmTimerController.SirenData);
+        SwitchToClockView(CacheReferences);
     }
 
     public void AddToPlaylist()
     {
-        throw new NotImplementedException("oopsie");
+        if (SelectedDir.IsMusic)
+        {
+            MusicItems.Add(SelectedDir);
+            SelectedMusic = MusicItems.Last();
+        }
     }
 
     public void RemoveFromPlaylist()
     {
-        throw new NotImplementedException("oopsie");
+        if (MusicItems.Count > 0)
+        {
+            MusicItems.Remove(SelectedMusic);
+        }
     }
 
-    public void PlayStopMedia()
+    public async void PlayStopMedia()
     {
-        throw new NotImplementedException("oopsie");
+        if (CacheReferences.alarmTimerController.AudioController.IsPlaying())
+        {
+            CacheReferences.alarmTimerController.AudioController.Stop();
+        }
+        else
+        {
+            await CacheReferences.alarmTimerController.AudioController.PlayAudio(Selected2Listen.FullPath);
+            //is this even supposed to work like this? will it be responsive?
+        }
+        
     }
         
         
