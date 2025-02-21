@@ -9,6 +9,7 @@ using Avalonia.Input;
 using Avalonia.Media;
 using CommunityToolkit.Mvvm.ComponentModel;
 using DynamicData;
+using LibVLCSharp.Shared;
 using SirenDisplay.Assets.Polygons.Frames;
 using SirenDisplay.Controllers;
 using SirenDisplay.Model;
@@ -342,11 +343,16 @@ public sealed partial class MusicViewModel : ViewModelBase
     {
         string[] music = Directory.GetFiles(_currentDir);
         List<DirectoryItem> coll = new();
+        var libVLC = new LibVLC();
+        var media = new Media(libVLC,string.Empty);
         foreach (var item in music)
         {
+            
+            media=new Media(libVLC,item);
+            Console.WriteLine($"media.track was: {media.Tracks[0]}"); //i can add more tracks to it? 
             coll.Add(new DirectoryItem()
             {
-                IsMusic = true,
+                IsMusic = (media.Tracks[0].TrackType == TrackType.Audio || (media.Tracks[0].TrackType==TrackType.Video)?true : false),
                 Label = LabelData.MusicLabel,
                 Name = System.IO.Path.GetFileName(item),
                 FullPath = item
@@ -354,7 +360,6 @@ public sealed partial class MusicViewModel : ViewModelBase
         }
 
         SelectedMusic = null;
-        throw new NotImplementedException("helo, where do i filter music?bruh");
         return coll;
     }
 
@@ -434,6 +439,8 @@ public sealed partial class MusicViewModel : ViewModelBase
         }
     }
 
+    
+
     public void MusicPathDown()
     {
         if (MusicItems.Count>0)
@@ -459,18 +466,21 @@ public sealed partial class MusicViewModel : ViewModelBase
 
     public void SaveAndExit()
     {
-        //todo modify the conf to actually save it
-        fjalskjfq
         ConfController.SaveConf(CacheReferences.alarmTimerController.SirenData);
         SwitchToClockView(CacheReferences);
     }
 
+    private void Save2SirenData()
+    {//haha! in 1 line
+        CacheReferences.alarmTimerController.SirenData.MusicPaths[_playlistNames[_playlistNameIndex]] = MusicItems.Select(x=>x.FullPath).ToList();
+    }
     public void AddToPlaylist()
     {
         if (SelectedDir.IsMusic)
         {
             MusicItems.Add(SelectedDir);
             SelectedMusic = MusicItems.Last();
+            Save2SirenData();
         }
     }
 
@@ -479,9 +489,10 @@ public sealed partial class MusicViewModel : ViewModelBase
         if (MusicItems.Count > 0)
         {
             MusicItems.Remove(SelectedMusic);
+            Save2SirenData();
         }
     }
-
+    
     public async void PlayStopMedia()
     {
         if (CacheReferences.alarmTimerController.AudioController.IsPlaying())

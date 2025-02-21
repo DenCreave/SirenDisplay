@@ -15,14 +15,17 @@
         <Grid x:Name="MainGrid" RowDefinitions="*,3*,*" ColumnDefinitions="*">
             <Grid Grid.Row="0" ColumnDefinitions="*,*">
                 <Viewbox Grid.Column="0">
-                    <Label />
+                    <Grid ColumnDefinitions="Auto,*">
+                        <Label Grid.Column="0" Foreground="#2d00f7" Content="{Binding Selected2Listen.Label}"/>
+                        <Label Grid.Column="1" Foreground="#2d00f7" Content="{Binding Selected2Listen.Name}"/>
+                    </Grid>
                 </Viewbox>
                 <ContentControl Grid.Column="1" Content="{Binding PlaylistViewGrid}"/>
             </Grid>
             <Grid Grid.Row="1" Margin="30,30,30,30" RowDefinitions="*" ColumnDefinitions="3*,*,3*"
                   VerticalAlignment="Center">
                 
-                <!--todo directory list--><!-- we will see if this works or not...i wonder if touching the list will also select it-->
+                <!--directory list--><!-- we will see if this works or not...i wonder if touching the list will also select it-->
                 <ListBox Grid.Column="0" ItemsSource="{Binding DirectoryItems}"  SelectionMode="Single" SelectedItem="{Binding SelectedDir}">
                     <ListBox.ItemTemplate>
                         <DataTemplate x:DataType="model:DirectoryItem">
@@ -47,7 +50,7 @@
                     </Viewbox>
                 </Grid>
                 
-                <!--todo playlist list-->
+                <!--playlist list-->
                 
                 <ListBox Grid.Column="0" ItemsSource="{Binding MusicItems}"  SelectionMode="Single" SelectedItem="{Binding SelectedMusic}">
                 <ListBox.ItemTemplate>
