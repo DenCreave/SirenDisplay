@@ -15,9 +15,11 @@
     <Grid x:Name="BackGroundGrid" Background="{DynamicResource PrimaryBackground}">
         <ContentControl Classes="main-frame" Content="{Binding Path=MainFrame}" />
         <Grid x:Name="MainGrid" RowDefinitions="*,3*,*" ColumnDefinitions="*">
-            <Viewbox Grid.Row="0" PointerPressed="SetPlayList">
-                <Label Foreground="#ff901b" Content="{Binding SelectedPlaylist}"></Label>
-            </Viewbox>
+            <Grid Grid.Row="0" ColumnDefinitions="*,6*,*">
+                <Viewbox Grid.Column="1" PointerPressed="SetPlayList">
+                    <Label Foreground="#ff901b" Content="{Binding SelectedPlaylist}"></Label>
+                </Viewbox>
+            </Grid>
             <Grid Grid.Row="1" Margin="30,30,30,30" RowDefinitions="*" ColumnDefinitions="*,*,*,*,*"
                   VerticalAlignment="Center">
                 <ContentControl Grid.Column="0" Margin="0,0,20,0" HorizontalContentAlignment="Right"

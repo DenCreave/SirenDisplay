@@ -171,7 +171,8 @@ public sealed partial class ClockViewModel : ViewModelBase
     {
         var tmp=CacheReferences.alarmTimerController.SirenData;
         AlarmString = $"{tmp.UsualTime.Hours}:{tmp.UsualTime.Minutes}";
-        SelectedPlaylist = tmp.SelectedPlaylist;
+        SelectedPlaylist = tmp.SelectedPlaylist=="" ? "Welcome to Siren Display" : tmp.SelectedPlaylist;
+        
     }
     
 }

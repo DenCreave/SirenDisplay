@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
+using System.Threading.Tasks;
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Input;
@@ -39,8 +40,8 @@ public sealed partial class MusicViewModel : ViewModelBase
     [ObservableProperty] private DirectoryItem? _selected2Listen;
     [ObservableProperty] private DirectoryItem? _selectedDir;
     [ObservableProperty] private DirectoryItem? _selectedMusic;
-    [ObservableProperty] private ObservableCollection<DirectoryItem> _directoryItems;
-    [ObservableProperty] private ObservableCollection<DirectoryItem> _musicItems;
+    [ObservableProperty] private ObservableCollection<DirectoryItem> _directoryItems = new ObservableCollection<DirectoryItem>();
+    [ObservableProperty] private ObservableCollection<DirectoryItem> _musicItems = new ObservableCollection<DirectoryItem>();
 
     public string PlayButton => IsPlayButton ? LabelData.PlayLabel : LabelData.StopLabel;
 
@@ -50,15 +51,30 @@ public sealed partial class MusicViewModel : ViewModelBase
     public MusicViewModel()
     {
         FrameInitializer();
-        LoadPlayListNames(); //we might not have Cache references by that time
+        LabelData = new LabelData();
+        //we might not have Cache references by that time
+    }
+
+    public void PostInit()
+    {
+        LoadPlayListNames(); 
         LoadPlaylistTitleNameGrid();
         LoadPlayListOptionsGrid();
         LoadPlaylistRenameGrid();
         InitDirPaths();
         InitMusicPaths();
         IsPlayButton = true;
+        
+        DirectoryItems.Clear();
+        DirectoryItem tjmp = new DirectoryItem()
+        {
+            IsMusic = false,
+            Label = LabelData.MusicLabel,
+            Name = "tidk",
+            FullPath = "/home/vava/Music/SOmething"
+        };
+        DirectoryItems.Add(tjmp);
     }
-
     
 
     private void FrameInitializer()
@@ -311,12 +327,17 @@ public sealed partial class MusicViewModel : ViewModelBase
         LoadMusicPaths();
     }
 
-    private void LoadDirectoryItems()
+    private async void LoadDirectoryItems()
     {
+        
         List<DirectoryItem> coll = new();
-        coll.Add(DirectoryLoader());
-        coll.Add(MusicLoader());
         DirectoryItems.Clear();
+        coll.Add(DirectoryLoader());
+        var tmp = await Task.WhenAll(MusicLoader());
+        foreach (var tem in tmp)
+        {
+            coll.Add(tem);
+        }
         DirectoryItems.AddRange(coll.OrderBy(x=>x.Name).ToArray());
         SelectedMusic = null;
     }
@@ -339,16 +360,23 @@ public sealed partial class MusicViewModel : ViewModelBase
         return coll;
     }
 
-    private List<DirectoryItem> MusicLoader()
+    private async Task<List<DirectoryItem>> MusicLoader()
     {
         string[] music = Directory.GetFiles(_currentDir);
         List<DirectoryItem> coll = new();
-        var libVLC = new LibVLC();
-        var media = new Media(libVLC,string.Empty);
+        var libVLC = new LibVLC(enableDebugLogs: true);
+        Media media = null;
         foreach (var item in music)
         {
-            
+            Console.WriteLine($"item is: {item}"); //i can add more tracks to it? 
             media=new Media(libVLC,item);
+            Console.WriteLine($"the type: {media.Type}");
+            await media.Parse();
+            Console.WriteLine($"the type: {media.Type}");
+            if (media.Tracks.Length==0)
+            {
+               // continue;
+            }
             Console.WriteLine($"media.track was: {media.Tracks[0]}"); //i can add more tracks to it? 
             coll.Add(new DirectoryItem()
             {
@@ -382,14 +410,17 @@ public sealed partial class MusicViewModel : ViewModelBase
         {
             if (SelectedDir == null )
             {
-                SelectedDir = DirectoryItems.First();
-                Selected2Listen = DirectoryItems.First();
+                SelectedDir = DirectoryItems.Last();
+                Selected2Listen = DirectoryItems.Last();
             }
             else
             {
                 int index = DirectoryItems.IndexOf(SelectedDir);
-                ++index;
-                index %= DirectoryItems.Count;
+                --index;
+                if (index < 0)
+                {
+                    index = DirectoryItems.Count - 1;
+                }
                 SelectedDir=DirectoryItems[index];
                 Selected2Listen=DirectoryItems[index];
             }
@@ -402,17 +433,14 @@ public sealed partial class MusicViewModel : ViewModelBase
         {
             if (SelectedDir == null )
             {
-                SelectedDir = DirectoryItems.Last();
-                Selected2Listen = DirectoryItems.Last();
+                SelectedDir = DirectoryItems.First();
+                Selected2Listen = DirectoryItems.First();
             }
             else
             {
                 int index = DirectoryItems.IndexOf(SelectedDir);
-                --index;
-                if (index < 0)
-                {
-                    index = DirectoryItems.Count - 1;
-                }
+                ++index;
+                index %= DirectoryItems.Count;
                 SelectedDir=DirectoryItems[index];
                 Selected2Listen=DirectoryItems[index];
             }
@@ -498,11 +526,13 @@ public sealed partial class MusicViewModel : ViewModelBase
         if (CacheReferences.alarmTimerController.AudioController.IsPlaying())
         {
             CacheReferences.alarmTimerController.AudioController.Stop();
+            IsPlayButton = true;
         }
         else
         {
             await CacheReferences.alarmTimerController.AudioController.PlayAudio(Selected2Listen.FullPath);
             //is this even supposed to work like this? will it be responsive?
+            IsPlayButton = false;
         }
         
     }

@@ -36,6 +36,7 @@ public partial class ViewModelBase : ObservableObject
          {
              CacheReferences = references
          };
-         
+         var tmp = references.InitViewModel.CurrentView as MusicViewModel;
+         tmp.PostInit();
      }
 }
