@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
@@ -14,21 +15,25 @@ using LibVLCSharp.Shared;
 using SirenDisplay.Assets.Polygons.Frames;
 using SirenDisplay.Controllers;
 using SirenDisplay.Model;
+using Color = Avalonia.Media.Color;
 using Path = Avalonia.Controls.Shapes.Path;
+using Rectangle = Avalonia.Controls.Shapes.Rectangle;
 
 namespace SirenDisplay.ViewModels;
 
 public sealed partial class MusicViewModel : ViewModelBase
 {
     [ObservableProperty] private Path _mainFrame;
-    public LabelData LabelData { get;}
+    public LabelData LabelData { get; }
     public CacheReferences CacheReferences { get; set; }
 
-    [ObservableProperty] private Grid _playlistViewGrid;
-    private Grid _playlistTitleNameGrid {get; set;}
-    private Grid _playlisTitleOptionsGrid { get; set;}
-    private Grid _playlisTitleRenameGrid { get; set;}
-    [ObservableProperty] private Label _currentPlaylistTitle;
+    [ObservableProperty] private Grid _playlistViewGrid = new();
+
+    //[ObservableProperty] private ObservableCollection<Grid> _playlistViewGrid = new();
+    public Grid _playlistTitleNameGrid { get; set; }
+    private Grid _playlisTitleOptionsGrid { get; set; }
+    private Grid _playlisTitleRenameGrid { get; set; }
+    [ObservableProperty] private Label _currentPlaylistTitle = new();
     private string[] _playlistNames { get; set; }
     private int _playlistNameIndex { get; set; }
     private TextBox _renameBox { get; set; }
@@ -36,18 +41,39 @@ public sealed partial class MusicViewModel : ViewModelBase
     private string _rootDir => Environment.GetFolderPath(Environment.SpecialFolder.MyMusic);
 
     private string _currentDir { get; set; }
-    
+
     [ObservableProperty] private DirectoryItem? _selected2Listen;
     [ObservableProperty] private DirectoryItem? _selectedDir;
+    private int _dirIndex { get; set; }
     [ObservableProperty] private DirectoryItem? _selectedMusic;
-    [ObservableProperty] private ObservableCollection<DirectoryItem> _directoryItems = new ObservableCollection<DirectoryItem>();
-    [ObservableProperty] private ObservableCollection<DirectoryItem> _musicItems = new ObservableCollection<DirectoryItem>();
+    private int _musicIndex { get; set; }
+
+    [ObservableProperty]
+    private ObservableCollection<DirectoryItem> _directoryItems = new ObservableCollection<DirectoryItem>();
+
+    [ObservableProperty]
+    private ObservableCollection<DirectoryItem> _musicItems = new ObservableCollection<DirectoryItem>();
+
+    /// <summary>
+    /// this function partial void On[PropertyName]Changed(T? value)
+    /// is part of the mvvm toolkit, bruh this is so powerful, i love it
+    /// </summary>
+    /// <param name="value"></param>
+    partial void OnSelectedDirChanged(DirectoryItem? value)
+    {
+        Selected2Listen = value;
+    }
+
+    partial void OnSelectedMusicChanged(DirectoryItem? value)
+    {
+        Selected2Listen = value;
+    }
 
     public string PlayButton => IsPlayButton ? LabelData.PlayLabel : LabelData.StopLabel;
 
-    [ObservableProperty] 
-    [NotifyPropertyChangedFor(nameof(PlayButton))]
+    [ObservableProperty] [NotifyPropertyChangedFor(nameof(PlayButton))]
     private bool _isPlayButton;
+
     public MusicViewModel()
     {
         FrameInitializer();
@@ -57,31 +83,43 @@ public sealed partial class MusicViewModel : ViewModelBase
 
     public void PostInit()
     {
-        LoadPlayListNames(); 
+        // PlaylistViewGrid = new Grid();
+        // PlaylistViewGrid.ColumnDefinitions.Add(new ColumnDefinition());
+
+        /*Rectangle rect = new Rectangle { Fill = Brushes.Red, Width = 50, Height = 50 };
+        //PlaylistViewGrid.Children.Add(rect);
+
+
+        _playlistTitleNameGrid = new Grid()
+        {
+            ColumnDefinitions = new ColumnDefinitions("*,*,*")
+        };
+
+        Rectangle rect2 = new Rectangle { Fill = Brushes.Blue, Width = 50, Height = 50 };
+        _playlistTitleNameGrid.Children.Add(rect2);
+        _playlistTitleNameGrid.Children.Add(rect);
+        Grid.SetColumn(rect, 0);
+        Grid.SetColumn(rect2, 1);
+        _playlistTitleNameGrid.Children.Add(CurrentPlaylistTitle);
+        Grid.SetColumn(CurrentPlaylistTitle, 2);
+        PlaylistViewGrid = _playlistTitleNameGrid;
+        */
+        //LoadPlayListNames();
         LoadPlaylistTitleNameGrid();
         LoadPlayListOptionsGrid();
         LoadPlaylistRenameGrid();
+        SwapToNavigationMode(this,null);
         InitDirPaths();
         InitMusicPaths();
         IsPlayButton = true;
-        
-        DirectoryItems.Clear();
-        DirectoryItem tjmp = new DirectoryItem()
-        {
-            IsMusic = false,
-            Label = LabelData.MusicLabel,
-            Name = "tidk",
-            FullPath = "/home/vava/Music/SOmething"
-        };
-        DirectoryItems.Add(tjmp);
     }
-    
+
 
     private void FrameInitializer()
     {
         MainFrame = new Path
         {
-            Stroke =  Application.Current.FindResource("OffColor") as LinearGradientBrush,
+            Stroke = Application.Current.FindResource("OffColor") as LinearGradientBrush,
             StrokeThickness = 10,
             Stretch = Stretch.Fill,
             Data = new PathGeometry
@@ -101,16 +139,16 @@ public sealed partial class MusicViewModel : ViewModelBase
 
     private void LoadPlaylistTitleNameGrid()
     {
-        //todo check if it works at all
         _playlistTitleNameGrid = new Grid()
         {
             ColumnDefinitions = new ColumnDefinitions("*,*,*")
         };
+        Color color = Color.Parse("#ff0090");
+        SolidColorBrush brush = new SolidColorBrush(color);
         Viewbox viewbox1 = new Viewbox();
         Label arrowLeft = new Label
         {
-            
-            Foreground = Application.Current.FindResource("A2") as LinearGradientBrush,
+            Foreground = brush,
             Classes = { "icon" },
             Content = LabelData.LeftLabel
         };
@@ -123,13 +161,21 @@ public sealed partial class MusicViewModel : ViewModelBase
         Viewbox viewbox3 = new Viewbox();
         Label arrowRight = new Label()
         {
-            Foreground = Application.Current.FindResource("A2") as LinearGradientBrush,
+            Foreground = brush,
             Classes = { "icon" },
             Content = LabelData.RightLabel
         };
         viewbox3.Child = arrowRight;
         viewbox3.PointerPressed += NextPlaylist;
-
+        
+        _playlistTitleNameGrid.Children.Add(viewbox1);
+        _playlistTitleNameGrid.Children.Add(viewbox2);
+        _playlistTitleNameGrid.Children.Add(viewbox3);
+        
+        Grid.SetColumn(viewbox1, 0);
+        Grid.SetColumn(viewbox2, 1);
+        Grid.SetColumn(viewbox3, 2);
+        
     }
 
     private void LoadPlayListOptionsGrid()
@@ -138,10 +184,14 @@ public sealed partial class MusicViewModel : ViewModelBase
         {
             ColumnDefinitions = new ColumnDefinitions("*,*,*,*"),
         };
+        Color colorB1 = Color.Parse("#ff901b");
+        Color colorS1 = Color.Parse("#9e0022");
+        SolidColorBrush brushB1 = new SolidColorBrush(colorB1);
+        SolidColorBrush brushS1 = new SolidColorBrush(colorS1);
         Viewbox viewbox1 = new Viewbox();
         Label back = new Label()
         {
-            Foreground = Application.Current.FindResource("B1") as LinearGradientBrush,
+            Foreground = brushB1,
             Classes = { "icon" },
             Content = LabelData.BackLabel
         };
@@ -150,7 +200,7 @@ public sealed partial class MusicViewModel : ViewModelBase
         Viewbox viewbox2 = new Viewbox();
         Label addnew = new Label()
         {
-            Foreground = Application.Current.FindResource("B1") as LinearGradientBrush,
+            Foreground = brushB1,
             Classes = { "icon" },
             Content = LabelData.AddLabel
         };
@@ -159,7 +209,7 @@ public sealed partial class MusicViewModel : ViewModelBase
         Viewbox viewbox3 = new Viewbox();
         Label edit = new Label()
         {
-            Foreground = Application.Current.FindResource("B1") as LinearGradientBrush,
+            Foreground = brushB1,
             Classes = { "icon" },
             Content = LabelData.EditLabel
         };
@@ -168,12 +218,22 @@ public sealed partial class MusicViewModel : ViewModelBase
         Viewbox viewbox4 = new Viewbox();
         Label delete = new Label()
         {
-            Foreground = Application.Current.FindResource("S1") as LinearGradientBrush,
+            Foreground = brushS1,
             Classes = { "icon" },
             Content = LabelData.DeleteLabel
         };
         viewbox4.Child = delete;
         viewbox4.PointerPressed += DeletePlaylist;
+        
+        _playlisTitleOptionsGrid.Children.Add(viewbox1);
+        _playlisTitleOptionsGrid.Children.Add(viewbox2);
+        _playlisTitleOptionsGrid.Children.Add(viewbox3);
+        _playlisTitleOptionsGrid.Children.Add(viewbox4);
+        
+        Grid.SetColumn(viewbox1, 0);
+        Grid.SetColumn(viewbox2, 1);
+        Grid.SetColumn(viewbox3, 2);
+        Grid.SetColumn(viewbox4, 3);
     }
 
     public void LoadPlaylistRenameGrid()
@@ -183,14 +243,18 @@ public sealed partial class MusicViewModel : ViewModelBase
             ColumnDefinitions = new ColumnDefinitions("*,*,*")
         };
         Viewbox viewbox1 = new Viewbox();
+        Color colorB1 = Color.Parse("#ff901b");
+        SolidColorBrush brushB1 = new SolidColorBrush(colorB1);
+        Color colorG1 = Color.Parse("#39FF14");
+        SolidColorBrush brushG1 = new SolidColorBrush(colorG1);
         Label back = new Label()
         {
-            Foreground = Application.Current.FindResource("B1") as LinearGradientBrush,
+            Foreground = brushB1,
             Classes = { "icon" },
             Content = LabelData.BackLabel
         };
         viewbox1.Child = back;
-        viewbox1.PointerPressed += SwapToNavigationMode; 
+        viewbox1.PointerPressed += SwapToNavigationMode;
         Viewbox viewbox2 = new Viewbox();
         _renameBox = new TextBox()
         {
@@ -200,12 +264,20 @@ public sealed partial class MusicViewModel : ViewModelBase
         Viewbox viewbox3 = new Viewbox();
         Label accept = new Label()
         {
-            Foreground = Application.Current.FindResource("G1") as LinearGradientBrush,
+            Foreground = brushG1,
             Classes = { "icon" },
             Content = LabelData.CheckLabel
         };
         viewbox3.Child = accept;
         viewbox3.PointerPressed += ConfirmRename;
+        
+        _playlisTitleRenameGrid.Children.Add(viewbox1);
+        _playlisTitleRenameGrid.Children.Add(viewbox2);
+        _playlisTitleRenameGrid.Children.Add(viewbox3);
+        
+        Grid.SetColumn(viewbox1, 0);
+        Grid.SetColumn(viewbox2, 1);
+        Grid.SetColumn(viewbox3, 2);
     }
 
     public void LoadPlayListNames()
@@ -215,7 +287,8 @@ public sealed partial class MusicViewModel : ViewModelBase
         if (CacheReferences.alarmTimerController.SirenData.MusicPaths.Keys.Count > 0)
         {
             _playlistNames = CacheReferences.alarmTimerController.SirenData.MusicPaths.Keys.ToArray();
-            _playlistNameIndex = _playlistNames.IndexOf(CacheReferences.alarmTimerController.SirenData.SelectedPlaylist);
+            _playlistNameIndex =
+                _playlistNames.IndexOf(CacheReferences.alarmTimerController.SirenData.SelectedPlaylist);
         }
         else
         {
@@ -224,26 +297,30 @@ public sealed partial class MusicViewModel : ViewModelBase
             CacheReferences.alarmTimerController.SirenData.SelectedPlaylist = _playlistNames[_playlistNameIndex];
             Console.WriteLine("no playlist found, loading as Siren Display");
         }
-        
+
+        Color color = Color.Parse("#ff901b");
+        SolidColorBrush brush = new SolidColorBrush(color);
         CurrentPlaylistTitle = new Label()
         {
             Content = _playlistNames[_playlistNameIndex],
-            Foreground = Application.Current.FindResource("B1") as LinearGradientBrush
+            Foreground = brush,
+            //Foreground = Application.Current.FindResource("B1") as SolidColorBrush
+            //Foreground = Brushes.Chocolate
         };
-        Console.WriteLine($"for debug reason\tname:{_playlistNames}\tindex:{_playlistNameIndex}");
-
+        Console.WriteLine($"for debug reason\tname:{_playlistNames[_playlistNameIndex]}\tindex:{_playlistNameIndex}");
     }
 
     public void PreviousPlaylist(object sender, PointerPressedEventArgs e)
     {
-        if (_playlistNameIndex==0)
+        if (_playlistNameIndex == 0)
         {
-            _playlistNameIndex = _playlistNames.Length-1;
+            _playlistNameIndex = _playlistNames.Length - 1;
         }
         else
         {
             --_playlistNameIndex;
         }
+
         CurrentPlaylistTitle.Content = _playlistNames[_playlistNameIndex];
         LoadMusicPaths();
     }
@@ -251,7 +328,7 @@ public sealed partial class MusicViewModel : ViewModelBase
     public void NextPlaylist(object sender, PointerPressedEventArgs e)
     {
         ++_playlistNameIndex;
-        _playlistNameIndex%=_playlistNames.Length;
+        _playlistNameIndex %= _playlistNames.Length;
         CurrentPlaylistTitle.Content = _playlistNames[_playlistNameIndex];
         LoadMusicPaths();
     }
@@ -274,7 +351,7 @@ public sealed partial class MusicViewModel : ViewModelBase
     public void AddNewPlaylist(object sender, PointerPressedEventArgs e)
     {
         string tmp = $"Siren Display {_playlistNames.Length}";
-        CacheReferences.alarmTimerController.SirenData.MusicPaths.Add(tmp,new List<string>());
+        CacheReferences.alarmTimerController.SirenData.MusicPaths.Add(tmp, new List<string>());
         CacheReferences.alarmTimerController.SirenData.SelectedPlaylist = tmp;
         _playlistNames = CacheReferences.alarmTimerController.SirenData.MusicPaths.Keys.ToArray();
         _playlistNameIndex = _playlistNames.IndexOf(CacheReferences.alarmTimerController.SirenData.SelectedPlaylist);
@@ -288,9 +365,9 @@ public sealed partial class MusicViewModel : ViewModelBase
         if (_playlistNames.Length == 0)
         {
             _playlistNames = ["Siren Display"];
-            CacheReferences.alarmTimerController.SirenData.MusicPaths.Add(_playlistNames[0],new List<string>());
+            CacheReferences.alarmTimerController.SirenData.MusicPaths.Add(_playlistNames[0], new List<string>());
         }
-        
+
         _playlistNameIndex = 0;
         CacheReferences.alarmTimerController.SirenData.SelectedPlaylist = _playlistNames[_playlistNameIndex];
         _playlistNameIndex = _playlistNames.IndexOf(CacheReferences.alarmTimerController.SirenData.SelectedPlaylist);
@@ -303,7 +380,9 @@ public sealed partial class MusicViewModel : ViewModelBase
         {
             throw new NullReferenceException("_renameBox was null after confirmation");
         }
-        CacheReferences.alarmTimerController.SirenData.MusicPaths.Add(_renameBox.Text, CacheReferences.alarmTimerController.SirenData.MusicPaths[_playlistNames[_playlistNameIndex]]);
+
+        CacheReferences.alarmTimerController.SirenData.MusicPaths.Add(_renameBox.Text,
+            CacheReferences.alarmTimerController.SirenData.MusicPaths[_playlistNames[_playlistNameIndex]]);
         CacheReferences.alarmTimerController.SirenData.MusicPaths.Remove(_playlistNames[_playlistNameIndex]);
         CacheReferences.alarmTimerController.SirenData.SelectedPlaylist = _renameBox.Text;
         _playlistNames[_playlistNameIndex] = _renameBox.Text;
@@ -314,11 +393,12 @@ public sealed partial class MusicViewModel : ViewModelBase
     #endregion DynamicBar
 
     //i just realized its almost 300 lines here, this is going to be a godclass ffs, i definitely break pattern
+
     #region dircaller
 
     public void InitDirPaths()
     {
-        _currentDir=_rootDir;
+        _currentDir = _rootDir;
         LoadDirectoryItems();
     }
 
@@ -329,7 +409,6 @@ public sealed partial class MusicViewModel : ViewModelBase
 
     private async void LoadDirectoryItems()
     {
-        
         List<DirectoryItem> coll = new();
         DirectoryItems.Clear();
         coll.Add(DirectoryLoader());
@@ -338,7 +417,8 @@ public sealed partial class MusicViewModel : ViewModelBase
         {
             coll.Add(tem);
         }
-        DirectoryItems.AddRange(coll.OrderBy(x=>x.Name).ToArray());
+
+        DirectoryItems.AddRange(coll.OrderBy(x => x.Name).ToArray());
         SelectedMusic = null;
     }
 
@@ -364,23 +444,27 @@ public sealed partial class MusicViewModel : ViewModelBase
     {
         string[] music = Directory.GetFiles(_currentDir);
         List<DirectoryItem> coll = new();
-        var libVLC = new LibVLC(enableDebugLogs: true);
+        var libVLC = new LibVLC(enableDebugLogs: false); //todo enable
         Media media = null;
         foreach (var item in music)
         {
             Console.WriteLine($"item is: {item}"); //i can add more tracks to it? 
-            media=new Media(libVLC,item);
+            media = new Media(libVLC, item);
             Console.WriteLine($"the type: {media.Type}");
             await media.Parse();
             Console.WriteLine($"the type: {media.Type}");
-            if (media.Tracks.Length==0)
+            if (media.Tracks.Length == 0)
             {
-               // continue;
+                continue;
             }
+
             Console.WriteLine($"media.track was: {media.Tracks[0]}"); //i can add more tracks to it? 
             coll.Add(new DirectoryItem()
             {
-                IsMusic = (media.Tracks[0].TrackType == TrackType.Audio || (media.Tracks[0].TrackType==TrackType.Video)?true : false),
+                IsMusic = (media.Tracks[0].TrackType == TrackType.Audio ||
+                           (media.Tracks[0].TrackType == TrackType.Video)
+                    ? true
+                    : false),
                 Label = LabelData.MusicLabel,
                 Name = System.IO.Path.GetFileName(item),
                 FullPath = item
@@ -406,12 +490,11 @@ public sealed partial class MusicViewModel : ViewModelBase
 
     public void DirectoryUp()
     {
-        if (DirectoryItems.Count>0)
+        if (DirectoryItems.Count > 0)
         {
-            if (SelectedDir == null )
+            if (SelectedDir == null)
             {
                 SelectedDir = DirectoryItems.Last();
-                Selected2Listen = DirectoryItems.Last();
             }
             else
             {
@@ -421,62 +504,38 @@ public sealed partial class MusicViewModel : ViewModelBase
                 {
                     index = DirectoryItems.Count - 1;
                 }
-                SelectedDir=DirectoryItems[index];
-                Selected2Listen=DirectoryItems[index];
+
+                SelectedDir = DirectoryItems[index];
             }
         }
     }
 
     public void DirectoryDown()
     {
-        if (DirectoryItems.Count>0)
+        if (DirectoryItems.Count > 0)
         {
-            if (SelectedDir == null )
+            if (SelectedDir == null)
             {
                 SelectedDir = DirectoryItems.First();
-                Selected2Listen = DirectoryItems.First();
             }
             else
             {
                 int index = DirectoryItems.IndexOf(SelectedDir);
                 ++index;
                 index %= DirectoryItems.Count;
-                SelectedDir=DirectoryItems[index];
-                Selected2Listen=DirectoryItems[index];
+                SelectedDir = DirectoryItems[index];
+                Selected2Listen = DirectoryItems[index];
             }
         }
     }
 
     public void MusicPathUp()
     {
-        if (MusicItems.Count>0)
+        if (MusicItems.Count > 0)
         {
-            if (SelectedMusic == null )
+            if (SelectedMusic == null)
             {
                 SelectedMusic = MusicItems.First();
-                Selected2Listen = MusicItems.First();
-            }
-            else
-            {
-                int index = MusicItems.IndexOf(SelectedMusic);
-                ++index;
-                index %= MusicItems.Count;
-                SelectedMusic=MusicItems[index];
-                Selected2Listen=MusicItems[index];
-            }
-        }
-    }
-
-    
-
-    public void MusicPathDown()
-    {
-        if (MusicItems.Count>0)
-        {
-            if (SelectedMusic == null )
-            {
-                SelectedMusic = MusicItems.First();
-                Selected2Listen = MusicItems.First();
             }
             else
             {
@@ -486,8 +545,27 @@ public sealed partial class MusicViewModel : ViewModelBase
                 {
                     index = MusicItems.Count - 1;
                 }
-                SelectedMusic=MusicItems[index];
-                Selected2Listen=MusicItems[index];
+
+                SelectedMusic = MusicItems[index];
+            }
+        }
+    }
+
+
+    public void MusicPathDown()
+    {
+        if (MusicItems.Count > 0)
+        {
+            if (SelectedMusic == null)
+            {
+                SelectedMusic = MusicItems.First();
+            }
+            else
+            {
+                int index = MusicItems.IndexOf(SelectedMusic);
+                ++index;
+                index %= MusicItems.Count;
+                SelectedMusic = MusicItems[index];
             }
         }
     }
@@ -499,28 +577,49 @@ public sealed partial class MusicViewModel : ViewModelBase
     }
 
     private void Save2SirenData()
-    {//haha! in 1 line
-        CacheReferences.alarmTimerController.SirenData.MusicPaths[_playlistNames[_playlistNameIndex]] = MusicItems.Select(x=>x.FullPath).ToList();
+    {
+        //haha! in 1 line
+        CacheReferences.alarmTimerController.SirenData.MusicPaths[_playlistNames[_playlistNameIndex]] =
+            MusicItems.Select(x => x.FullPath).ToList();
     }
+
     public void AddToPlaylist()
     {
         if (SelectedDir.IsMusic)
         {
-            MusicItems.Add(SelectedDir);
+            MusicItems.Add(new DirectoryItem(SelectedDir));
             SelectedMusic = MusicItems.Last();
             Save2SirenData();
+        }
+        else
+        {
+            _currentDir = Selected2Listen.FullPath;
+            LoadDirectoryItems();
         }
     }
 
     public void RemoveFromPlaylist()
     {
-        if (MusicItems.Count > 0)
+        if (Selected2Listen != null && Selected2Listen == SelectedMusic)
         {
-            MusicItems.Remove(SelectedMusic);
-            Save2SirenData();
+            if (MusicItems.Count > 0)
+            {
+                MusicItems.Remove(SelectedMusic);
+                Save2SirenData();
+            }
+        }
+        else
+        {
+            if (_currentDir != _rootDir)
+            {
+                Console.WriteLine($"_currentDir.LastIndexOf('/'){_currentDir.LastIndexOf('/')}");
+                _currentDir = _currentDir.Substring(0, _currentDir.LastIndexOf('/'));
+                Console.WriteLine($"_currentDir: {_currentDir}");
+                LoadDirectoryItems();
+            }
         }
     }
-    
+
     public async void PlayStopMedia()
     {
         if (CacheReferences.alarmTimerController.AudioController.IsPlaying())
@@ -534,9 +633,7 @@ public sealed partial class MusicViewModel : ViewModelBase
             //is this even supposed to work like this? will it be responsive?
             IsPlayButton = false;
         }
-        
     }
-        
-        
+
     #endregion MusicHandlingButtons
 }

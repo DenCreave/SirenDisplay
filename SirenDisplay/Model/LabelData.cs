@@ -20,8 +20,8 @@ public sealed class LabelData : ILabelData
     public string PlayLabel => "\uE3D0";
     public string StopLabel => "\uE46C";
     public string SaveLabel => "\uE428";
-    public string BackLabel => "\uE3D4";
-    public string AddLabel => "\uE07E";
+    public string BackLabel => "\uE07E";
+    public string AddLabel => "\uE3D4";
     public string EditLabel => "\uE3B2";
     public string DeleteLabel => "\uE4F6";
     public string LeftLabel => "\uE138";

@@ -9,4 +9,14 @@ public sealed class DirectoryItem : ObservableObject
     public string Label { get; set; }
     public string Name { get; set; } //of song/dir
     public string FullPath { get; set; }
+
+    public DirectoryItem(){ }
+
+    public DirectoryItem(DirectoryItem directoryItem)
+    {
+        IsMusic = directoryItem.IsMusic;
+        Label = directoryItem.Label;
+        Name = directoryItem.Name;
+        FullPath = directoryItem.FullPath;
+    }
 }

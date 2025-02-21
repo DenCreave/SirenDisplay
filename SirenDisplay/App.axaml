@@ -14,6 +14,7 @@
         <StyleInclude Source="Styles/DefaultStyles.axaml"></StyleInclude>
     </Application.Styles>
     
+             
     <Application.Resources>
         <SolidColorBrush x:Key="PrimaryBackground">#000000</SolidColorBrush>
         <SolidColorBrush x:Key="G1">#39FF14</SolidColorBrush>
