@@ -16,6 +16,21 @@
     <Style Selector="Label.icon" > 
         <Setter Property="FontFamily" Value="{DynamicResource Phosphor}"></Setter>
     </Style>
+    <Style Selector="ListBox.listbox">
+        <Setter Property="Background" Value="Transparent"></Setter>
+    </Style>
+    <Style Selector="ListBoxItem:selected /template/ ContentPresenter">
+        <Setter Property="Background" >
+            <Setter.Value>
+                <LinearGradientBrush StartPoint="0%,100%" Opacity="0.5" EndPoint="100%,0%">
+                    <GradientStop Color="#ff0090" Offset="0.0"/>
+                    <GradientStop Color="#ff6533" Offset="1.0"/>
+                </LinearGradientBrush>
+            </Setter.Value>
+        </Setter>	
+    </Style>
+ 
+
     
     
     

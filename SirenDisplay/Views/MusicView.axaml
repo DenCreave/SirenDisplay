@@ -15,24 +15,18 @@
         <Grid x:Name="MainGrid" RowDefinitions="*,3*,*" ColumnDefinitions="*">
             <Grid Grid.Row="0" ColumnDefinitions="*,*">
                 <Viewbox Grid.Column="0">
-                    <Grid ColumnDefinitions="Auto,*" HorizontalAlignment="Center">
-                        <Label Grid.Column="0" Foreground="#2d00f7" Classes="icon" Content="{Binding Selected2Listen.Label}"/>
-                        <Label Grid.Column="1" Foreground="#2d00f7" Content="{Binding Selected2Listen.Name}"/>
+                    <Grid ColumnDefinitions="Auto,*" HorizontalAlignment="Center" Margin="10,0,0,0">
+                        <Label Grid.Column="0" Foreground="#ea057e" Classes="icon" Content="{Binding Selected2Listen.Label}"/>
+                        <Label Grid.Column="1" Foreground="#05e5ea" Content="{Binding Selected2Listen.Name}"/>
                     </Grid>
                 </Viewbox>
                 <ContentControl Grid.Column="1" Content="{Binding PlaylistViewGrid}"/>
-                <!--<Viewbox Grid.Column="1">
-                   <Grid ColumnDefinitions="Auto,*" HorizontalAlignment="Center">
-                       <Label Grid.Column="1" Foreground="#2d00f7" Content="hali"/>
-                   </Grid>
-               </Viewbox>-->
             </Grid>
             <Grid Grid.Row="1" Margin="20,30,20,30" RowDefinitions="*" ColumnDefinitions="3*,*,3*"
                   VerticalAlignment="Center">
                 
                 <!--directory list--><!-- we will see if this works or not...i wonder if touching the list will also select it-->
-               
-                <ListBox Grid.Column="0" ItemsSource="{Binding DirectoryItems}"  SelectionMode="Single" SelectedItem="{Binding SelectedDir}">
+                <ListBox Grid.Column="0" Classes="listbox" ItemsSource="{Binding DirectoryItems}"  SelectionMode="Single" SelectedItem="{Binding SelectedDir}">
                     <ListBox.ItemTemplate>
                         <DataTemplate x:DataType="model:DirectoryItem">
                             <Grid ColumnDefinitions="Auto,*">
@@ -45,21 +39,25 @@
                 
                 
                 <!-- buttons-->
-                <Grid Grid.Column="1" ColumnDefinitions="*" RowDefinitions="*,*,*" Margin="20" >
+                <Grid Grid.Column="1" ColumnDefinitions="*" RowDefinitions="*,*,*,*" Margin="5" >
                     <Viewbox Grid.Row="0" PointerPressed="AddToPlaylist">
                         <Label Foreground="#ff901b" Classes="icon" Content="{Binding LabelData.DoubleRightLabel}"></Label>
                     </Viewbox>
                     <Viewbox Grid.Row="1" PointerPressed="PlayStopMedia"> 
                         <Label Foreground="#ff901b" Classes="icon" Content="{Binding PlayButton}"></Label>
-                    </Viewbox>                                  <!-- todo another class for handling audio, and this button -->
+                    </Viewbox>
+                    <!-- todo another class for handling audio, and this button -->
                     <Viewbox Grid.Row="2" PointerPressed="RemoveFromPlaylist">
                         <Label Foreground="#ff901b" Classes="icon" Content="{Binding LabelData.DoubleLeftLabel}"></Label>
+                    </Viewbox>
+                    <Viewbox Grid.Row="3" PointerPressed="UpADir">
+                        <Label Foreground="#ff901b" Classes="icon" Content="{Binding LabelData.DoubleUpLabel}"></Label>
                     </Viewbox>
                 </Grid>
                 
                 <!--playlist list-->
                 
-                <ListBox Grid.Column="2" ItemsSource="{Binding MusicItems}"  SelectionMode="Single" SelectedItem="{Binding SelectedMusic}">
+                <ListBox Grid.Column="2" Classes="listbox" ItemsSource="{Binding MusicItems}"  SelectionMode="Single" SelectedItem="{Binding SelectedMusic}">
                 <ListBox.ItemTemplate>
                     <DataTemplate x:DataType="model:DirectoryItem">
                         <Grid ColumnDefinitions="Auto,*">

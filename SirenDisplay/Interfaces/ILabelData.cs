@@ -10,6 +10,7 @@ public interface ILabelData
     public string SirenLabel { get; }
     public string UpLabel { get; }
     public string DownLabel { get; }
+    public string DoubleUpLabel { get; }
     public string DoubleRightLabel { get; }
     public string DoubleLeftLabel { get; }
     public string PlayLabel { get; }

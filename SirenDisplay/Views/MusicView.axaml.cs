@@ -61,5 +61,10 @@ public partial class MusicView : UserControl
         var tmp = DataContext as MusicViewModel;
         tmp.PlayStopMedia();
     }
-    
+
+    private void UpADir(object? sender, PointerPressedEventArgs e)
+    {
+        var tmp = DataContext as MusicViewModel;
+        tmp.UpADir();
+    }
 }
