@@ -66,10 +66,10 @@ public sealed partial class MusicViewModel : ViewModelBase
         Selected2Listen = value;
     }
 
-    public string PlayButton => IsPlayButton ? LabelData.PlayLabel : LabelData.StopLabel;
+   /* public string PlayButton => IsPlayButton ? LabelData.PlayLabel : LabelData.StopLabel;
 
     [ObservableProperty] [NotifyPropertyChangedFor(nameof(PlayButton))]
-    private bool _isPlayButton;
+    private bool _isPlayButton; */
 
     public MusicViewModel()
     {
@@ -86,7 +86,7 @@ public sealed partial class MusicViewModel : ViewModelBase
         LoadPlaylistRenameGrid();
         SwapToNavigationMode(this,null);
         InitDirPaths();
-        IsPlayButton = true;
+       // IsPlayButton = true;
         FetchPlaylist();
     }
 
@@ -443,11 +443,11 @@ public sealed partial class MusicViewModel : ViewModelBase
         Media media = null;
         foreach (var item in music)
         {
-            Console.WriteLine($"item is: {item}"); //i can add more tracks to it? 
+            //Console.WriteLine($"item is: {item}"); //i can add more tracks to it? 
             media = new Media(libVLC, item);
-            Console.WriteLine($"the type: {media.Type}");
+            //Console.WriteLine($"the type: {media.Type}");
             await media.Parse();
-            Console.WriteLine($"the type: {media.Type}");
+            //Console.WriteLine($"the type: {media.Type}");
             if (media.Tracks.Length == 0)
             {
                 continue;
@@ -620,13 +620,13 @@ public sealed partial class MusicViewModel : ViewModelBase
         if (CacheReferences.alarmTimerController.AudioController.IsPlaying())
         {
             CacheReferences.alarmTimerController.AudioController.Stop();
-            IsPlayButton = true;
+            //IsPlayButton = true;
         }
         else
         {
             await CacheReferences.alarmTimerController.AudioController.PlayAudio(Selected2Listen.FullPath);
             //is this even supposed to work like this? will it be responsive?
-            IsPlayButton = false;
+            //IsPlayButton = false;
         }
     }
 

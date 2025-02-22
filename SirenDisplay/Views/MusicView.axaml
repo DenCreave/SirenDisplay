@@ -44,7 +44,7 @@
                         <Label Foreground="#ff901b" Classes="icon" Content="{Binding LabelData.DoubleRightLabel}"></Label>
                     </Viewbox>
                     <Viewbox Grid.Row="1" PointerPressed="PlayStopMedia"> 
-                        <Label Foreground="#ff901b" Classes="icon" Content="{Binding PlayButton}"></Label>
+                        <Label Foreground="#ff901b" Classes="icon" Content="{Binding CacheReferences.alarmTimerController.AudioController.PlayButton}"></Label>
                     </Viewbox>
                     <!-- todo another class for handling audio, and this button -->
                     <Viewbox Grid.Row="2" PointerPressed="RemoveFromPlaylist">
