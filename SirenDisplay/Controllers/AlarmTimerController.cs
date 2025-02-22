@@ -1,11 +1,12 @@
 using System;
 using System.Threading;
 using System.Threading.Tasks;
+using CommunityToolkit.Mvvm.ComponentModel;
 using SirenDisplay.Model;
 
 namespace SirenDisplay.Controllers;
 
-public sealed class AlarmTimerController
+public sealed partial class AlarmTimerController : ObservableObject
 {
     public Timer? Timer { get; set; }
     public DateTimeOffset SirenTime { get; set; }
@@ -13,9 +14,46 @@ public sealed class AlarmTimerController
     public ConfData SirenData { get; set; }
 
     public AudioController AudioController { get; set; }
+    public LabelData LabelData { get; }
+    public string Kolor => IsOff ? "#ff901b" : "#9e0022";
+    
+    [ObservableProperty] 
+    [NotifyPropertyChangedFor(nameof(Kolor))] private bool _isOff;
+    
+    [ObservableProperty] 
+    [NotifyPropertyChangedFor(nameof(ClockButton))]
+    private AlarmState _alarmState;
+    
+    public string ClockButton
+    {
+        get {
+            switch (AlarmState)
+            {
+                case AlarmState.Off:
+                {
+                    return LabelData.OffLabel;
+                }
+                case AlarmState.Pending:
+                {
+                    return LabelData.PendingLabel;
+                }
+                case AlarmState.Sirens:
+                {
+                    return LabelData.SirenLabel;
+                }
+                default:
+                {
+                    Console.WriteLine("Unknown alarm state");
+                    return "\uE4E0";
+                }
+            }
+        }
+    }
 
     public AlarmTimerController()
     {
+        IsOff = true;
+        LabelData = new LabelData();
         SirenData = ConfController.LoadConf();
         AudioController = new AudioController();
         if (SirenData.IsPending)
@@ -47,18 +85,38 @@ public sealed class AlarmTimerController
         {
             Stop();
         }
-
+        
 
         Timer = new Timer(SirenMe, null, dueTimeSpan, Timeout.InfiniteTimeSpan);
     }
 
     private async void SirenMe(object state)
     {
+        AlarmState = AlarmState.Sirens;
         await AudioController.PlaySirenDisplay(SirenData.MusicPaths[SirenData.SelectedPlaylist]);
         Stop();
     }
 
-
+    public void ActivateAlarmTimer()
+    {
+        if (IsOff)
+        {
+            IsOff = false;
+            AlarmState = AlarmState.Pending;
+            SirenData.IsPending = true;
+            Start();
+            ConfController.SaveConf(SirenData);
+        }
+        else
+        {
+            IsOff = true;
+            AlarmState = AlarmState.Off;
+            SirenData.IsPending = false;
+            AudioController.Stop();
+            Stop();
+            ConfController.SaveConf(SirenData);
+        }
+    }
     public void Stop()
     {
         Timer?.Dispose();

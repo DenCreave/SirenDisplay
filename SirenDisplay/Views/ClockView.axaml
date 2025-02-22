@@ -29,10 +29,10 @@
                 <Grid Grid.Column="2" ColumnDefinitions="*" RowDefinitions="*,*" Margin="20"
                       PointerPressed="ToggleAlarm">
                     <Viewbox Grid.Row="0">
-                        <Label Foreground="#ff901b" Classes="icon" Content="{Binding ClockButton}"></Label>
+                        <Label Foreground="{Binding CacheReferences.alarmTimerController.Kolor}" Classes="icon" Content="{Binding CacheReferences.alarmTimerController.ClockButton}"></Label>
                     </Viewbox>
                     <Viewbox Grid.Row="1">
-                        <Label Foreground="#ff901b" Classes="icon" Content="{Binding ClockButton}"></Label>
+                        <Label Foreground="{Binding CacheReferences.alarmTimerController.Kolor}" Classes="icon" Content="{Binding CacheReferences.alarmTimerController.ClockButton}"></Label>
                     </Viewbox>
                 </Grid>
                 <ContentControl Grid.Column="3" HorizontalContentAlignment="Right" HorizontalAlignment="Right"

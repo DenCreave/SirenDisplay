@@ -453,7 +453,7 @@ public sealed partial class MusicViewModel : ViewModelBase
                 continue;
             }
 
-            Console.WriteLine($"media.track was: {media.Tracks[0]}"); //i can add more tracks to it? 
+            //Console.WriteLine($"media.track was: {media.Tracks[0]}"); //i can add more tracks to it? 
             coll.Add(new DirectoryItem()
             {
                 IsMusic = (media.Tracks[0].TrackType == TrackType.Audio ||
@@ -624,7 +624,10 @@ public sealed partial class MusicViewModel : ViewModelBase
         }
         else
         {
-            await CacheReferences.alarmTimerController.AudioController.PlayAudio(Selected2Listen.FullPath);
+            if (Selected2Listen != null)
+            {
+                await CacheReferences.alarmTimerController.AudioController.PlayAudio(Selected2Listen.FullPath);
+            }
             //is this even supposed to work like this? will it be responsive?
             //IsPlayButton = false;
         }

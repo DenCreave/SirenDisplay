@@ -11,7 +11,7 @@ public sealed class LabelData : ILabelData
         "\uE2B4", "\uE2B8", "\uE2B6"
     ];
 
-    public string PendingLabel => "\uE492";
+    public string PendingLabel => "\uE006";
     public string SirenLabel => "\uE9B8";
     public string UpLabel => "\uE13C";
     public string DownLabel => "\uE136";

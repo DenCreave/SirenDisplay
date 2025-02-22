@@ -13,7 +13,10 @@ public sealed partial class AudioController : ObservableObject
     private LibVLC _libvlc {get; set;}
     private Media _media { get; set; } //= new Media(_libvlc, new Uri(@"C:\tmp\big_buck_bunny.mp4"));
     private MediaPlayer _mediaplayer { get; set; }//= new MediaPlayer(_media);
-    private List<DirectoryItem> _playlist { get; set; }
+    //private List<DirectoryItem> _playlist { get; set; }
+    private List<Media> _playlist { get; set; }
+    
+    private int  _playlistIndex { get; set; }
     private LabelData LabelData { get; }
     public string PlayButton => IsPlayButton ? LabelData.PlayLabel : LabelData.StopLabel;
 
@@ -46,32 +49,59 @@ public sealed partial class AudioController : ObservableObject
         {
             Stop();
         }
-        _playlist = new List<DirectoryItem>(paths);
+        _playlist = new List<Media>();
+        foreach (var path in paths)
+        {
+            _playlist.Add(new Media(_libvlc,path.FullPath));
+        }
+
+        _playlistIndex = 0;
+        //_playlist = new List<DirectoryItem>(paths);
         _mediaplayer = new MediaPlayer(_libvlc); 
         _mediaplayer.EndReached += PlayNextSiren;
-        _media= new Media(_libvlc,_playlist.First().FullPath);
+        //_media= new Media(_libvlc,_playlist.First().FullPath);
         Console.WriteLine($"Playing Siren Display first song {_playlist.First()}");
-        _playlist.RemoveAt(0);
-        _mediaplayer.Play(_media);
+       // _playlist.RemoveAt(0);
+        //_mediaplayer.Play(_media);
+        _mediaplayer.Play(_playlist[_playlistIndex]);
+        Console.WriteLine($"Playing Siren Display second song {_playlist[_playlistIndex].Tracks}");
+        ++_playlistIndex;
     }
 
     public void ToPlayIconTrue(object sender, EventArgs e)
     {
         IsPlayButton = true;
     }
-    public void PlayNextSiren(object sender, EventArgs e)
+
+    public async Task PlayNextSiren()
     {
+        if (_playlistIndex<_playlist.Count)
+        {
+            _mediaplayer = new MediaPlayer(_libvlc);
+            _mediaplayer.EndReached += PlayNextSiren;
+            _mediaplayer.Play(_playlist[_playlistIndex]);
+            ++_playlistIndex;
+            Console.WriteLine("why doesnt it play anything");
+        }
+    }
+    public async void PlayNextSiren(object sender, EventArgs e)
+    {
+        await PlayNextSiren();
+        /*
         if (_playlist.Count != 0)
         {
-            Console.WriteLine($"Playing Siren Display another song {_playlist.First()}");
+            _media.Dispose();
+            Console.WriteLine($"Playing Siren Display another song {_playlist.First().FullPath}");
             _media = new Media(_libvlc, _playlist.First().FullPath);
-            _mediaplayer.Play(_media);
+            _mediaplayer.Media=_media;
+            _mediaplayer.Play();
             _playlist.RemoveAt(0);
         }
         else
         {
             Stop();
-        }
+            Console.WriteLine("why are we stopping in the else ?");
+        }*/
     }
 
     public bool IsPlaying()
@@ -83,9 +113,12 @@ public sealed partial class AudioController : ObservableObject
         }
         return _mediaplayer.IsPlaying;
     }
+
+    public void Dispose()
+    {
+        _mediaplayer.Dispose();
+    }
     
-    
-    //todo make a Stop and rename this to dispose...
     public void Stop()
     {
         //_mediaplayer.Dispose();

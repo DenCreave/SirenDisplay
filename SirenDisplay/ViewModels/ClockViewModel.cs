@@ -6,6 +6,7 @@ using Avalonia.Threading;
 using CommunityToolkit.Mvvm.ComponentModel;
 using SirenDisplay.Assets.Polygons.Frames;
 using SirenDisplay.Classes.Digits;
+using SirenDisplay.Controllers;
 using SirenDisplay.Model;
 using Path = Avalonia.Controls.Shapes.Path;
 
@@ -31,7 +32,7 @@ public sealed partial class ClockViewModel : ViewModelBase
     
     public CacheReferences CacheReferences { get; set; }
     
-    [ObservableProperty] 
+   /* [ObservableProperty] 
     [NotifyPropertyChangedFor(nameof(ClockButton))]
     private AlarmState _alarmState;
     
@@ -59,7 +60,7 @@ public sealed partial class ClockViewModel : ViewModelBase
                 }
             }
         }
-    }
+    }*/
 
     [ObservableProperty]
     private string _alarmString;
@@ -68,7 +69,7 @@ public sealed partial class ClockViewModel : ViewModelBase
 
     public ClockViewModel() 
     { 
-        AlarmState = AlarmState.Off;
+        //AlarmState = AlarmState.Off;
         FrameInitializer();
         ClockInitializer();
         AlarmButtonInitializer();
@@ -148,29 +149,37 @@ public sealed partial class ClockViewModel : ViewModelBase
             MinuteDigit.Data=_digitLoader.ReturnPathGeometry(minutes%10);
         };
         _timer.Start();
+        hours = DateTime.Now.Hour;
+        hoursDecimal = hours / 10;
+        minutes = DateTime.Now.Minute;
+        minutesDecimal = minutes / 10;
+        if (hoursDecimal == 0)
+        {
+            HourDecimalDigit.Data=_digitLoader.ReturnPathGeometry(10); 
+        }
+        else
+        { 
+            HourDecimalDigit.Data=_digitLoader.ReturnPathGeometry(hoursDecimal%3);
+        }
+        HourDigit.Data=_digitLoader.ReturnPathGeometry(hours%10);
+        MinuteDecimalDigit.Data=_digitLoader.ReturnPathGeometry(minutesDecimal%6);
+        MinuteDigit.Data=_digitLoader.ReturnPathGeometry(minutes%10);
     }
     
     private void AlarmButtonInitializer()
     {
         LabelData = new LabelData();
-        
     }
-
-
-
-
+    bool weon ;
     public void ActivateAlarmButton()
     {
-        Console.WriteLine($"alarm state was: {AlarmState}");
-        AlarmState++;
-        Console.WriteLine($"alarm state is : {AlarmState}");
-
+        CacheReferences.alarmTimerController.ActivateAlarmTimer();
     }
 
     public void PostLoad()
     {
         var tmp=CacheReferences.alarmTimerController.SirenData;
-        AlarmString = $"{tmp.UsualTime.Hours}:{tmp.UsualTime.Minutes}";
+        AlarmString = $"{tmp.UsualTime.Hours}:{(tmp.UsualTime.Minutes>9?tmp.UsualTime.Minutes:(tmp.UsualTime.Minutes==0?"00":"0"+tmp.UsualTime.Minutes))}";
         SelectedPlaylist = tmp.SelectedPlaylist=="" ? "Welcome to Siren Display" : tmp.SelectedPlaylist;
         
     }
