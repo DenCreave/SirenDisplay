@@ -170,7 +170,6 @@ public sealed partial class ClockViewModel : ViewModelBase
     {
         LabelData = new LabelData();
     }
-    bool weon ;
     public void ActivateAlarmButton()
     {
         CacheReferences.alarmTimerController.ActivateAlarmTimer();

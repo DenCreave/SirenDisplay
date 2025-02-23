@@ -16,8 +16,10 @@
             <Grid Grid.Row="0" ColumnDefinitions="*,*">
                 <Viewbox Grid.Column="0">
                     <Grid ColumnDefinitions="Auto,*" HorizontalAlignment="Center" Margin="10,0,0,0">
-                        <Label Grid.Column="0" Foreground="#ea057e" Classes="icon" Content="{Binding Selected2Listen.Label}"/>
-                        <Label Grid.Column="1" Foreground="#05e5ea" Content="{Binding Selected2Listen.Name}"/>
+                        <Viewbox Grid.Column="0">
+                            <Label  Foreground="#ea057e" Classes="icon" Content="{Binding Selected2Listen.Label}"/>
+                        </Viewbox>
+                        <Label Grid.Column="1" Foreground="#05e5ea" Content="{Binding S2LName}"/>
                     </Grid>
                 </Viewbox>
                 <ContentControl Grid.Column="1" Content="{Binding PlaylistViewGrid}"/>

@@ -4,6 +4,7 @@ using System.Collections.ObjectModel;
 using System.Drawing;
 using System.IO;
 using System.Linq;
+using System.Text;
 using System.Threading.Tasks;
 using Avalonia;
 using Avalonia.Controls;
@@ -15,6 +16,7 @@ using LibVLCSharp.Shared;
 using SirenDisplay.Assets.Polygons.Frames;
 using SirenDisplay.Controllers;
 using SirenDisplay.Model;
+using SkiaSharp;
 using Color = Avalonia.Media.Color;
 using Path = Avalonia.Controls.Shapes.Path;
 using Rectangle = Avalonia.Controls.Shapes.Rectangle;
@@ -24,7 +26,7 @@ namespace SirenDisplay.ViewModels;
 public sealed partial class MusicViewModel : ViewModelBase
 {
     [ObservableProperty] private Path _mainFrame;
-    public LabelData LabelData { get; }
+    public LabelData LabelData { get; } = new();
     public CacheReferences CacheReferences { get; set; }
 
     [ObservableProperty] private Grid _playlistViewGrid = new();
@@ -38,8 +40,41 @@ public sealed partial class MusicViewModel : ViewModelBase
     private string _rootDir => Environment.GetFolderPath(Environment.SpecialFolder.MyMusic);
 
     private string _currentDir { get; set; }
+    private StringBuilder _sb { get; set; } = new();
+    public string S2LName  
+    {
+        get
+        {
+            int nlcunt = 0;
+            _sb.Clear();
+            if (Selected2Listen!= null)
+            {
+                int nlmax = Selected2Listen.Name.Length/30;
+                int nltreshhold = nlmax == 0 ? 0 : Selected2Listen.Name.Length / nlmax;
+                string[] tmp = Selected2Listen.Name.Split(' ');
+                for (int i = 0; i < tmp.Length; i++)
+                {
+                    _sb.Append(tmp[i]);
+                    if (_sb.Length > nltreshhold * (nlcunt + 1) && nltreshhold != 0)
+                    {
+                        _sb.Append('\n');
+                        ++nlcunt;
+                    }
+                    else
+                    {
+                        _sb.Append(' ');
+                    }
+                }
+                return _sb.ToString(0, _sb.Length - 1);
+            }
+            else
+            {
+                return "";
+            }
+        }    
+    } 
 
-    [ObservableProperty] private DirectoryItem? _selected2Listen;
+    [ObservableProperty] [NotifyPropertyChangedFor(nameof(S2LName))] private DirectoryItem? _selected2Listen;
     [ObservableProperty] private DirectoryItem? _selectedDir;
     private int _dirIndex { get; set; }
     [ObservableProperty] private DirectoryItem? _selectedMusic;
@@ -74,7 +109,7 @@ public sealed partial class MusicViewModel : ViewModelBase
     public MusicViewModel()
     {
         FrameInitializer();
-        LabelData = new LabelData();
+        //LabelData = new LabelData();
         //we might not have Cache references by that time
     }
 
@@ -603,7 +638,7 @@ public sealed partial class MusicViewModel : ViewModelBase
             }
         }
     }
-
+    
     public void UpADir()
     {
         if (_currentDir != _rootDir)
