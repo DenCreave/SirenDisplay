@@ -7,8 +7,5 @@
         x:Class="SirenDisplay.Views.InitView"
         Title="SirenDisplay"
         x:DataType="viewModels:InitViewModel">
-    <Window.DataContext>
-        <viewModels:InitViewModel/> 
-    </Window.DataContext>
     <ContentControl Content="{Binding  CurrentView}"></ContentControl>
 </Window>

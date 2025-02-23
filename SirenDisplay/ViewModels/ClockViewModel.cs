@@ -29,38 +29,7 @@ public sealed partial class ClockViewModel : ViewModelBase
     [NotifyPropertyChangedFor( nameof(EnabledMe))]
     private bool _isGoodMorning; 
     public bool EnabledMe => !IsGoodMorning;
-    
     public CacheReferences CacheReferences { get; set; }
-    
-   /* [ObservableProperty] 
-    [NotifyPropertyChangedFor(nameof(ClockButton))]
-    private AlarmState _alarmState;
-    
-    public string ClockButton
-    {
-        get {
-            switch (AlarmState)
-            {
-                case AlarmState.Off:
-                {
-                    return LabelData.OffLabel;
-                }
-                case AlarmState.Pending:
-                {
-                    return LabelData.PendingLabel;
-                }
-                case AlarmState.Sirens:
-                {
-                    return LabelData.SirenLabel;
-                }
-                default:
-                {
-                    Console.WriteLine("Unknown alarm state");
-                    return "\uE4E0";
-                }
-            }
-        }
-    }*/
 
     [ObservableProperty]
     private string _alarmString;
@@ -68,12 +37,11 @@ public sealed partial class ClockViewModel : ViewModelBase
     [ObservableProperty] private string _selectedPlaylist ;
 
     public ClockViewModel() 
-    { 
-        //AlarmState = AlarmState.Off;
+    {
+        Console.WriteLine("ClockViewModel was instantiated.");
         FrameInitializer();
         ClockInitializer();
         AlarmButtonInitializer();
-        Console.WriteLine("ClockViewModel constructor complete");
     }
     
     
@@ -180,7 +148,6 @@ public sealed partial class ClockViewModel : ViewModelBase
         var tmp=CacheReferences.alarmTimerController.SirenData;
         AlarmString = $"{tmp.UsualTime.Hours}:{(tmp.UsualTime.Minutes>9?tmp.UsualTime.Minutes:(tmp.UsualTime.Minutes==0?"00":"0"+tmp.UsualTime.Minutes))}";
         SelectedPlaylist = tmp.SelectedPlaylist=="" ? "Welcome to Siren Display" : tmp.SelectedPlaylist;
-        
     }
     
 }

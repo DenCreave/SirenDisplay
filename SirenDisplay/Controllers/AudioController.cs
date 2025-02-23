@@ -49,6 +49,7 @@ public sealed partial class AudioController : ObservableObject
         {
             Stop();
         }
+        _mediaplayer.Dispose();
         _playlist = new List<Media>();
         foreach (var path in paths)
         {
@@ -81,7 +82,6 @@ public sealed partial class AudioController : ObservableObject
             _mediaplayer.EndReached += PlayNextSiren;
             _mediaplayer.Play(_playlist[_playlistIndex]);
             ++_playlistIndex;
-            Console.WriteLine("why doesnt it play anything");
         }
     }
     public async void PlayNextSiren(object sender, EventArgs e)
@@ -124,6 +124,6 @@ public sealed partial class AudioController : ObservableObject
         //_mediaplayer.Dispose();
         _mediaplayer.Stop();
         IsPlayButton = true;
-        Console.WriteLine("we stopped the music player in audo");
+        Console.WriteLine("we stopped the music player in audiocontroller");
     }
 }
