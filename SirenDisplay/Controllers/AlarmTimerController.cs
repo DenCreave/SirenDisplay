@@ -150,7 +150,10 @@ public sealed partial class AlarmTimerController : ObservableObject
     private async void SirenMe(object state)
     {
         AlarmState = AlarmState.Sirens;
-        await AudioController.PlaySirenDisplay(SirenData.MusicPaths[SirenData.SelectedPlaylist]);
+        if (SirenData.MusicPaths.ContainsKey(SirenData.SelectedPlaylist))
+        {
+            await AudioController.PlaySirenDisplay(SirenData.MusicPaths[SirenData.SelectedPlaylist]);
+        }
         Stop();
     }
 
