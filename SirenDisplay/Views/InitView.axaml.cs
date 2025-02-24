@@ -11,5 +11,6 @@ public partial class InitView : Window
     {
         InitializeComponent();
         DataContext = new InitViewModel();
+        WindowState = WindowState.FullScreen;
     }
 }
