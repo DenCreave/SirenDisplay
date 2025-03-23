@@ -40,7 +40,7 @@
                 <ContentControl Margin="20,0,0,0" Grid.Column="4" HorizontalContentAlignment="Right"
                                 HorizontalAlignment="Right" Content="{Binding Path=MinuteDigit}" />
             </Grid>
-            <Viewbox Grid.Row="2" PointerPressed="SetAlarm">
+            <Viewbox Grid.Row="2" PointerPressed="SetAlarm" >
                 <Label Foreground="#ff901b" Content="{Binding AlarmString}"></Label>
             </Viewbox>
         </Grid>

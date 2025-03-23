@@ -142,7 +142,7 @@ public sealed partial class AlarmViewModel : ViewModelBase, IAlarmTimeController
     public void IncreaseHour()
     {
         ++IATCHours;
-        IATCHours %= 10;
+        IATCHours %= IATCHoursDecimal>1?4:10;
         HourDigit.Data = _digitLoader.ReturnPathGeometry(IATCHours);
     }
 
@@ -151,7 +151,7 @@ public sealed partial class AlarmViewModel : ViewModelBase, IAlarmTimeController
         --IATCHours;
         if (IATCHours == -1)
         {
-            IATCHours = 9;
+            IATCHours = IATCHoursDecimal>1?3:10;
         }
         HourDigit.Data = _digitLoader.ReturnPathGeometry(IATCHours);
     }
@@ -162,7 +162,7 @@ public sealed partial class AlarmViewModel : ViewModelBase, IAlarmTimeController
         IATCHoursDecimal %= 3;
         
         HourDecimalDigit.Data = _digitLoader.ReturnPathGeometry(IATCHoursDecimal);
-        if (IATCHours>3)
+        if (IATCHours>3 && IATCHoursDecimal > 1)
         {
             IATCHours = 3;
             HourDigit.Data = _digitLoader.ReturnPathGeometry(IATCHours);
@@ -177,7 +177,7 @@ public sealed partial class AlarmViewModel : ViewModelBase, IAlarmTimeController
             IATCHoursDecimal = 2;
         }
         HourDecimalDigit.Data = _digitLoader.ReturnPathGeometry(IATCHoursDecimal);
-        if (IATCHours>3)
+        if (IATCHours>3 && IATCHoursDecimal > 1)
         {
             IATCHours = 3;
             HourDigit.Data = _digitLoader.ReturnPathGeometry(IATCHours);
