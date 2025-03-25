@@ -49,7 +49,7 @@ public sealed partial class AudioController : ObservableObject
         {
             Stop();
         }
-        _mediaplayer.Dispose();
+        _mediaplayer.Stop();
         _playlist = new List<Media>();
         foreach (var path in paths)
         {
@@ -112,11 +112,6 @@ public sealed partial class AudioController : ObservableObject
             return false;
         }
         return _mediaplayer.IsPlaying;
-    }
-
-    public void Dispose()
-    {
-        _mediaplayer.Dispose();
     }
     
     public void Stop()
