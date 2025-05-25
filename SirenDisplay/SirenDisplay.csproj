@@ -29,22 +29,14 @@
 
     <ItemGroup>
       <Folder Include="Assets\Fonts\" />
+      <Folder Include="Assets\Images\" />
       <Folder Include="Styles\" />
     </ItemGroup>
 
     <ItemGroup>
       <None Remove="Assets\Images\exit_icon.svg" />
-      <AvaloniaResource Include="Assets\Images\exit_icon.svg">
-        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-      </AvaloniaResource>
       <None Remove="Assets\Images\alarmbuttonver1.svg" />
-      <AvaloniaResource Include="Assets\Images\alarmbuttonver1.svg">
-        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-      </AvaloniaResource>
       <None Remove="Assets\Images\clockbuttonclock.svg" />
-      <AvaloniaResource Include="Assets\Images\clockbuttonclock.svg">
-        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-      </AvaloniaResource>
       <None Remove="Assets\Images\clockbuttonclock.png" />
       <None Remove="Assets\Fonts\Phosphor.ttf" />
       <AvaloniaResource Include="Assets\Fonts\Phosphor.ttf">
