@@ -38,6 +38,16 @@ public partial class MusicView : UserControl
         tmp.MusicPathDown();
     }
 
+    public void MusicOrderUp(object? sender, PointerPressedEventArgs e)
+    {
+        var tmp = DataContext as MusicViewModel;
+        tmp.MusicOrderUp();
+    }
+
+    public void MusicOrderDown(object? sender, PointerPressedEventArgs e){
+        var tmp = DataContext as MusicViewModel;
+        tmp.MusicOrderDown();
+    }
     public void SaveAndExit(object? sender, PointerPressedEventArgs e)
     {
         var tmp = DataContext as MusicViewModel;

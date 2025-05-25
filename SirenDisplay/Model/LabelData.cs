@@ -15,7 +15,9 @@ public sealed class LabelData : ILabelData
     public string SirenLabel => "\uE9B8";
     public string UpLabel => "\uE13C";
     public string DownLabel => "\uE136";
+    public string UpaDirectoryLabel => "\uE12E";
     public string DoubleUpLabel => "\uE12C";
+    public string DoubleDownLabel => "\uE126";
     public string DoubleRightLabel => "\uE12A";
     public string DoubleLeftLabel => "\uE128";
     public string PlayLabel => "\uE3D0";

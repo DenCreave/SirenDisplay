@@ -23,7 +23,7 @@ public sealed partial class AudioController : ObservableObject
     [ObservableProperty] [NotifyPropertyChangedFor(nameof(PlayButton))] private bool _isPlayButton;
     public AudioController()
     {
-        _libvlc=new LibVLC(enableDebugLogs: true);
+        _libvlc=new LibVLC(enableDebugLogs: false);
         _media = new Media(_libvlc, "tmp");
         _mediaplayer = new MediaPlayer(_media);
         LabelData=new LabelData();

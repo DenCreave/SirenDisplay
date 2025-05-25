@@ -614,16 +614,19 @@ public sealed partial class MusicViewModel : ViewModelBase
 
     public void AddToPlaylist()
     {
-        if (SelectedDir.IsMusic)
+        if (SelectedDir!= null)
         {
-            MusicItems.Add(new DirectoryItem(SelectedDir));
-            SelectedMusic = MusicItems.Last();
-            Save2SirenData();
-        }
-        else
-        {
-            _currentDir = Selected2Listen.FullPath;
-            LoadDirectoryItems();
+            if (SelectedDir.IsMusic)
+            {
+                MusicItems.Add(new DirectoryItem(SelectedDir));
+                SelectedMusic = MusicItems.Last();
+                Save2SirenData();
+            }
+            else
+            {
+                _currentDir = SelectedDir.FullPath;
+                LoadDirectoryItems();
+            }
         }
     }
 
@@ -634,6 +637,10 @@ public sealed partial class MusicViewModel : ViewModelBase
             if (MusicItems.Count > 0)
             {
                 MusicItems.Remove(SelectedMusic);
+                if (SelectedDir!= null)
+                {
+                    Selected2Listen = SelectedDir;
+                }
                 Save2SirenData();
             }
         }
@@ -665,6 +672,30 @@ public sealed partial class MusicViewModel : ViewModelBase
             }
             //is this even supposed to work like this? will it be responsive?
             //IsPlayButton = false;
+        }
+    }
+
+    public void MusicOrderUp()
+    {
+        if (SelectedMusic!=null)
+        {
+            int newPosition = Math.Max(MusicItems.IndexOf(SelectedMusic) - 1, 0);
+            MusicItems.Move(MusicItems.IndexOf(SelectedMusic),newPosition);
+            Save2SirenData();
+            SelectedMusic= MusicItems[newPosition];
+            Selected2Listen = SelectedMusic;
+        }
+    }
+
+    public void MusicOrderDown()
+    {
+        if (SelectedMusic!=null)
+        {
+            int newPosition = Math.Min(MusicItems.IndexOf(SelectedMusic) + 1, MusicItems.Count - 1);
+            MusicItems.Move(MusicItems.IndexOf(SelectedMusic),newPosition);
+            Save2SirenData();
+            SelectedMusic = MusicItems[newPosition];
+            Selected2Listen = SelectedMusic;
         }
     }
 

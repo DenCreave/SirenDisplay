@@ -53,7 +53,7 @@
                         <Label Foreground="#ff901b" Classes="icon" Content="{Binding LabelData.DoubleLeftLabel}"></Label>
                     </Viewbox>
                     <Viewbox Grid.Row="3" PointerPressed="UpADir">
-                        <Label Foreground="#ff901b" Classes="icon" Content="{Binding LabelData.DoubleUpLabel}"></Label>
+                        <Label Foreground="#ff901b" Classes="icon" Content="{Binding LabelData.UpaDirectoryLabel}"></Label>
                     </Viewbox>
                 </Grid>
                 
@@ -83,11 +83,17 @@
                 <Viewbox Grid.Column="1" PointerPressed="SaveAndExit">
                     <Label Foreground="#39FF14" Classes="icon" Content="{Binding LabelData.SaveLabel}"></Label>
                 </Viewbox>
-                <Grid Column="2" ColumnDefinitions="*,*">
+                <Grid Column="2" ColumnDefinitions="*,*,*,*">
                     <Viewbox Grid.Column="0" PointerPressed="MusicPathUp">
                         <Label Foreground="#ff0090" Classes="icon" Content="{Binding LabelData.UpLabel}"></Label>
                     </Viewbox>
-                    <Viewbox Grid.Column="1" PointerPressed="MusicPathDown">
+                    <Viewbox Grid.Column="1" PointerPressed="MusicOrderUp">
+                        <Label Foreground="#ff901b" Classes="icon" Content="{Binding LabelData.DoubleUpLabel}"></Label>
+                    </Viewbox>
+                    <Viewbox Grid.Column="2" PointerPressed="MusicOrderDown">
+                        <Label Foreground="#ff901b" Classes="icon" Content="{Binding LabelData.DoubleDownLabel}"></Label>
+                    </Viewbox>
+                    <Viewbox Grid.Column="3" PointerPressed="MusicPathDown">
                         <Label Foreground="#ff0090" Classes="icon" Content="{Binding LabelData.DownLabel}"></Label>
                     </Viewbox>
                 </Grid>
