@@ -151,7 +151,7 @@ public sealed partial class AlarmViewModel : ViewModelBase, IAlarmTimeController
         --IATCHours;
         if (IATCHours == -1)
         {
-            IATCHours = IATCHoursDecimal>1?3:10;
+            IATCHours = IATCHoursDecimal>1?3:9;
         }
         HourDigit.Data = _digitLoader.ReturnPathGeometry(IATCHours);
     }
