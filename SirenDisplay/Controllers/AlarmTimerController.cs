@@ -61,7 +61,7 @@ public sealed partial class AlarmTimerController : ObservableObject
         LabelData = new LabelData();
         SirenData = ConfController.LoadConf();
         AudioController = new AudioController();
-        //ArdentAlarm();
+        ArdentAlarm();
         Console.WriteLine("Alarm timer WAS INITIALIZED");
     }
     

@@ -14,7 +14,6 @@ class Program
     public static void Main(string[] args)
     {
         AlarmTimerController? alarmTimerController = AlarmTimerController.Instance;
-        alarmTimerController.ArdentAlarm();
         BuildAvaloniaApp()
             .StartWithClassicDesktopLifetime(args);
     }
