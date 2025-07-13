@@ -1,6 +1,8 @@
+using CommunityToolkit.Mvvm.ComponentModel;
+
 namespace SirenDisplay.Controllers;
 
-public sealed class BackgroundController
+public sealed class BackgroundController : ObservableObject
 {
     
 }
