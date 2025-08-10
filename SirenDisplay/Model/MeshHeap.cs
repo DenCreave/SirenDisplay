@@ -6,4 +6,5 @@ public sealed class MeshHeap
 {
     public HashSet<Vertex> RootNodes => new();
     public Vertex Current { get; set; }
+    
 }

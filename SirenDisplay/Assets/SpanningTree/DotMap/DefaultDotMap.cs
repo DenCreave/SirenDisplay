@@ -8,6 +8,7 @@ namespace SirenDisplay.Assets.SpanningTree.DotMap;
 public sealed class DefaultDotMap : IDotMap
 {
     public string Name => "Default";
+    public int ID => 0;
     public bool IsStatic => true;
     public  HashSet<Vertex> Vertices =new();
     

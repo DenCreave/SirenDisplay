@@ -7,6 +7,7 @@ namespace SirenDisplay.Interfaces;
 public interface ITorrentLayer
 {
     string Name { get; }
+    int ID { get; }
     ObservableCollection<Vertex> Vertices { get; set; }
     void IncreaseVertices(){}
     void DecreaseVertices(){}
