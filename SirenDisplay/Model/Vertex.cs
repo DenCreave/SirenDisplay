@@ -21,6 +21,7 @@ public sealed partial class Vertex : ObservableObject, IComparable<Vertex>, IEqu
     public int Vex { get; set; }
     public int Vey { get; set; }
     public double Weight { get; set; }
+    public int EdgeLimit { get; set; } //to run a modified kruskal, wonder how it'll look
 
     public List<Vertex> DistanceVector = new();
     public List<LineSegment> Edges = new();
@@ -28,9 +29,10 @@ public sealed partial class Vertex : ObservableObject, IComparable<Vertex>, IEqu
     public Vertex CMPRoot { get; set; }
     public double CMPRootDistance { get; set; }
 
-    public void UpdateDistance()
+    public Vertex UpdateDistance()
     {
         CMPRootDistance = Math.Sqrt(Math.Pow(Cox - CMPRoot.Cox, 2) + Math.Pow(Coy - CMPRoot.Coy, 2))*Weight*CMPRoot.Weight;
+        return this;
     }
 
     public int CompareTo(Vertex? other)
