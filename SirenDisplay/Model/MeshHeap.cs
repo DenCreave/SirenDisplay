@@ -4,7 +4,7 @@ namespace SirenDisplay.Model;
 
 public sealed class MeshHeap
 {
-    public HashSet<Vertex> RootNodes => new();
-    public Vertex Current { get; set; }
+    public List<Vertex> RootNodes { get; set; } = new();
+    public List<VexEdge> Edges { get; set; } = new();
     
 }
