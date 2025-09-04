@@ -2,7 +2,7 @@ using System;
 
 namespace SirenDisplay.Model;
 
-public sealed class VexEdge : IEquatable<VexEdge>
+public sealed class VexEdge : IEquatable<VexEdge>, IComparable<VexEdge>
 {
     public Vertex A {get; set;}
     public Vertex B {get; set;}
@@ -22,5 +22,10 @@ public sealed class VexEdge : IEquatable<VexEdge>
     public bool Equals(VexEdge? other)
     { // .contains check if the point is already added (checks based of reference not value)
         return (this.A == other.A && this.B == other.B) || (this.A == other.B && this.B == other.A );
+    }
+
+    public int CompareTo(VexEdge? other)
+    {
+        return Distance.CompareTo(other?.Distance);
     }
 }

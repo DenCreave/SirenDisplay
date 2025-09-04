@@ -21,7 +21,7 @@ public sealed partial class Vertex : ObservableObject, IEquatable<Vertex>
     public int Vex { get; set; }
     public int Vey { get; set; }
     public double Speed {get; set;}
-    public double Weight { get; set; }
+    public double Weight { get; set; } = 1;
     public int EdgeLimit { get; set; } //to run a modified kruskal, wonder how it'll look
     public bool Equals(Vertex? other)
     {//.contains checks if the a vertex exists with the same coordinates
