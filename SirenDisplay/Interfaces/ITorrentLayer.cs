@@ -1,14 +1,12 @@
-using System.Collections.ObjectModel;
-using CommunityToolkit.Mvvm.ComponentModel;
+using System.Collections.Generic;
 using SirenDisplay.Model;
 
 namespace SirenDisplay.Interfaces;
 
 public interface ITorrentLayer
 {
+    TLGroup Group { get; }
     string Name { get; }
-    int ID { get; }
-    ObservableCollection<Vertex> Vertices { get; set; }
-    void IncreaseVertices(){}
-    void DecreaseVertices(){}
+    List<Vertex> TorrentPath { get; } 
+    //todo, maybe add a layer order too
 }

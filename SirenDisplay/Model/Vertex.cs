@@ -11,15 +11,15 @@ namespace SirenDisplay.Model;
 public sealed partial class Vertex : ObservableObject, IEquatable<Vertex>
 { 
     [ObservableProperty]
-    private int _x;
+    private double _x;
     [ObservableProperty]
-    private int _y;
+    private double _y;
 
 
-    public int Cox {get; set;}
-    public int Coy {get; set;}
-    public int Vex { get; set; }
-    public int Vey { get; set; }
+    public double Cox {get; set;}
+    public double Coy {get; set;}
+    public double Vex { get; set; }
+    public double Vey { get; set; }
     public double Speed {get; set;}
     public double Weight { get; set; } = 1;
     public int EdgeLimit { get; set; } //to run a modified kruskal, wonder how it'll look

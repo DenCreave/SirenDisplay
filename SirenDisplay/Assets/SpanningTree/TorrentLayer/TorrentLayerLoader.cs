@@ -5,13 +5,14 @@ using System.Reflection;
 using Avalonia.Media;
 using SirenDisplay.Classes.Digits;
 using SirenDisplay.Interfaces;
+using SirenDisplay.Model;
 
 namespace SirenDisplay.Assets.SpanningTree.TorrentLayer;
 
 public sealed class TorrentLayerLoader
 {
     public HashSet<ITorrentLayer> Layers { get; }
-    public ITorrentLayer[] TorrentLayers { get; }
+    public Dictionary< TLGroup, ITorrentLayer[]> TorrentLayers { get; }
     
    /* public PathGeometry ReturnPathGeometry( int index )
     {
@@ -49,6 +50,7 @@ public sealed class TorrentLayerLoader
             throw;
         }
         
-        TorrentLayers = Layers.OrderBy(x=>x.ID).ToArray();
+        TorrentLayers = Layers.GroupBy(x=>x.Group)
+           .ToDictionary(x=>x.Key, x=>x.ToArray());
     }
 }
