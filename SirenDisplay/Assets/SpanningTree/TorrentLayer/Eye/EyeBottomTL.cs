@@ -3,14 +3,17 @@ using SirenDisplay.Model;
 
 namespace SirenDisplay.Assets.SpanningTree.TorrentLayer.Eye;
 
-public sealed class EyeBottom : ITorrentLayer
+public sealed class EyeBottomTL : ITorrentLayer
 {
     public TLGroup Group => TLGroup.Eye;
-    public string Name => "Bottom";
+    public TLName Name => TLName.Bottom;
     public double? SpawnMinX => 800;
     public double? SpawnMaxX => null;
     public double? SpawnMinY => 100;
     public double? SpawnMaxY => 300;
+    public bool? RotateClockwise => null;
+    public bool Oscillates => true;
+    public double TorrentPower => 80;
     public ResNote ResolutionNote => new ResNote() { X = 800, Y = 480, Ratio = "5:3" };
     public GPoint[] TorrentPath =>
     [

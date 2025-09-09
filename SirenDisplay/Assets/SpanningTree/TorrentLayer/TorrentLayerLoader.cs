@@ -13,12 +13,6 @@ public sealed class TorrentLayerLoader
 {
     public HashSet<ITorrentLayer> Layers { get; }
     public Dictionary< TLGroup, ITorrentLayer[]> TorrentLayers { get; }
-    
-   /* public PathGeometry ReturnPathGeometry( int index )
-    {
-        return PathGeometries[index];
-    }*/
-    
     public TorrentLayerLoader()
     {
         Layers = new();
@@ -51,6 +45,6 @@ public sealed class TorrentLayerLoader
         }
         
         TorrentLayers = Layers.GroupBy(x=>x.Group)
-           .ToDictionary(x=>x.Key, x=>x.ToArray());
+           .ToDictionary(x=>x.Key, x=>x.OrderBy(y=>y.Name).ToArray());
     }
 }

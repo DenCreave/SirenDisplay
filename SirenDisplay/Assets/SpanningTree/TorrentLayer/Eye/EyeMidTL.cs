@@ -5,7 +5,7 @@ using SirenDisplay.Model;
 
 namespace SirenDisplay.Assets.SpanningTree.TorrentLayer.Eye;
 
-public sealed class EyeMid : ITorrentLayer
+public sealed class EyeMidTL : ITorrentLayer
 {
     /* todo: actually, we might not even need the eye as a torrent layer, but a dotmap
      * what im wondering tho, where should i define the desired behaviour?
@@ -19,11 +19,15 @@ public sealed class EyeMid : ITorrentLayer
      * ooooh it will look so good! i hope performant too...
      */
     public TLGroup Group => TLGroup.Eye;
-    public string Name => "Mid";
+    public TLName Name => TLName.Mid;
     public double? SpawnMinX => null;
     public double? SpawnMaxX => null;
     public double? SpawnMinY => null;
     public double? SpawnMaxY => null;
+
+    public bool? RotateClockwise => false; // let's try other way too
+    public bool Oscillates => true;
+    public double TorrentPower => 10;
     public ResNote ResolutionNote => new ResNote() { X = 800, Y = 480, Ratio = "5:3" };
 
     public GPoint[] TorrentPath =>

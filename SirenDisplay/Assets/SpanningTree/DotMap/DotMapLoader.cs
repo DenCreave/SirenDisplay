@@ -4,19 +4,14 @@ using System.Linq;
 using System.Reflection;
 using SirenDisplay.Assets.SpanningTree.TorrentLayer;
 using SirenDisplay.Interfaces;
+using SirenDisplay.Model;
 
 namespace SirenDisplay.Assets.SpanningTree.DotMap;
 
 public sealed class DotMapLoader
 {
     public HashSet<IDotMap> Maps { get; }
-    public IDotMap[] DotMaps { get; }
-    
-    /* public PathGeometry ReturnPathGeometry( int index )
-     {
-         return PathGeometries[index];
-     }*/
-    
+    public Dictionary<DMGroup, IDotMap[]> DotMaps { get; }
     public DotMapLoader()
     {
         Maps = new();
@@ -48,6 +43,7 @@ public sealed class DotMapLoader
             throw;
         }
         
-        DotMaps = Maps.OrderBy(x=>x.ID).ToArray();
+        DotMaps = Maps.GroupBy(x=>x.Group)
+            .ToDictionary(x=>x.Key, x=>x.OrderBy(y=>y.LayerLevel).ToArray());
     }
 }
