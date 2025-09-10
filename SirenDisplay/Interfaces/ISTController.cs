@@ -1,11 +1,10 @@
-using SirenDisplay.Assets.SpanningTree.DotMap.Controller;
+using SirenDisplay.Assets.SpanningTree.Controller;
 
 namespace SirenDisplay.Interfaces;
 
 public interface ISTController
 {
     STCGroup Group { get; }
-    IDotMap DotMap { get; }
-    ITorrentLayer Layer { get; }
+    STCName Name { get; }
     //todo functions
 }

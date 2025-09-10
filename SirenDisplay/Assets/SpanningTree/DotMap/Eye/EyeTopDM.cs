@@ -1,4 +1,5 @@
 using System;
+using SirenDisplay.Assets.SpanningTree.Controller;
 using SirenDisplay.Assets.SpanningTree.TorrentLayer;
 using SirenDisplay.Interfaces;
 using SirenDisplay.Model;
@@ -10,10 +11,15 @@ public sealed class EyeTopDM : IDotMap
     public DMGroup Group => DMGroup.Eye;
     public TLGroup? TorrentGroup => TLGroup.Eye;
     public TLName? TorrentLayerType => TLName.Top;
+    public STCGroup? ControllerGroup => null;
+    public STCName? ControllerName => null;
     public DMName Name => DMName.EyeTop;
     public int LayerLevel => 0;
+    public bool ManuallyGenerateDots => false;
     public int? DotLimit => 50;
-    public bool? GenerateWithRandomVector => true;
+    public bool GenerateWithRandomVector => true;
+    public double? InitVectorMin => 10;
+    public double? InitVectorMax => 50;
     public bool IsStatic => false;
     public TimeSpan? ActivationDelay => null;
     public bool ManuallyDefinedEdges => false;

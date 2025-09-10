@@ -4,15 +4,15 @@ using System.Linq;
 using System.Reflection;
 using SirenDisplay.Interfaces;
 
-namespace SirenDisplay.Assets.SpanningTree.DotMap.Controller;
+namespace SirenDisplay.Assets.SpanningTree.Controller;
 
 public sealed class STCLoader
 {
-    public HashSet<ISTController>  Controllers { get; } 
-    public Dictionary<STCGroup, ISTController[]> STCController { get; }
+    public HashSet<ISTController>  Controller { get; } 
+    public Dictionary<STCGroup, ISTController[]> STCControllers { get; }
     public STCLoader()
     {
-        Controllers = new ();
+        Controller = new ();
         Assembly asm= Assembly.GetAssembly(typeof(STCLoader));
         if (asm==null)
         {
@@ -28,7 +28,7 @@ public sealed class STCLoader
             {
                 if (Activator.CreateInstance(type) is ISTController controller)
                 {
-                    Controllers.Add(controller);
+                    Controller.Add(controller);
                 }
             }
         }
@@ -37,7 +37,7 @@ public sealed class STCLoader
             Console.WriteLine(e);
             throw;
         }
-        STCController = Controllers.GroupBy(x=>x.Group)
-            .ToDictionary(x=>x.Key, x=>x.OrderBy(y=>y.DotMap.LayerLevel).ToArray());
+        STCControllers = Controller.GroupBy(x=>x.Group)
+            .ToDictionary(x=>x.Key, x=>x.OrderBy(y=>y.Name).ToArray());
     }
 }

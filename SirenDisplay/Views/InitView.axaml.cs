@@ -13,6 +13,6 @@ public partial class InitView : Window
         InitializeComponent();
         DataContext = new InitViewModel();
         WindowState = WindowState.FullScreen;
-        Cursor = new Cursor(StandardCursorType.None); //comment this line if you want to see the cursor
+        //Cursor = new Cursor(StandardCursorType.None); //comment this line if you want to see the cursor
     }
 }
