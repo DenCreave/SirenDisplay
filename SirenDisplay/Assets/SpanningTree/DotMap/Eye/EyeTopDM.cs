@@ -24,5 +24,6 @@ public sealed class EyeTopDM : IDotMap
     public TimeSpan? ActivationDelay => null;
     public bool ManuallyDefinedEdges => false;
     public double? AlgorithmThreshold => 0.6;
-    public Vertex[]? Vertices => null;
+    public Vertex[]? Vertices { get; set; } = null;
+    public bool IsUsePredefinedVectices => false;
 }

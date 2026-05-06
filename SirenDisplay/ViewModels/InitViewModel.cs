@@ -28,7 +28,8 @@ public sealed partial class InitViewModel : ViewModelBase
         #endregion inits
         
 
-        SwitchToClockView(_cacheReferences);
+        //SwitchToClockView(_cacheReferences);
+        SwitchToSTCView(_cacheReferences);
     }
     
 }

@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using SirenDisplay.Controllers;
 using SirenDisplay.Interfaces;
 using SirenDisplay.Model;
 
@@ -34,4 +35,13 @@ public sealed class EyeMidTL : ITorrentLayer
     [
         new GPoint(){X = 400, Y = 240} //1 pixel to the right but who cares
     ];
+
+    //deleteos
+    
+    public AnimatrixController Controls { get; }
+    public Noise Noise { get; }
+    public void AffectVector(Vertex vertex)
+    {
+        throw new System.NotImplementedException();
+    }
 }

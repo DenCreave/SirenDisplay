@@ -31,6 +31,7 @@ public interface IDotMap
     /// null: doesnt run the algorythm, manually defined (see bool ManuallyDefinedEdges)
     /// </summary>
     double? AlgorithmThreshold { get; } 
-    Vertex[]? Vertices { get; } //if it has any predefined vertices to use
+    bool IsUsePredefinedVectices { get; }
+    Vertex[]? Vertices { get; set; } //if it has any predefined vertices to use
     //todo: add colors or maybe just add a color manager itself, idk
 }

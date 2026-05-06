@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using Avalonia.Media;
+using Microsoft.Extensions.DependencyInjection;
 using SirenDisplay.Classes.Digits;
 using SirenDisplay.Interfaces;
 using SirenDisplay.Model;
@@ -32,7 +33,12 @@ public sealed class TorrentLayerLoader
         {
             foreach (var type in types)
             {
+                /* im using DI now, and they have params
                 if (Activator.CreateInstance(type) is ITorrentLayer layer)
+                {
+                    Layers.Add(layer);
+                }*/
+                if (ActivatorUtilities.CreateInstance(App.Services, type) is ITorrentLayer layer)
                 {
                     Layers.Add(layer);
                 }

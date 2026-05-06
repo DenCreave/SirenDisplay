@@ -10,8 +10,6 @@
     <UserControl.DataContext>
         <viewModels:ClockViewModel />
     </UserControl.DataContext>
-
-
     <Grid x:Name="BackGroundGrid" Background="{DynamicResource PrimaryBackground}">
         <ContentControl Classes="main-frame" Content="{Binding Path=MainFrame}" />
         <Grid x:Name="MainGrid" RowDefinitions="*,3*,*" ColumnDefinitions="*">

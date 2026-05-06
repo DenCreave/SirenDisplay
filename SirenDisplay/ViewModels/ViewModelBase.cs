@@ -1,6 +1,8 @@
 using System;
 using CommunityToolkit.Mvvm.ComponentModel;
 using HarfBuzzSharp;
+using SirenDisplay.Assets.SpanningTree.DotMap;
+using SirenDisplay.Controllers;
 using SirenDisplay.Model;
 using SirenDisplay.Views;
 
@@ -8,7 +10,6 @@ namespace SirenDisplay.ViewModels;
 
 public partial class ViewModelBase : ObservableObject
 {
-    
     public void SwitchToClockView(CacheReferences references)
     {
         references.InitViewModel.CurrentView= new ClockViewModel()
@@ -38,5 +39,11 @@ public partial class ViewModelBase : ObservableObject
          };
          var tmp = references.InitViewModel.CurrentView as MusicViewModel;
          tmp.PostInit();
+     }
+
+     public void SwitchToSTCView(CacheReferences references)
+     {
+         references.InitViewModel.CurrentView = new STCViewModel(); { };
+         
      }
 }
