@@ -1,5 +1,6 @@
 using System;
 using SirenDisplay.Model;
+using SirenDisplay.Model.TLProps;
 
 namespace SirenDisplay.Controllers;
 

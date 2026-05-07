@@ -2,8 +2,7 @@ namespace SirenDisplay.Assets.SpanningTree.DotMap;
 
 public enum DMName
 {
-    EyeTop,
-    EyeBottom,
+    Particle,
     Iris,
     RingOfIris,
 }

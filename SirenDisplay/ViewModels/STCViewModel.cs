@@ -31,13 +31,13 @@ public sealed partial class STCViewModel :ViewModelBase
     public STCViewModel()
     {
         Console.WriteLine("STCViewModel init");
-        _testLayer = new EyeTopTL(new AnimatrixController(),new DotMapLoader());
+        _testLayer = new EyeTopTL(new AnimatrixController());
         Testpoint = new Vertex()
         {
             Cox = _testLayer.UniqueProps.TorrentPath[0].X,
             Coy = _testLayer.UniqueProps.TorrentPath[0].Y,
             TargetPathIndex = 1,
-            HaltonIndex = 1 // Uses the 0.5 noise we just set
+            //HaltonIndex = 1 // Uses the 0.5 noise we just set
         }.InitVertex();
 
         LineInitializer();
@@ -147,7 +147,7 @@ public sealed partial class STCViewModel :ViewModelBase
     public async void PostInit()
     {
         Console.WriteLine("clicked");
-        Console.WriteLine($"der halton:{_testLayer.Noise.HaltonValues1D[0]}");
+        Console.WriteLine($"der halton:{_testLayer.UniqueProps.Noise.HaltonValues1D[0]}");
         for (int i = 0; i < 500; i++)
         {
             //Aline.Point=new Point(Aline.Point.X+0.1,Aline.Point.Y-0.1);

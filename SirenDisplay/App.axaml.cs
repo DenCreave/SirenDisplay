@@ -7,7 +7,6 @@ using SirenDisplay.Assets.SpanningTree.Controller;
 using SirenDisplay.Assets.SpanningTree.DotMap;
 using SirenDisplay.Assets.SpanningTree.TorrentLayer;
 using SirenDisplay.Controllers;
-using SirenDisplay.Interfaces;
 using SirenDisplay.Views;
 
 namespace SirenDisplay;
@@ -29,7 +28,6 @@ public partial class App : Application
         services.AddSingleton<AnimatrixController>();
         services.AddSingleton<DotMapLoader>();
         services.AddSingleton<TorrentLayerLoader>();
-        services.AddSingleton<STCLoader>();
         services.AddSingleton<SpanningTreeController>();
         
         Services = services.BuildServiceProvider();

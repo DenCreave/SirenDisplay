@@ -2,16 +2,16 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
-using SirenDisplay.Assets.SpanningTree.TorrentLayer;
+using Microsoft.Extensions.DependencyInjection;
+using SirenDisplay.Assets.SpanningTree.Controller;
 using SirenDisplay.Interfaces;
-using SirenDisplay.Model;
 
 namespace SirenDisplay.Assets.SpanningTree.DotMap;
 
 public sealed class DotMapLoader
 {
-    public HashSet<IDotMap> Maps { get; }
-    public Dictionary<DMGroup, IDotMap[]> DotMaps { get; }
+    public HashSet<IDotMapFactory> Maps { get; }
+    public Dictionary<ThemeGroup, IDotMapFactory[]> DotMaps { get; }
     public DotMapLoader()
     {
         Maps = new();
@@ -25,15 +25,20 @@ public sealed class DotMapLoader
         var types = asm.GetTypes()
             .Where(x => x.IsClass
                         && !x.IsAbstract
-                        && x.IsAssignableTo(typeof(IDotMap)));
+                        && x.IsAssignableTo(typeof(IDotMapFactory)));
 
         try
         {
             foreach (var type in types)
             {
-                if (Activator.CreateInstance(type) is IDotMap map)
+                /* using di now
+                if (Activator.CreateInstance(type) is IDotMapFactory map)
                 {
                     Maps.Add(map);
+                }*/
+                if (ActivatorUtilities.CreateInstance(App.Services, type) is IDotMapFactory dotMap)
+                {
+                    Maps.Add(dotMap);
                 }
             }
         }

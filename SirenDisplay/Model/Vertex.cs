@@ -12,8 +12,8 @@ namespace SirenDisplay.Model;
 
 public sealed class Vertex : IEquatable<Vertex>
 {
+    public int ID { get; init; } // assigned at birth
     public int TargetPathIndex { get; set; } = 1; // Remembers which point it's heading to
-    public int HaltonIndex { get; set; }     // Assigned at spawn so noise is permanent
     public int Ticks { get; set; } = 0;
     public double Cox {get; set;}
     public double Coy {get; set;}
@@ -32,7 +32,7 @@ public sealed class Vertex : IEquatable<Vertex>
 
     
     public double Speed { get; set; } = 1; //multiplier of speed 
-    public double Weight { get; set; } = 1; //multiplier in edges
+    public double Weight { get; set; } = 1; //multiplier in Edges
     public int? EdgeLimit { get; set; } = null; //to run a modified kruskal, wonder how it'll look; null: no limits
     public bool IsEnabled { get; set; } = false;
     

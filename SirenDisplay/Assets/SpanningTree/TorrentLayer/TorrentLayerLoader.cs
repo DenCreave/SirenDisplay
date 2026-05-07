@@ -2,18 +2,16 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
-using Avalonia.Media;
 using Microsoft.Extensions.DependencyInjection;
-using SirenDisplay.Classes.Digits;
+using SirenDisplay.Assets.SpanningTree.Controller;
 using SirenDisplay.Interfaces;
-using SirenDisplay.Model;
 
 namespace SirenDisplay.Assets.SpanningTree.TorrentLayer;
 
 public sealed class TorrentLayerLoader
 {
     public HashSet<ITorrentLayer> Layers { get; }
-    public Dictionary< TLGroup, ITorrentLayer[]> TorrentLayers { get; }
+    public Dictionary<ThemeGroup, ITorrentLayer[]> TorrentLayers { get; }
     public TorrentLayerLoader()
     {
         Layers = new();
