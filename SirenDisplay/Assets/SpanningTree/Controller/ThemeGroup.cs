@@ -1,6 +1,8 @@
 namespace SirenDisplay.Assets.SpanningTree.Controller;
 
-public enum STCGroup
+// for namespace purposes
+public enum ThemeGroup
 {
+    Generic,
     Eye
 }

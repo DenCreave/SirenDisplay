@@ -12,7 +12,6 @@ public sealed class AnimatrixController
 {
     public void Rotate(Vertex shape, double angleInRadians)
     {
-        //todo, with this it should be put in place, we'll see tho, should find a way to test it
         double tempex = shape.Cox;
         double tempey = shape.Coy;
 
@@ -21,12 +20,10 @@ public sealed class AnimatrixController
         double sinTheta = Math.Sin(angleInRadians);
 
         // Apply the rotation formulas and round them too
-        shape.Cox =Math.Round( tempex * cosTheta - tempey * sinTheta, 2);
-        shape.Coy = Math.Round( tempex * sinTheta + tempey * cosTheta, 2);
+        shape.Cox = tempex * cosTheta - tempey * sinTheta;
+        shape.Coy = tempex * sinTheta + tempey * cosTheta;
     }
-    ///todo figure out a way so that it works on all resolutions
-    /// something to do with the ratios (extra math yay)
-    
+
 
     public void ShapeConnected(bool cycleConnected)
     {

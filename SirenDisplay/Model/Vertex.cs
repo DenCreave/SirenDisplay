@@ -12,7 +12,7 @@ namespace SirenDisplay.Model;
 
 public sealed class Vertex : IEquatable<Vertex>
 {
-    public int ID { get; init; } // assigned at birth
+    public int ID { get; set; } // assigned at birth
     public int TargetPathIndex { get; set; } = 1; // Remembers which point it's heading to
     public int Ticks { get; set; } = 0;
     public double Cox {get; set;}
