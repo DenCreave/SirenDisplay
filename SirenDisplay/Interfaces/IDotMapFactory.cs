@@ -1,5 +1,6 @@
 using SirenDisplay.Assets.SpanningTree.Controller;
 using SirenDisplay.Assets.SpanningTree.DotMap;
+using SirenDisplay.Assets.SpanningTree.Theme;
 using SirenDisplay.Model;
 
 namespace SirenDisplay.Interfaces;

@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using SirenDisplay.Assets.SpanningTree.Controller;
 using SirenDisplay.Assets.SpanningTree.Shapes;
+using SirenDisplay.Assets.SpanningTree.Theme;
 using SirenDisplay.Assets.SpanningTree.TorrentLayer;
 using SirenDisplay.Controllers;
 using SirenDisplay.Interfaces;

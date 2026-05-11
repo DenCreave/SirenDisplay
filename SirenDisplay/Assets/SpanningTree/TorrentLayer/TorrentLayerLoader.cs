@@ -4,6 +4,7 @@ using System.Linq;
 using System.Reflection;
 using Microsoft.Extensions.DependencyInjection;
 using SirenDisplay.Assets.SpanningTree.Controller;
+using SirenDisplay.Assets.SpanningTree.Theme;
 using SirenDisplay.Interfaces;
 
 namespace SirenDisplay.Assets.SpanningTree.TorrentLayer;

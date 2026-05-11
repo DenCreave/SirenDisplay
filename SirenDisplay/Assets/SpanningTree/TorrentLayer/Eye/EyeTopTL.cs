@@ -2,6 +2,7 @@ using System;
 using System.Linq;
 using SirenDisplay.Assets.SpanningTree.Controller;
 using SirenDisplay.Assets.SpanningTree.DotMap;
+using SirenDisplay.Assets.SpanningTree.Theme;
 using SirenDisplay.Controllers;
 using SirenDisplay.Interfaces;
 using SirenDisplay.Model;
@@ -11,12 +12,12 @@ namespace SirenDisplay.Assets.SpanningTree.TorrentLayer.Eye;
 
 public sealed class EyeTopTL : ITorrentLayer<VortexProperties>
 {
-    public ThemeGroup Group => ThemeGroup.Eye;
-    public TLName Name => TLName.Top;
-    public ResNote ResolutionNote => new ResNote() { X = 800, Y = 480, Ratio = "5:3" };
+    public ThemeGroup Group { get; } = ThemeGroup.Eye;
+    public TLName Name { get; } = TLName.Top;
+    public ResNote ResolutionNote { get; } = new ResNote() { X = 800, Y = 480, Ratio = "5:3" };
     public VortexProperties UniqueProps { get; }
     public AnimatrixController Controls { get; }
-
+    public RenderAlignment Align { get; }
 
     public EyeTopTL(AnimatrixController controls)
     {
@@ -60,7 +61,7 @@ public sealed class EyeTopTL : ITorrentLayer<VortexProperties>
             SpringStiffness = 0.05
         };
 
-
+        Align = RenderAlignment.Unchanged;
     }
 
     public void AffectVector(Vertex vertex)
@@ -84,6 +85,11 @@ public sealed class EyeTopTL : ITorrentLayer<VortexProperties>
     }
 
     public void Init()
+    {
+        throw new NotImplementedException();
+    }
+    
+    public void Reset()
     {
         throw new NotImplementedException();
     }

@@ -1,4 +1,4 @@
-namespace SirenDisplay.Assets.SpanningTree.Controller;
+namespace SirenDisplay.Assets.SpanningTree.Theme;
 
 // for namespace purposes
 public enum ThemeGroup

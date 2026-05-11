@@ -14,6 +14,6 @@ public partial class InitView : Window
         DataContext = new InitViewModel();
         //DataContext = new STCViewModel();
         //WindowState = WindowState.FullScreen;
-        //Cursor = new Cursor(StandardCursorType.None); //comment this line if you want to see the cursor
+        //Cursor = new Cursor(StandardCursorType.None);  //comment this line if you want to see the cursor
     }
 }

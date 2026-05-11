@@ -1,6 +1,7 @@
 using System;
 using SirenDisplay.Assets.SpanningTree.Controller;
 using SirenDisplay.Assets.SpanningTree.DotMap;
+using SirenDisplay.Assets.SpanningTree.Theme;
 using SirenDisplay.Controllers;
 using SirenDisplay.Interfaces;
 using SirenDisplay.Model;
@@ -16,6 +17,7 @@ public sealed class EyeBottomTL : ITorrentLayer<VortexProperties>
 
     public VortexProperties UniqueProps { get; }
     public AnimatrixController Controls { get; }
+    public RenderAlignment Align { get; }
 
     public EyeBottomTL(AnimatrixController controls, DotMapLoader mapLoader)
     {
@@ -60,6 +62,7 @@ public sealed class EyeBottomTL : ITorrentLayer<VortexProperties>
             MinLateralSpeed = 20,
             SpringStiffness = 0.05,
         };
+        Align = RenderAlignment.Unchanged;
     }
 
     public void AffectVector(Vertex vertex)
@@ -83,6 +86,11 @@ public sealed class EyeBottomTL : ITorrentLayer<VortexProperties>
     }
 
     public void Init()
+    {
+        throw new NotImplementedException();
+    }
+
+    public void Reset()
     {
         throw new NotImplementedException();
     }

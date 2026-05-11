@@ -5,6 +5,7 @@ using Avalonia.Markup.Xaml;
 using Microsoft.Extensions.DependencyInjection;
 using SirenDisplay.Assets.SpanningTree.Controller;
 using SirenDisplay.Assets.SpanningTree.DotMap;
+using SirenDisplay.Assets.SpanningTree.Theme;
 using SirenDisplay.Assets.SpanningTree.TorrentLayer;
 using SirenDisplay.Controllers;
 using SirenDisplay.Views;
@@ -22,13 +23,15 @@ public partial class App : Application
 
     public override void OnFrameworkInitializationCompleted()
     {
-        // 1. Create the Service Collection
         var services = new ServiceCollection();
         
         services.AddSingleton<AnimatrixController>();
         services.AddSingleton<DotMapLoader>();
         services.AddSingleton<TorrentLayerLoader>();
+        services.AddSingleton<DotMapLoader>();
+        services.AddSingleton<ThemeBinderLoader>();
         services.AddSingleton<SpanningTreeController>();
+        services.AddSingleton<SpanningTreeRenderer>();
         
         Services = services.BuildServiceProvider();
 
