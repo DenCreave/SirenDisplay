@@ -17,7 +17,7 @@ public sealed class Vertex : IEquatable<Vertex>
     public int Ticks { get; set; } = 0;
     public double Cox {get; set;}
     public double Coy {get; set;}
-    
+    public double Opacity { get; set; }
     public double Vex {get; set;} // absolute vector x
     public double Vey {get; set;} // absolute vector y
     

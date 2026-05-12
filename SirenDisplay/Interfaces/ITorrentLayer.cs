@@ -10,19 +10,18 @@ namespace SirenDisplay.Interfaces;
 /// </summary>
 public interface ITorrentLayer
 {
-    ///todo add a Halton sequence for the guiding path
-    /// so that way each point could have a slightly noisy path
     ThemeGroup Group { get; }
     TLName Name { get; } // dotmaps use the group then this to locate the TL
     ResNote ResolutionNote { get; }
     AnimatrixController Controls { get; }
     RenderAlignment Align { get; }
-    public void Init();
+    public bool IsAffecting { get; }
+    public bool IsVisible { get; } // for the ui
     public void Reset();
+    public void UpdateState(double deltaTime);
     public void Spawn(Vertex vertex);
     public void Despawn(Vertex vertex);
     public void AffectVector(Vertex vertex);
-    //todo, maybe add a layer order too
 }
 public interface ITorrentLayer<T> : ITorrentLayer 
     where T : ILayerProperties

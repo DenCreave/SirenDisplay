@@ -18,9 +18,19 @@ public sealed class EyeBottomTL : ITorrentLayer<VortexProperties>
     public VortexProperties UniqueProps { get; }
     public AnimatrixController Controls { get; }
     public RenderAlignment Align { get; }
+    
+    
+    // well it has to be animated even after lifetime ends
+    // afterall spawner just stops spawning, and it disappears once
+    // it reaches the end of its path.
+    public bool IsAffecting { get; } 
+    
+    public bool IsVisible { get; }
 
-    public EyeBottomTL(AnimatrixController controls, DotMapLoader mapLoader)
+    public EyeBottomTL(AnimatrixController controls)
     {
+        IsVisible = true;
+        IsAffecting = true;
         Controls = controls;
         UniqueProps = new VortexProperties()
         {
@@ -61,50 +71,55 @@ public sealed class EyeBottomTL : ITorrentLayer<VortexProperties>
             FlowSpeed = 20,
             MinLateralSpeed = 20,
             SpringStiffness = 0.05,
+            VertexSpawner = new Spawner()
+            {
+                LifeTime = 30,
+                SpawnInterval = 0.06
+            }
         };
         Align = RenderAlignment.Unchanged;
     }
 
+    public void UpdateState(double deltaTime)
+    {
+        UniqueProps.VertexSpawner.UpdateTime(deltaTime);
+    }
+
     public void AffectVector(Vertex vertex)
     {
-        ///todo: will add a timelimit for how long these can be visible
-        /// note: self tick limit so that i can control the flow of
-        /// particles for a given time or amount
         if (!vertex.IsEnabled)
         {
-            Spawn(vertex);
+            if (UniqueProps.VertexSpawner.TryConsumeSpawn())
+            {
+                Spawn(vertex);
+            }
             return;
         }
         Controls.Vortexer(UniqueProps, vertex);
         
-        ///todo: these despawns will be handled by a dedicated UI handler
-        /// which can be inherited from the Control class in avaloniaUI
+        
         if (vertex.TargetPathIndex > UniqueProps.TorrentPath.Length - 1)
         {
             Despawn(vertex);
         }
     }
 
-    public void Init()
-    {
-        throw new NotImplementedException();
-    }
-
     public void Reset()
     {
-        throw new NotImplementedException();
+        
+        UniqueProps.VertexSpawner.Reset();
     }
 
     public void Spawn(Vertex vertex)
     {
         vertex.Cox = UniqueProps.TorrentPath[0].X + (UniqueProps.Noise.NoiseScale * 
                                                      (UniqueProps.Noise.AffectsX 
-            ? UniqueProps.Noise.HaltonValues1D[vertex.ID&UniqueProps.Noise.HaltonValues1D.Length] : 0))
+            ? UniqueProps.Noise.HaltonValues1D[vertex.ID%UniqueProps.Noise.HaltonValues1D.Length] : 0))
             -UniqueProps.Noise.NoiseScale/2;
         
         vertex.Coy = UniqueProps.TorrentPath[0].Y  + (UniqueProps.Noise.NoiseScale * 
                                                       (UniqueProps.Noise.AffectsY
-            ? UniqueProps.Noise.HaltonValues1D[vertex.ID&UniqueProps.Noise.HaltonValues1D.Length] : 0)) 
+            ? UniqueProps.Noise.HaltonValues1D[vertex.ID%UniqueProps.Noise.HaltonValues1D.Length] : 0)) 
                      -UniqueProps.Noise.NoiseScale/2;
         vertex.IsEnabled = true;
     }

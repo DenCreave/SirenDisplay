@@ -9,23 +9,21 @@ public sealed class VexEdge : IEquatable<VexEdge>, IComparable<VexEdge>
 {
     public Vertex A { get; set; }
     public Vertex B { get; set; }
-    
+    public double Opacity { get; set; }
     public EdgeRelType RelationType { get; set; }
-    
-    // todo basically delete everything, refactor this to a struct as well (along with Vertex)
-    
+
     public Path EdgePath { get; set; }
 
     public PathFigure EdgeFigure { get; set; }
     public LineSegment EndSegment { get; set; }
-    
+
     public HsvColor StrokeColor { get; set; }
     public HsvColor EffectColor { get; set; }
+
 
     //public SolidColorBrush FillColor { get; set; }
 
     public DropShadowEffect DropShadow { get; set; }
-    public double Opacity { get; set; } = 0;
 
     public double Distance { get; set; }
 

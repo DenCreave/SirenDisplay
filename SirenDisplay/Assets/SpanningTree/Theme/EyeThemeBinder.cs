@@ -24,9 +24,7 @@ public class EyeThemeBinder : IThemeBinder
         List<Animap> tmp = [];
         tmp.Add(new Animap()
         {
-            TorrentLayer = _layerLoader.Layers.Where(x => x.Group == ThemeGroup.Eye 
-                                                                    && x.Name == TLName.Top)
-                .First(),
+            TorrentLayer = _layerLoader.CreateNewLayer(ThemeGroup.Eye, TLName.Top),
             Graph = _mapLoader.Maps.Where(x=> x.Group == ThemeGroup.Generic 
                                               && x.Name == DMName.Particle)
                 .First()
@@ -35,20 +33,19 @@ public class EyeThemeBinder : IThemeBinder
         
         tmp.Add(new Animap()
         {
-            TorrentLayer = _layerLoader.Layers.Where(x => x.Group == ThemeGroup.Eye 
-                                                          && x.Name == TLName.Bottom)
-                .First(),
+            TorrentLayer = _layerLoader.CreateNewLayer(ThemeGroup.Eye, TLName.Bottom),
             Graph = _mapLoader.Maps.Where(x=> x.Group == ThemeGroup.Generic 
                                               && x.Name == DMName.Particle)
                 .First()
                 .GenerateVertices()
         });
         
+        var mid_layer= _layerLoader.CreateNewLayer(ThemeGroup.Eye, TLName.Mid);
+        
+        
         tmp.Add(new Animap()
         {
-            TorrentLayer = _layerLoader.Layers.Where(x => x.Group == ThemeGroup.Eye 
-                                                          && x.Name == TLName.Mid)
-                .First(),
+            TorrentLayer = mid_layer,
             Graph = _mapLoader.Maps.Where(x=> x.Group == ThemeGroup.Eye 
                                               && x.Name == DMName.Iris)
                 .First()
@@ -57,9 +54,7 @@ public class EyeThemeBinder : IThemeBinder
         
         tmp.Add(new Animap()
         {
-            TorrentLayer = _layerLoader.Layers.Where(x => x.Group == ThemeGroup.Eye 
-                                                          && x.Name == TLName.Mid)
-                .First(),
+            TorrentLayer = mid_layer,
             Graph = _mapLoader.Maps.Where(x=> x.Group == ThemeGroup.Eye 
                                               && x.Name == DMName.RingOfIris)
                 .First()

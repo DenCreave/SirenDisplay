@@ -11,45 +11,31 @@ namespace SirenDisplay.Assets.SpanningTree.TorrentLayer;
 
 public sealed class TorrentLayerLoader
 {
-    public HashSet<ITorrentLayer> Layers { get; }
-    public Dictionary<ThemeGroup, ITorrentLayer[]> TorrentLayers { get; }
+    // private HashSet<ITorrentLayer> Layers { get; }
+    // private Dictionary<ThemeGroup, ITorrentLayer[]> TorrentLayers { get; }
+    private Dictionary<(ThemeGroup, TLName), Type> LayerBlueprints { get; } = new();
+
     public TorrentLayerLoader()
     {
-        Layers = new();
-        
-        Assembly asm= Assembly.GetAssembly(typeof(TorrentLayerLoader));
-        if (asm==null)
-        {
-            throw new NullReferenceException("TorrentLayerLoader assembly was NULL");
-        }
+        var types = Assembly.GetAssembly(typeof(TorrentLayerLoader))
+            .GetTypes()
+            .Where(x => x.IsClass && !x.IsAbstract && x.IsAssignableTo(typeof(ITorrentLayer)));
 
-        var types = asm.GetTypes()
-            .Where(x => x.IsClass
-                        && !x.IsAbstract
-                        && x.IsAssignableTo(typeof(ITorrentLayer)));
-
-        try
+        foreach (var type in types)
         {
-            foreach (var type in types)
+            if (ActivatorUtilities.CreateInstance(App.Services, type) is ITorrentLayer dummy)
             {
-                /* im using DI now, and they have params
-                if (Activator.CreateInstance(type) is ITorrentLayer layer)
-                {
-                    Layers.Add(layer);
-                }*/
-                if (ActivatorUtilities.CreateInstance(App.Services, type) is ITorrentLayer layer)
-                {
-                    Layers.Add(layer);
-                }
+                // Store the Type using the dummys name, dummy is an instance.
+                LayerBlueprints.Add((dummy.Group, dummy.Name), type);
             }
         }
-        catch (Exception e)
-        {
-            Console.WriteLine(e);
-            throw;
-        }
+    }
+    
+    public ITorrentLayer CreateNewLayer(ThemeGroup theme, TLName name)
+    {
+        Type layerType = LayerBlueprints[(theme,name)];
         
-        TorrentLayers = Layers.GroupBy(x=>x.Group)
-           .ToDictionary(x=>x.Key, x=>x.OrderBy(y=>y.Name).ToArray());
+        // i stored the type, i need to instantiate it. its an object, so convert
+        return (ITorrentLayer)ActivatorUtilities.CreateInstance(App.Services, layerType);
     }
 }

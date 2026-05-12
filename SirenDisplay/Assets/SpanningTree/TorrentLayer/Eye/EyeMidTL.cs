@@ -17,22 +17,36 @@ public sealed class EyeMidTL : ITorrentLayer<MidIrisProperties>
     public MidIrisProperties UniqueProps { get; }
 
     public AnimatrixController Controls { get; }
+    public bool IsAffecting => UniqueProps.FaderConf.IsAlive;
+    public bool IsVisible { get; }
 
     public EyeMidTL(AnimatrixController controls)
     {
+        //IsAffecting = true;
+        IsVisible = true;
         Controls = controls;
         Align = RenderAlignment.ScreenCenter;
         UniqueProps = new MidIrisProperties(0.3);
+        UniqueProps.FaderConf = new Fader()
+        {
+            FadeInDelay = 1.5,
+            FadeInDuration = 2,
+            Lifetime = 30,
+            FadeOutDelay = 0,
+            FadeOutDuration = 2,
+            LayerOpacity = 0,
+            TotalElapsedSeconds = 0
+        };
     }
 
-    public void Init()
+    public void UpdateState(double deltaTime)
     {
-        throw new System.NotImplementedException();
+        UniqueProps.FaderConf.UpdateTime(deltaTime);
     }
 
     public void Reset()
     {
-        throw new NotImplementedException();
+        UniqueProps.FaderConf.Reset();
     }
 
     public void Spawn(Vertex vertex)
