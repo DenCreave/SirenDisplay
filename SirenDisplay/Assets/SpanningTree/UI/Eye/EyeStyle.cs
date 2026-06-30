@@ -13,6 +13,10 @@ public class EyeStyle
     public LinearGradientBrush BGLayer { get; }
     // public RadialGradientBrush BGGlow { get; }
     public RadialGradientBrush[] GlowPalette { get; }
+    public double CoreThickness { get; }
+    public double EmeraldGlowMultiplier { get; }
+    public double AmethystGlowMultiplier { get; }
+    public double IrisGlowMultiplier { get; }
 
     public double DotRadius { get; } 
     public double DotGlowRadius { get; }
@@ -22,25 +26,27 @@ public class EyeStyle
     //layer 1
     public IPen EmeraldGlow { get; }
     public IPen EmeraldCore { get; }
-    public DashStyle EmeraldDash { get; }
+    public double[] EmeraldDash { get; }
 
     public IPen AmethystArcGlow { get; }
     public IPen AmethystArcCore { get; }
-    public DashStyle AmethystDashArc { get; }
-    public DashStyle AmethystDashGlowArc { get; }
+    public double[] AmethystDashArc { get; }
+    public double[] AmethystDashGlowArc { get; }
 
     public IPen AmethystEdgeGlow { get; }
     public IPen AmethystEdgeCore { get; }
-    public DashStyle AmethystDashEdge { get; }
+    public double[] AmethystDashEdge { get; }
     
     //layer 2 
     public IPen IrisEdgeGlow { get; }
     public IPen IrisEdgeCore { get; }
-    public DashStyle IrisEdgeDash { get; }
+    public double[] IrisEdgeDash { get; }
+    public double[] IrisEdgeDashGlow { get; }
 
     public IPen IrisArcGlow { get; }
     public IPen IrisArcCore { get; }
-    public DashStyle IrisArcDash { get; }
+    public double[] IrisArcDash { get; }
+    public double[] IrisArcDashGlow { get; }
     
     public IPen IrisConnectGlow { get; }
     public IPen IrisConnectCore { get; }
@@ -48,8 +54,12 @@ public class EyeStyle
 
     public EyeStyle(TorrentLayerLoader loader)
     {
+        CoreThickness = 1.5;
+        EmeraldGlowMultiplier = 4;
+        AmethystGlowMultiplier = 3;
+        IrisGlowMultiplier = 4;
+        
         ResolutionNote = loader.CreateNewLayer(ThemeGroup.Eye, TLName.Top).ResolutionNote;
-
         Color colorStart = Color.FromArgb(255, 255, 0, 144);  // Pink
         Color colorEnd = Color.FromArgb(255, 255, 109, 61);   // Orange
 
@@ -99,11 +109,11 @@ public class EyeStyle
         // LAYER 1 INITIALIZATION
         // A thick, semi-transparent pen for the neon glow / shadow effect
         // draw 10 lines, then skip 2, then draw 2, and skip 2. { 10, 2, 2, 2 }
-        EmeraldDash = new DashStyle(new double[] { 10, 2, 2, 2 },0);
+        EmeraldDash = new double[] { 10, 2, 2, 2 };
         
         EmeraldGlow = new Pen(
             brush: new SolidColorBrush(Color.FromArgb(150, 15, 84, 15)),
-            thickness: 6.0,
+            thickness: CoreThickness * EmeraldGlowMultiplier,
             lineCap: PenLineCap.Flat, 
             lineJoin: PenLineJoin.Round,
             dashStyle: null);
@@ -114,42 +124,39 @@ public class EyeStyle
         // Bevel: Chiseled, flat corners.
         EmeraldCore = new Pen(
             brush: new SolidColorBrush(Color.FromArgb(255, 57, 255, 20)), 
-            thickness: 1.5,
+            thickness: CoreThickness,
             lineCap: PenLineCap.Flat, 
             lineJoin: PenLineJoin.Miter,
-            dashStyle: EmeraldDash);
+            dashStyle: new DashStyle(EmeraldDash,0));
             
         
-        double[] basePattern = new double[] 
-            { 5,2,2,3, 1, 3,2,2,4,2,2,3,1,3,2,2};
-        AmethystDashArc = new DashStyle(basePattern, 0);
-        double[] glowPattern = basePattern.Select(x=> x/3).ToArray();
-        AmethystDashGlowArc = new DashStyle(glowPattern, 0);
+        AmethystDashArc = new double[] { 5,2,2,3, 1, 3,2,2,4,2,2,3,1,3,2,2};
         
-        AmethystDashEdge = new DashStyle(new double[]
-            { 7,1,4,1}, 0);
+        AmethystDashGlowArc = GlowDasher(AmethystDashArc, AmethystGlowMultiplier);
+        
+        AmethystDashEdge = new double[] { 7,1,4,1};
 
         //amethyst arc
         AmethystArcGlow = new Pen(
             brush: new SolidColorBrush(Color.FromArgb(120, 255, 0, 144)), 
-            thickness: 4.5,
+            thickness: CoreThickness * AmethystGlowMultiplier,
             lineCap: PenLineCap.Round,
             lineJoin: PenLineJoin.Round,
-            dashStyle: AmethystDashGlowArc);
+            dashStyle: new DashStyle(AmethystDashGlowArc,0));
 
        
         AmethystArcCore = new Pen(
             brush: new SolidColorBrush(Color.FromArgb(240, 255, 0, 144)),
             //brush: new SolidColorBrush(Color.FromArgb(255, 255, 0, 150)), // Bright pale orange/white
-            thickness: 1.5,
+            thickness: CoreThickness,
             lineCap: PenLineCap.Round,
             lineJoin: PenLineJoin.Round,
-            dashStyle: AmethystDashArc);
+            dashStyle: new DashStyle(AmethystDashArc,0));
         
         //amethyst edge
         AmethystEdgeGlow = new Pen(
             brush: new SolidColorBrush(Color.FromArgb(100, 255, 0, 144)), 
-            thickness: 5,
+            thickness: CoreThickness * AmethystGlowMultiplier,
             lineCap: PenLineCap.Flat,
             lineJoin: PenLineJoin.Round,
             dashStyle: null);
@@ -158,58 +165,61 @@ public class EyeStyle
         AmethystEdgeCore = new Pen(
             brush: new SolidColorBrush(Color.FromArgb(255, 149, 0, 89)),
             //brush: new SolidColorBrush(Color.FromArgb(255, 255, 0, 150)), // Bright pale orange/white
-            thickness: 1.5,
+            thickness: CoreThickness,
             lineCap: PenLineCap.Flat, 
             lineJoin: PenLineJoin.Miter,
-            dashStyle: AmethystDashEdge);
+            dashStyle: new DashStyle(AmethystDashEdge,0));
         
         //iris
-        IrisEdgeDash = new DashStyle(new double[]
-            { 11,1,7,1},0);
-        IrisArcDash = new DashStyle(new double[]
-            { 1,2,1,2,3,3,1,3,3,2,1,2,}, 0);
+        IrisEdgeDash = new double[] { 11,1,7,1};
+        IrisEdgeDashGlow = GlowDasher(IrisEdgeDash, IrisGlowMultiplier);
+        
+        
+        IrisArcDash = new double[] { 1,2,1,2,3,3,1,3,3,2,1,2,};
+        IrisArcDashGlow = GlowDasher(IrisArcDash, IrisGlowMultiplier);
+        
         
         IrisEdgeGlow =new Pen(
             brush: new SolidColorBrush(Color.FromArgb(100, 255, 12, 89)), 
-        thickness: 6.0,
+        thickness: CoreThickness * IrisGlowMultiplier,
         lineCap: PenLineCap.Round,
         lineJoin: PenLineJoin.Round,
-        dashStyle: DashStyle.Dash);
+        dashStyle: new DashStyle(IrisEdgeDashGlow,0));
         
         IrisEdgeCore =new Pen(
             brush: new SolidColorBrush(Color.FromArgb(255, 255, 109, 61)), 
-            thickness: 1.5,
+            thickness: CoreThickness,
             lineCap: PenLineCap.Flat,
             lineJoin: PenLineJoin.Miter,
-            dashStyle: IrisEdgeDash);
+            dashStyle: new DashStyle(IrisEdgeDash,0));
         
         IrisArcGlow = new Pen(
             brush: new SolidColorBrush(Color.FromArgb(100, 255, 12, 89)), 
-            thickness: 6.0,
+            thickness: CoreThickness * IrisGlowMultiplier,
             lineCap: PenLineCap.Round,
             lineJoin: PenLineJoin.Round,
-            dashStyle: IrisArcDash);
+            dashStyle: new DashStyle(IrisArcDashGlow,0));
         
         IrisArcCore =new Pen(
             brush: new SolidColorBrush(Color.FromArgb(255, 255, 109, 61)), 
-            thickness: 1.5,
+            thickness: CoreThickness,
             lineCap: PenLineCap.Flat,
             lineJoin: PenLineJoin.Miter,
-            dashStyle: IrisArcDash);
+            dashStyle: new DashStyle(IrisArcDash,0));
 
         IrisConnectGlow = new Pen(
             brush: new SolidColorBrush(Color.FromArgb(90, 255, 12, 89)),
-            thickness: 6.0,
+            thickness: CoreThickness * IrisGlowMultiplier,
             lineCap: PenLineCap.Round,
             lineJoin: PenLineJoin.Round,
-            dashStyle: DashStyle.Dash);
+            dashStyle: null);
         
         IrisConnectCore =new Pen(
             brush: new SolidColorBrush(Color.FromArgb(230, 255, 109, 61)), 
-            thickness: 1.5,
+            thickness: CoreThickness,
             lineCap: PenLineCap.Flat,
             lineJoin: PenLineJoin.Miter,
-            dashStyle: DashStyle.Dash);
+            dashStyle: null);
         
     }
     
@@ -240,6 +250,11 @@ public class EyeStyle
                 }
             };
         }
+    }
+
+    private double[] GlowDasher(double[] rythm, double multiplier)
+    {
+        return rythm.Select(x=> x/multiplier).ToArray(); 
     }
     
     private Color InterpolateColor(Color c1, Color c2, double amount)
