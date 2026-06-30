@@ -24,17 +24,6 @@ public sealed class AnimatrixController
         shape.Coy = tempex * sinTheta + tempey * cosTheta;
     }
 
-
-    public void ShapeConnected(bool cycleConnected)
-    {
-        //todo im way tooo ded
-    }
-    // for ones that have a single begin and end
-    public void ShapeChain(Vertex[] shapes)
-    {
-        //todo
-    }
-
     public double[] HaltonSequencer1D(int size, int bass = 2)
     {
         double[] result = new double[size];
@@ -42,6 +31,7 @@ public sealed class AnimatrixController
         {
             result[i] = HaltonSequence1D(i, bass);
         }
+
         return result;
     }
 
@@ -49,17 +39,24 @@ public sealed class AnimatrixController
     {
         double result = 0;
         double fractiMulti = 1;
-        while (index>0)
+        while (index > 0)
         {
-            fractiMulti/=bass;
+            fractiMulti /= bass;
             result += fractiMulti * (index % bass);
             index /= bass;
         }
+
         return result;
     }
 
     public Vertex Vortexer(VortexProperties uniqueProps, Vertex vertex)
     {
+        // --- SAFETY CHECK: Prevent silent crashes! ---
+        if (vertex.TargetPathIndex >= uniqueProps.TorrentPath.Length)
+        {
+            return vertex; // Do nothing, let the TorrentLayer despawn it
+        }
+
         // Get our current segment points A and B
         int prevIndex = vertex.TargetPathIndex - 1;
         if (prevIndex < 0) prevIndex = 0;
@@ -125,57 +122,36 @@ public sealed class AnimatrixController
         // ==========================================
         // NEW STEP 3.6: SPRING PHYSICS (THE CORRIDOR)
         // ==========================================
-        /*double deadzoneRadius = 20.0; // The boundary of our tube
-        double springStiffness = 0.05; // How hard the rubber band pulls back (0.1 is smooth, 0.5 is snappy)
-        double minLateralSpeed = 20; */
-        // If we haven't set a lateral speed yet, give it a starting push!
-        if (vertex.LateralVector == 0) vertex.LateralVector = uniqueProps.MinLateralSpeed;
-
-        // this IF ELSE checks the OUTSIDE of the deadzone
-        // Check if we crossed the RIGHT boundary
-        if (signedDistance > uniqueProps.DeadzoneRadius)
-        {
-            
-            // Calculate how far past the boundary we are
-            double excessDistance = signedDistance - uniqueProps.DeadzoneRadius;
+        // 1. Use the Hash to get the scrambled Halton value!
+        uint id = (uint)vertex.ID;
+        uint hashY = id * 2246822519u;
+        int indexY = (int)(hashY % (uint)uniqueProps.Noise.HaltonValuesY.Length);
         
-            // The rubber band pulls us to the LEFT (negative)
-            // If we are 10px past, it pulls with a force of -1.0. If 100px past, force is -10.0!
+        double halton = uniqueProps.Noise.HaltonValuesY[indexY];
+        
+        // 2. Scale BOTH the Deadzone AND the Speed!
+        double personalDeadzone = uniqueProps.DeadzoneRadius * halton;
+        double personalMinSpeed = uniqueProps.MinLateralSpeed * halton;
+       
+        if (signedDistance > personalDeadzone)
+        {
+            double excessDistance = signedDistance - personalDeadzone;
             vertex.LateralVector -= (excessDistance * uniqueProps.SpringStiffness);
         }
-        // Check if we crossed the LEFT boundary
-        else if (signedDistance < -uniqueProps.DeadzoneRadius)
+        else if (signedDistance < -personalDeadzone)
         {
-            // Calculate how far past the boundary we are (using Math.Abs to make it positive for the math)
-            double excessDistance = Math.Abs(signedDistance) - uniqueProps.DeadzoneRadius;
-        
-            // The rubber band pulls us to the RIGHT (positive)
+            double excessDistance = Math.Abs(signedDistance) - personalDeadzone;
             vertex.LateralVector += (excessDistance * uniqueProps.SpringStiffness);
         }
-        // 3. INSIDE THE DEADZONE!
         else
         {
-            // We are safely inside the deadzone. 
-            // Let's check if the vertex is being "lazy" (moving too slow).
-            // Math.Abs turns -1 into 1, so we can check the raw speed regardless of direction.
-            if (Math.Abs(vertex.LateralVector) < uniqueProps.MinLateralSpeed)
+            // Now, if personalMinSpeed is 0, it won't kick it outward!
+            if (Math.Abs(vertex.LateralVector) < personalMinSpeed)
             {
-                // It is moving too slow! Which way was it trying to go?
-                if (vertex.LateralVector >= 0)
-                {
-                    // It was moving Right (or exactly 0). Boost it to the Right!
-                    vertex.LateralVector = uniqueProps.MinLateralSpeed; 
-                }
-                else
-                {
-                    // It was moving Left. Boost it to the Left!
-                    vertex.LateralVector = -uniqueProps.MinLateralSpeed; 
-                }
+                vertex.LateralVector = (vertex.LateralVector >= 0) ? personalMinSpeed : -personalMinSpeed; 
             }
         }
 
-        
-        
 
         // todo absolute ends here
 
@@ -206,24 +182,19 @@ public sealed class AnimatrixController
         {
             ++vertex.TargetPathIndex;
             // todo  this is where the cutoff should be for spawn despawn.
-            
-            
-            
-            
-            
-            
-            
-           /* // Loop back to the start if we reached the end of the whole path
-            if (vertex.TargetPathIndex > uniqueProps.TorrentPath.Length - 1)
-            {
-                vertex.TargetPathIndex = 1;
 
-                // todo the respawn and despawn logic should come here.
-                vertex.Cox = uniqueProps.TorrentPath[0].X;
-                vertex.Coy = uniqueProps.TorrentPath[0].Y;
-            }*/
+
+            /* // Loop back to the start if we reached the end of the whole path
+             if (vertex.TargetPathIndex > uniqueProps.TorrentPath.Length - 1)
+             {
+                 vertex.TargetPathIndex = 1;
+
+                 // todo the respawn and despawn logic should come here.
+                 vertex.Cox = uniqueProps.TorrentPath[0].X;
+                 vertex.Coy = uniqueProps.TorrentPath[0].Y;
+             }*/
         }
-        
+
         return vertex;
-    } 
+    }
 }

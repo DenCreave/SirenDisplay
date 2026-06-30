@@ -58,15 +58,27 @@ public sealed class IrisDM : IDotMapFactory<IrisProperties>
             {
                 A = vertices[i],
                 B = vertices[(i + shapecount) % vertices.Count],
-                RelationType = EdgeRelType.Line
+                RelationType = EdgeRelType.Line,
+                Group = Insignia.Emerald
             });
+            if (i % shapecount == 0)
+            {
+                adjacency.Add(new VexEdge()
+                {
+                    A = vertices[i],
+                    B = vertices[(i + shapecount) % vertices.Count],
+                    RelationType = EdgeRelType.Arc,
+                    Group = Insignia.Amethyst
+                });
+            }
             if (i % (shapecount*2) == 0)
             {
                 adjacency.Add(new VexEdge()
                 {
                     A = vertices[i],
-                    B = vertices[(i + (shapecount -1)) % vertices.Count],
-                    RelationType = EdgeRelType.Arc
+                    B = vertices[(i + ((shapecount*2) -1)) % vertices.Count],
+                    RelationType = EdgeRelType.Line,
+                    Group = Insignia.Amethyst
                 });
             }
             else if (i % (shapecount*2) == (shapecount*2)-1 )
@@ -75,7 +87,8 @@ public sealed class IrisDM : IDotMapFactory<IrisProperties>
                 {
                     A = vertices[i],
                     B = vertices[(i + 1) % vertices.Count],
-                    RelationType = EdgeRelType.Arc
+                    RelationType = EdgeRelType.Line,
+                    Group = Insignia.Amethyst
                 });
             }
         }
@@ -83,7 +96,8 @@ public sealed class IrisDM : IDotMapFactory<IrisProperties>
         return new Constellation()
         {
             Vertices = vertices.ToArray(),
-            Edges = adjacency.ToArray()
+            Edges = adjacency.ToArray(),
+            LayerLevel = this.LayerLevel,
         };
     }
 }

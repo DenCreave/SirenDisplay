@@ -51,16 +51,30 @@ public sealed class EyeMidTL : ITorrentLayer<MidIrisProperties>
 
     public void Spawn(Vertex vertex)
     {
-        // todo, await animation, like 3 secs await and then fade in
+        vertex.IsEnabled = true;
     }
 
     public void Despawn(Vertex vertex)
     {
-        //todo after x time, fade out tho prolly handled by thetheme binder stc controller
+        vertex.IsEnabled = false;
     }
 
     public void AffectVector(Vertex vertex)
     {
-        Controls.Rotate(vertex, UniqueProps.RadiansPerFrame);
+        if (UniqueProps.FaderConf.IsAlive)
+        {
+            if (!vertex.IsEnabled)
+            {
+                Spawn(vertex);
+            }
+            Controls.Rotate(vertex, UniqueProps.RadiansPerFrame);
+        }
+        else
+        {
+            if (vertex.IsEnabled)
+            {
+                Despawn(vertex);
+            }
+        }
     }
 }

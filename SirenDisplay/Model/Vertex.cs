@@ -17,7 +17,7 @@ public sealed class Vertex : IEquatable<Vertex>
     public int Ticks { get; set; } = 0;
     public double Cox {get; set;}
     public double Coy {get; set;}
-    public double Opacity { get; set; }
+    //public double Opacity { get; set; }
     public double Vex {get; set;} // absolute vector x
     public double Vey {get; set;} // absolute vector y
     
@@ -35,67 +35,9 @@ public sealed class Vertex : IEquatable<Vertex>
     public double Weight { get; set; } = 1; //multiplier in Edges
     public int? EdgeLimit { get; set; } = null; //to run a modified kruskal, wonder how it'll look; null: no limits
     public bool IsEnabled { get; set; } = false;
-    
-    
-    public HsvColor FillColor { get; set; }
-    public HsvColor EffectColor { get; set; }
-    public Path VertexPath {get; set;}
-    public PathFigure Crest { get; set; }
-    public ArcSegment ArcA {get; set;}
-    public ArcSegment ArcB {get; set;}
-    public readonly double Diameter = 7;
-    public readonly double Radius = 3.5;
-    public readonly double fillOpacity = 0.6;
-    public readonly double effectOpacity = 0.8;
-    public DropShadowEffect DropShadow {get; set;}
 
-    public Vertex InitVertex()
-    {
-        FillColor = new HsvColor(fillOpacity, 340, 89, 100);
-        EffectColor = new HsvColor(effectOpacity, 340, 76, 100);
-        ArcA = new ArcSegment()
-        {
-            Point = new Point(Cox + Diameter, Coy),
-            Size = new Size(Radius, Radius),
-            SweepDirection = SweepDirection.Clockwise,
-            IsLargeArc = false
-        };
-        ArcB = new ArcSegment()
-        {
-            Point = new Point(Cox - Radius, Coy),
-            Size = new Size(Radius, Radius),
-            SweepDirection = SweepDirection.Clockwise,
-            IsLargeArc = false
-        };
-        Crest = new PathFigure()
-        {
-            StartPoint = new Point(Cox, Coy),
-            Segments = { ArcA, ArcB }
-        };
-        DropShadow = new DropShadowEffect()
-        {
-            BlurRadius = 21,
-            OffsetX = Radius,
-            Opacity = effectOpacity,
-            Color = EffectColor.ToRgb(),
-        };
-        VertexPath = new Path()
-        {
-            Stroke = new SolidColorBrush(EffectColor.ToRgb()),
-            StrokeThickness = 1,
-            Stretch = Stretch.Uniform,
-            Fill = new SolidColorBrush(FillColor.ToRgb()),
-            Effect = DropShadow,
-            Data = new PathGeometry()
-            {
-                Figures = new PathFigures() { Crest }
-            }
-        };
-
-        return this;
-    }
     
-    //TODO UPDATE THE POINTS EVERYWHERE
+    //todo cleanup
     public Vertex UpdateCO()
     {
         /*// 1. Calculate the exact mathematical step based on our local axes
@@ -112,18 +54,7 @@ public sealed class Vertex : IEquatable<Vertex>
         Coy+=Vey*Speed;
         return this;
     }
-
-    public Vertex UpdateUI()
-    {
-        if (Crest != null && ArcA != null && ArcB != null)
-        {
-            Crest.StartPoint = new Point(Cox, Coy);
-            ArcA.Point = new Point(Cox + Diameter, Coy);
-            ArcB.Point = new Point(Cox - Radius, Coy);
-        }
     
-        return this;
-    }
     
     /// <summary>
     /// Calculates a normalized direction vector based on proportional forward and sideways weights.

@@ -26,6 +26,9 @@ public sealed class EyeTopTL : ITorrentLayer<VortexProperties>
         Controls = controls;
         IsAffecting = true;
         IsVisible = true;
+        int n = 1000;
+        int baseX = 7;
+        int baseY = 11;
         UniqueProps = new VortexProperties()
         {
             Noise = new Noise()
@@ -35,9 +38,10 @@ public sealed class EyeTopTL : ITorrentLayer<VortexProperties>
                 AffectsX = false,
                 AffectsY = true,
                 HaltonDimension = 1,
-                NoiseInstances = 50,
-                NoiseScale = 40, // deadzoneradius*2
-                HaltonValues1D = Controls.HaltonSequencer1D(50, 2)
+                NoiseInstances = n,
+                NoiseScale = 100, // deadzoneradius*5
+                HaltonValuesX = Controls.HaltonSequencer1D(n, baseX),
+                HaltonValuesY = Controls.HaltonSequencer1D(n, baseY)
             },
             TorrentPath =
             [
@@ -59,13 +63,13 @@ public sealed class EyeTopTL : ITorrentLayer<VortexProperties>
                 new GPoint() { X = 800, Y = 80 }
             ],
             DeadzoneRadius = 20,
-            FlowSpeed = 20,
+            FlowSpeed = 10,
             MinLateralSpeed = 20,
             SpringStiffness = 0.05,
             VertexSpawner = new Spawner()
             {
                 LifeTime = 30,
-                SpawnInterval = 0.06
+                SpawnInterval = 0.01
             }
         };
 
@@ -104,16 +108,47 @@ public sealed class EyeTopTL : ITorrentLayer<VortexProperties>
 
     public void Spawn(Vertex vertex)
     {
-        vertex.Cox = UniqueProps.TorrentPath[0].X + (UniqueProps.Noise.NoiseScale * 
-                                                     (UniqueProps.Noise.AffectsX 
-                                                         ? UniqueProps.Noise.HaltonValues1D[vertex.ID%UniqueProps.Noise.HaltonValues1D.Length] : 0))
-                     -UniqueProps.Noise.NoiseScale/2;
+        vertex.TargetPathIndex = 1; 
         
-        vertex.Coy = UniqueProps.TorrentPath[0].Y  + (UniqueProps.Noise.NoiseScale * 
-                                                      (UniqueProps.Noise.AffectsY
-                                                          ? UniqueProps.Noise.HaltonValues1D[vertex.ID%UniqueProps.Noise.HaltonValues1D.Length] : 0))
-                     -UniqueProps.Noise.NoiseScale/2;
+        // --- THE HASH TRICK (Zero-GC Pseudo-Randomness) ---
+        // We multiply the ID by large prime numbers and cast to uint to scramble the bits.
+        // This completely destroys the "ribbon" pattern of the Halton sequence.
+        uint id = (uint)vertex.ID;
+        uint hashX = id * 2654435761u;
+        uint hashY = id * 2246822519u;
+
+        int indexX = (int)(hashX % (uint)UniqueProps.Noise.HaltonValuesX.Length);
+        int indexY = (int)(hashY % (uint)UniqueProps.Noise.HaltonValuesY.Length);
+
+        // 1. APPLY TRUE 2D NOISE TO COORDINATES
+        vertex.Cox = UniqueProps.TorrentPath[0].X + 
+                     (UniqueProps.Noise.AffectsX ? (UniqueProps.Noise.HaltonValuesX[indexX] * UniqueProps.Noise.NoiseScale) : 0) 
+                     - (UniqueProps.Noise.NoiseScale / 2);
+        
+        vertex.Coy = UniqueProps.TorrentPath[0].Y + 
+                     (UniqueProps.Noise.AffectsY ? (UniqueProps.Noise.HaltonValuesY[indexY] * UniqueProps.Noise.NoiseScale) : 0) 
+                     - (UniqueProps.Noise.NoiseScale / 2);
+
+        // 2. CHAOTIC INITIAL MOMENTUM
+        double haltonY = UniqueProps.Noise.HaltonValuesY[indexY];
+        double haltonX = UniqueProps.Noise.HaltonValuesX[indexX];
+
+        // Even IDs go Right (+1), Odd IDs go Left (-1)
+        double direction = (vertex.ID % 2 == 0) ? 1.0 : -1.0;
+        
+        // Randomize the starting speed using the scrambled Halton values
+        double speedMultiplier = 0.5 + (haltonX * 0.5);
+        double personalMinSpeed = UniqueProps.MinLateralSpeed * haltonY;
+        
+        vertex.LateralVector = personalMinSpeed * speedMultiplier * direction;
+        
+        //// Give it forward legs, but vary the speed! 
+        // Transpose Halton (0.0 to 1.0) into a multiplier (0.5 to 1.2)
+        double transposeMultiplier = 0.5 + (haltonX * 0.7);
+        // Give it forward legs
+        vertex.Speed = UniqueProps.FlowSpeed * transposeMultiplier;
         vertex.IsEnabled = true;
+
     }
     
     public void Despawn(Vertex vertex)

@@ -18,7 +18,7 @@ public class GenericParticle : IDotMapFactory<ParticleProps>
     {
         UniqueProps = new ParticleProps()
         {
-            DotLimit = 200,
+            DotLimit = 1000,
         };
     }
 
@@ -36,7 +36,8 @@ public class GenericParticle : IDotMapFactory<ParticleProps>
         return new Constellation()
         {
             Vertices = retme,
-            Edges = null
+            Edges = null,
+            LayerLevel = LayerLevel,
         };
     }
 }

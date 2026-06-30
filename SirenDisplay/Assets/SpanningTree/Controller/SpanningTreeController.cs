@@ -68,17 +68,19 @@ public sealed class SpanningTreeController
             RestartLayers();
         }
         
+        double dt = _frameTimer.Elapsed.TotalSeconds;
+        _frameTimer.Restart();
         foreach (var animap in CurrentScene)
         {
-            double dt = _frameTimer.Elapsed.TotalSeconds;
-            _frameTimer.Restart();
             animap.TorrentLayer.UpdateState(dt);
             
-            Parallel.ForEach(animap.Graph.Vertices, vertex => 
+            Parallel.ForEach(animap.Graph.Vertices, vertex =>
             {
-                if (vertex.IsEnabled)
+                animap.TorrentLayer.AffectVector(vertex);
+                // 2. APPLY the physics to the coordinates!
+                if (vertex.IsEnabled) 
                 {
-                    animap.TorrentLayer.AffectVector(vertex);
+                    vertex.UpdateCO(); 
                 }
             });
         }

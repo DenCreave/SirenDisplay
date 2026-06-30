@@ -32,13 +32,13 @@ public sealed partial class STCViewModel :ViewModelBase
     {
         Console.WriteLine("STCViewModel init");
         _testLayer = new EyeTopTL(new AnimatrixController());
-        Testpoint = new Vertex()
+        /*Testpoint = new Vertex()
         {
             Cox = _testLayer.UniqueProps.TorrentPath[0].X,
             Coy = _testLayer.UniqueProps.TorrentPath[0].Y,
             TargetPathIndex = 1,
             //HaltonIndex = 1 // Uses the 0.5 noise we just set
-        }.InitVertex();
+        }.InitVertex();*/
 
         LineInitializer();
         FrameInitializer();
@@ -135,7 +135,7 @@ public sealed partial class STCViewModel :ViewModelBase
                         StartPoint = new Point(840, 480),
                     },
                     Apoint,
-                    Testpoint.Crest,
+                    //Testpoint.Crest,
                     _guideLineFigure
                     
                 }
@@ -147,13 +147,13 @@ public sealed partial class STCViewModel :ViewModelBase
     public async void PostInit()
     {
         Console.WriteLine("clicked");
-        Console.WriteLine($"der halton:{_testLayer.UniqueProps.Noise.HaltonValues1D[0]}");
+        //Console.WriteLine($"der halton:{_testLayer.UniqueProps.Noise.HaltonValues1D[0]}");
         for (int i = 0; i < 500; i++)
         {
             //Aline.Point=new Point(Aline.Point.X+0.1,Aline.Point.Y-0.1);
             _testLayer.AffectVector(Testpoint);
             
-            Testpoint.UpdateCO().UpdateUI();
+            //Testpoint.UpdateCO().UpdateUI();
             Console.WriteLine($"lateral vector value: {Testpoint.LateralVector}");
             await Task.Delay(20);
         }

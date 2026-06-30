@@ -28,6 +28,7 @@ public sealed class RingOfIrisDM : IDotMapFactory<IrisProperties>
     {
         List<Vertex> vertices = [];
         List<VexEdge> adjacency = [];
+        List<VexEdge> nilEndCache = [];
         for (int i = 0; i < UniqueProps.ShapeMultiplier; i++)
         {
             double angleInRadians = (Math.PI * 2 / UniqueProps.ShapeMultiplier) * i;
@@ -44,11 +45,30 @@ public sealed class RingOfIrisDM : IDotMapFactory<IrisProperties>
                 Controls.Rotate(iris.Shapes[j], angleInRadians);
                 vertices.Add(iris.Shapes[j]);
             }
+            
+            nilEndCache.Add(new VexEdge()
+            {
+                A = iris.UniqueProps.Nil,
+                B = iris.UniqueProps.End,
+            });
         }
 
+        //new way for connecting shapes
+        for (int i = 0; i < nilEndCache.Count; i++)
+        {
+            adjacency.Add(new VexEdge()
+            {
+                A = nilEndCache[i].B,
+                B = nilEndCache[(i+1)%nilEndCache.Count].A,
+                RelationType = EdgeRelType.Arc,
+                Group = Insignia.Sapphire
+            });
+        }
+        
         int shapecount = new Star().Shapes.Length;
         for (int i = 0; i < vertices.Count; i++)
         {
+            /* old way of calculating connecting shapes.
             if (i % shapecount == 0)
             {
                 adjacency.Add(new VexEdge()
@@ -60,19 +80,23 @@ public sealed class RingOfIrisDM : IDotMapFactory<IrisProperties>
                     ],
                     RelationType = EdgeRelType.Arc
                 });
-            }
+            }*/
             adjacency.Add(new VexEdge()
             {
                 A = vertices[i],
-                B = vertices[(i + 1)% vertices.Count  ],
-                RelationType = EdgeRelType.Line
+                B = vertices[((i + 1) % shapecount)+(i/shapecount)*shapecount],
+                RelationType = (i % 3 == 1) ? EdgeRelType.Arc : EdgeRelType.Line,
+                Group = Insignia.Ruby
             });
         }
+
+        
 
         return new Constellation()
         {
             Vertices = vertices.ToArray(),
-            Edges = adjacency.ToArray()
+            Edges = adjacency.ToArray(),
+            LayerLevel = LayerLevel
         };
     }
 }

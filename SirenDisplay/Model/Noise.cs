@@ -13,5 +13,7 @@ public sealed class Noise
     public int HaltonDimension { get; init; }
     public int NoiseInstances { get; set; }
     public double NoiseScale { get; init; }
-    public double[] HaltonValues1D { get; set; }
+    //public double[] HaltonValues1D { get; set; }
+    public double[] HaltonValuesX { get; set; }
+    public double[] HaltonValuesY { get; set; }
 }
