@@ -6,11 +6,8 @@
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="480"
              x:DataType="viewModels:ClockViewModel"
              x:Class="SirenDisplay.Views.ClockView">
-
-    <UserControl.DataContext>
-        <viewModels:ClockViewModel />
-    </UserControl.DataContext>
-    <Grid x:Name="BackGroundGrid" Background="{DynamicResource PrimaryBackground}">
+    
+    <Grid x:Name="BackGroundGrid" Background="Transparent">
         <ContentControl Classes="main-frame" Content="{Binding Path=MainFrame}" />
         <Grid x:Name="MainGrid" RowDefinitions="*,3*,*" ColumnDefinitions="*">
             <Grid Grid.Row="0" ColumnDefinitions="*,6*,*">
@@ -27,10 +24,10 @@
                 <Grid Grid.Column="2" ColumnDefinitions="*" RowDefinitions="*,*" Margin="20"
                       PointerPressed="ToggleAlarm">
                     <Viewbox Grid.Row="0">
-                        <Label Foreground="{Binding CacheReferences.alarmTimerController.Kolor}" Classes="icon" Content="{Binding CacheReferences.alarmTimerController.ClockButton}"></Label>
+                        <Label Foreground="{Binding AlarmTimer.Kolor}" Classes="icon" Content="{Binding AlarmTimer.ClockButton}"></Label>
                     </Viewbox>
                     <Viewbox Grid.Row="1">
-                        <Label Foreground="{Binding CacheReferences.alarmTimerController.Kolor}" Classes="icon" Content="{Binding CacheReferences.alarmTimerController.ClockButton}"></Label>
+                        <Label Foreground="{Binding AlarmTimer.Kolor}" Classes="icon" Content="{Binding AlarmTimer.ClockButton}"></Label>
                     </Viewbox>
                 </Grid>
                 <ContentControl Grid.Column="3" HorizontalContentAlignment="Right" HorizontalAlignment="Right"

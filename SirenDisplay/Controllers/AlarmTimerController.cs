@@ -10,9 +10,6 @@ namespace SirenDisplay.Controllers;
 
 public sealed partial class AlarmTimerController : ObservableObject
 {
-    private static readonly Lazy<AlarmTimerController> _instance = new Lazy<AlarmTimerController>(() => new AlarmTimerController());
-    //private static readonly object _lock = new object();
-    public static AlarmTimerController Instance => _instance.Value;
     public Timer? Timer { get; set; }
     public DateTimeOffset SirenTime { get; set; }
 
@@ -55,7 +52,7 @@ public sealed partial class AlarmTimerController : ObservableObject
         }
     }
 
-    private AlarmTimerController()
+    public AlarmTimerController()
     {
         IsOff = true;
         LabelData = new LabelData();
@@ -64,35 +61,6 @@ public sealed partial class AlarmTimerController : ObservableObject
         ArdentAlarm();
         Console.WriteLine("Alarm timer WAS INITIALIZED");
     }
-    
-    /*public AlarmTimerController()
-    {
-        IsOff = true;
-        LabelData = new LabelData();
-        SirenData = ConfController.LoadConf();
-        AudioController = new AudioController();
-        /*if (SirenData.IsPending)
-        {
-            //
-            //Start();
-            /*if (Timer != null)
-            {
-                Stop();
-            }
-            IsOff = false;
-            AlarmState = AlarmState.Sirens;
-            SirenMe(null);
-            /// so there is a funny bug about this, cachreference, or mostly anything
-            /// gets instantiated twice
-            /// i dont know, why, or where, but if i do this in the constructor instead of calling it
-            /// in the postload of ClockViewModel, then even after i close the program, the playlist keeps playing
-            /// and i cant close it, i dont know where its running from, it just does
-            /// im glad the testing playlist wasnt hours long
-            /// as it turns out the answer was starting the music before the project is initialized
-            /// and calling ArdentAlarm there
-            /// and also making this a singleton
-        }
-    }*/
 
     public void ArdentAlarm()
     {

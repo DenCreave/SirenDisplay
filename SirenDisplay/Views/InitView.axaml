@@ -9,7 +9,12 @@
         Title="SirenDisplay"
         x:DataType="viewModels:InitViewModel">
     <Grid>
-        <ui:SpanningTreeRenderer STC="{Binding Stc}" STT="{Binding Stt}"/>
-        <ContentControl Content="{Binding  CurrentView}"/>
+        <!-- The Viewbox will scale the 800x480 engine to fit ANY window size! -->
+        <Viewbox Stretch="Fill">
+            <ui:SpanningTreeRenderer STC="{Binding Stc}" 
+                                     STT="{Binding Stt}" 
+                                     ClipToBounds="True"/>
+        </Viewbox>
+        <ContentControl Content="{Binding  Navigator.CurrentView}"/>
     </Grid>
 </Window>

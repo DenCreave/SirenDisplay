@@ -10,6 +10,7 @@ using SirenDisplay.Assets.SpanningTree.TorrentLayer;
 using SirenDisplay.Assets.SpanningTree.UI;
 using SirenDisplay.Assets.SpanningTree.UI.Eye;
 using SirenDisplay.Controllers;
+using SirenDisplay.Services;
 using SirenDisplay.ViewModels;
 using SirenDisplay.Views;
 
@@ -28,6 +29,7 @@ public partial class App : Application
     {
         var services = new ServiceCollection();
         
+        // Core Engin
         services.AddSingleton<AnimatrixController>();
         services.AddSingleton<DotMapLoader>();
         services.AddSingleton<TorrentLayerLoader>();
@@ -37,14 +39,19 @@ public partial class App : Application
         services.AddSingleton<StyleArchive>();
         services.AddSingleton<UIThemeLoader>();
         services.AddSingleton<SpanningTreeTheme>();
+        
+        
+        // Services || Controllers
+        services.AddSingleton<AlarmTimerController>();
+        services.AddSingleton<NavigationService>();
 
 
         services.AddSingleton<InitViewModel>();
-        services.AddSingleton<ClockViewModel>();
-        services.AddSingleton<AlarmViewModel>();
-        services.AddSingleton<MusicViewModel>();
-
-        //services.AddTransient<ClockViewModel>();
+        //views (their models)
+        services.AddTransient<ClockViewModel>();
+        services.AddTransient<AlarmViewModel>();
+        services.AddTransient<MusicViewModel>();
+        services.AddTransient<STCViewModel>();
         
         
         Services = services.BuildServiceProvider();

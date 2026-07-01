@@ -58,6 +58,16 @@ public class SpanningTreeRenderer : Control
                 Console.WriteLine("TICK FAILED: STT is null. Check XAML Binding."); 
                 return; 
             }
+            
+            double currentX = STC.CurrentScene[0].TorrentLayer.ResolutionNote.X;
+            double currentY = STC.CurrentScene[0].TorrentLayer.ResolutionNote.Y;
+
+            // If the engine changed resolution, update the canvas size!
+            if (this.Width != currentX) this.Width = currentX;
+            if (this.Height != currentY) this.Height = currentY;
+
+
+            
             STC.UpdateFrame();
             // tells Avalonia: "The math changed redraw the screen!"
             // This automatically triggers the Render() method below.

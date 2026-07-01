@@ -31,7 +31,10 @@ public sealed class RingOfIrisDM : IDotMapFactory<IrisProperties>
         List<VexEdge> nilEndCache = [];
         for (int i = 0; i < UniqueProps.ShapeMultiplier; i++)
         {
-            double angleInRadians = (Math.PI * 2 / UniqueProps.ShapeMultiplier) * i;
+            // in UI programming (screen) Y axis is flipped, and sine cosine will rotate COUNTER-clockwise
+            //instead of clockwise. to make it clockwise, ill give it negative radians.
+            // //ai called this the Threaded-bead effect (good to know such concept exists)
+            double angleInRadians = -(Math.PI * 2 / UniqueProps.ShapeMultiplier) * i;
             var iris = new Star();
             for (int j = 0; j < iris.Shapes.Length; j++)
             {
@@ -58,8 +61,13 @@ public sealed class RingOfIrisDM : IDotMapFactory<IrisProperties>
         {
             adjacency.Add(new VexEdge()
             {
+                /*//was a beautiful mistake, now im making it intentional
                 A = nilEndCache[i].B,
-                B = nilEndCache[(i+1)%nilEndCache.Count].A,
+                B = nilEndCache[(i+1)%nilEndCache.Count].A,*/
+                //this way im connecting 2 shapes, intentionnaly, and will go through them
+                //ai called this the Threaded-bead effect (good to know such concept exists)
+                A = nilEndCache[i].A,
+                B = nilEndCache[(i+1)%nilEndCache.Count].B, 
                 RelationType = EdgeRelType.Arc,
                 Group = Insignia.Sapphire
             });

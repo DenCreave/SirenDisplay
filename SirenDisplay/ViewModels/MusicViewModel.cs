@@ -16,6 +16,7 @@ using LibVLCSharp.Shared;
 using SirenDisplay.Assets.Polygons.Frames;
 using SirenDisplay.Controllers;
 using SirenDisplay.Model;
+using SirenDisplay.Services;
 using SkiaSharp;
 using Color = Avalonia.Media.Color;
 using Path = Avalonia.Controls.Shapes.Path;
@@ -27,7 +28,9 @@ public sealed partial class MusicViewModel : ViewModelBase
 {
     [ObservableProperty] private Path _mainFrame;
     public LabelData LabelData { get; } = new();
-    public CacheReferences CacheReferences { get; set; }
+    
+    public AlarmTimerController AlarmTimer { get; } // Public so XAML can bind to it!
+    public NavigationService Navigator { get; }
 
     [ObservableProperty] private Grid _playlistViewGrid = new();
     public Grid _playlistTitleNameGrid { get; set; }
@@ -100,17 +103,19 @@ public sealed partial class MusicViewModel : ViewModelBase
     {
         Selected2Listen = value;
     }
+    
 
-   /* public string PlayButton => IsPlayButton ? LabelData.PlayLabel : LabelData.StopLabel;
-
-    [ObservableProperty] [NotifyPropertyChangedFor(nameof(PlayButton))]
-    private bool _isPlayButton; */
-
-    public MusicViewModel()
+    public MusicViewModel(
+        AlarmTimerController alarmTimer,
+        NavigationService navigator)
     {
+        AlarmTimer = alarmTimer;
+        Navigator = navigator;
+        
         FrameInitializer();
-        //LabelData = new LabelData();
-        //we might not have Cache references by that time
+        
+        // We can call PostInit immediately because DI gives us a fresh instance!
+        PostInit();
     }
 
     public void PostInit()
@@ -294,28 +299,26 @@ public sealed partial class MusicViewModel : ViewModelBase
     public void FetchPlaylist()
     {
         MusicItems.Clear();
-        MusicItems.Add(
-            CacheReferences.alarmTimerController.SirenData.MusicPaths[
-                CacheReferences.alarmTimerController.SirenData.SelectedPlaylist]);
+        MusicItems.Add(AlarmTimer.SirenData.MusicPaths[AlarmTimer.SirenData.SelectedPlaylist]);
     }
 
     public void LoadPlayListNames()
     {
         //actualy i could just make this am interactive button with a usercontrol and just load it with the view locator..........
         //naaaah... its not that much of a mistake... right? is it a mistake tho? do i break pattern? either way its a good experience
-        if (CacheReferences.alarmTimerController.SirenData.MusicPaths.Keys.Count == 0)
+        if (AlarmTimer.SirenData.MusicPaths.Keys.Count == 0)
         {
-            CacheReferences.alarmTimerController.SirenData.MusicPaths.Add("Siren Display", new List<DirectoryItem>());
-            CacheReferences.alarmTimerController.SirenData.SelectedPlaylist = "Siren Display";
+            AlarmTimer.SirenData.MusicPaths.Add("Siren Display", new List<DirectoryItem>());
+            AlarmTimer.SirenData.SelectedPlaylist = "Siren Display";
             Console.WriteLine("no playlist found, loading as Siren Display");
         }
             
-        _playlistNames = CacheReferences.alarmTimerController.SirenData.MusicPaths.Keys.ToArray();
+        _playlistNames = AlarmTimer.SirenData.MusicPaths.Keys.ToArray();
         _playlistNameIndex =
-            _playlistNames.IndexOf(CacheReferences.alarmTimerController.SirenData.SelectedPlaylist);
-        if(CacheReferences.alarmTimerController.SirenData.SelectedPlaylist =="")
+            _playlistNames.IndexOf(AlarmTimer.SirenData.SelectedPlaylist);
+        if(AlarmTimer.SirenData.SelectedPlaylist =="")
         {
-            CacheReferences.alarmTimerController.SirenData.SelectedPlaylist = _playlistNames[_playlistNameIndex];
+            AlarmTimer.SirenData.SelectedPlaylist = _playlistNames[_playlistNameIndex];
         }
         Console.WriteLine("no playlist found, loading as Siren Display");
         
@@ -324,7 +327,7 @@ public sealed partial class MusicViewModel : ViewModelBase
         SolidColorBrush brush = new SolidColorBrush(color);
         CurrentPlaylistTitle = new Label()
         {
-            Content = CacheReferences.alarmTimerController.SirenData.SelectedPlaylist,
+            Content = AlarmTimer.SirenData.SelectedPlaylist,
             Foreground = brush,
         };
     }
@@ -341,7 +344,7 @@ public sealed partial class MusicViewModel : ViewModelBase
         }
 
         CurrentPlaylistTitle.Content = _playlistNames[_playlistNameIndex];
-        CacheReferences.alarmTimerController.SirenData.SelectedPlaylist= _playlistNames[_playlistNameIndex];
+        AlarmTimer.SirenData.SelectedPlaylist= _playlistNames[_playlistNameIndex];
         FetchPlaylist();
     }
 
@@ -350,7 +353,7 @@ public sealed partial class MusicViewModel : ViewModelBase
         ++_playlistNameIndex;
         _playlistNameIndex %= _playlistNames.Length;
         CurrentPlaylistTitle.Content = _playlistNames[_playlistNameIndex];
-        CacheReferences.alarmTimerController.SirenData.SelectedPlaylist= _playlistNames[_playlistNameIndex];
+        AlarmTimer.SirenData.SelectedPlaylist= _playlistNames[_playlistNameIndex];
         //LoadMusicPaths();
         FetchPlaylist();
     }
@@ -373,10 +376,10 @@ public sealed partial class MusicViewModel : ViewModelBase
     public void AddNewPlaylist(object sender, PointerPressedEventArgs e)
     {
         string tmp = $"Siren Display {_playlistNames.Length}";
-        CacheReferences.alarmTimerController.SirenData.MusicPaths.Add(tmp, new List<DirectoryItem>());
-        CacheReferences.alarmTimerController.SirenData.SelectedPlaylist = tmp;
-        _playlistNames = CacheReferences.alarmTimerController.SirenData.MusicPaths.Keys.ToArray();
-        _playlistNameIndex = _playlistNames.IndexOf(CacheReferences.alarmTimerController.SirenData.SelectedPlaylist);
+        AlarmTimer.SirenData.MusicPaths.Add(tmp, new List<DirectoryItem>());
+        AlarmTimer.SirenData.SelectedPlaylist = tmp;
+        _playlistNames = AlarmTimer.SirenData.MusicPaths.Keys.ToArray();
+        _playlistNameIndex = _playlistNames.IndexOf(AlarmTimer.SirenData.SelectedPlaylist);
         CurrentPlaylistTitle.Content = _playlistNames[_playlistNameIndex];
         FetchPlaylist();
         SwapToNavigationMode(this, null);
@@ -385,18 +388,18 @@ public sealed partial class MusicViewModel : ViewModelBase
 
     public void DeletePlaylist(object sender, PointerPressedEventArgs e)
     {
-        CacheReferences.alarmTimerController.SirenData.MusicPaths.Remove(_playlistNames[_playlistNameIndex]);
-        _playlistNames = CacheReferences.alarmTimerController.SirenData.MusicPaths.Keys.ToArray();
+        AlarmTimer.SirenData.MusicPaths.Remove(_playlistNames[_playlistNameIndex]);
+        _playlistNames = AlarmTimer.SirenData.MusicPaths.Keys.ToArray();
         if (_playlistNames.Length == 0)
         {
             _playlistNames = ["Siren Display"];
-            CacheReferences.alarmTimerController.SirenData.MusicPaths.Add(_playlistNames[0], new List<DirectoryItem>());
-            CacheReferences.alarmTimerController.SirenData.SelectedPlaylist = _playlistNames[0];
+            AlarmTimer.SirenData.MusicPaths.Add(_playlistNames[0], new List<DirectoryItem>());
+            AlarmTimer.SirenData.SelectedPlaylist = _playlistNames[0];
         }
 
         _playlistNameIndex = 0;
-        CacheReferences.alarmTimerController.SirenData.SelectedPlaylist = _playlistNames[_playlistNameIndex];
-        _playlistNameIndex = _playlistNames.IndexOf(CacheReferences.alarmTimerController.SirenData.SelectedPlaylist);
+        AlarmTimer.SirenData.SelectedPlaylist = _playlistNames[_playlistNameIndex];
+        _playlistNameIndex = _playlistNames.IndexOf(AlarmTimer.SirenData.SelectedPlaylist);
         CurrentPlaylistTitle.Content = _playlistNames[_playlistNameIndex];
         FetchPlaylist();
         SwapToNavigationMode(this,null);
@@ -410,10 +413,10 @@ public sealed partial class MusicViewModel : ViewModelBase
             throw new NullReferenceException("_renameBox was null after confirmation");
         }
 
-        CacheReferences.alarmTimerController.SirenData.MusicPaths.Add(_renameBox.Text,
-            CacheReferences.alarmTimerController.SirenData.MusicPaths[_playlistNames[_playlistNameIndex]]);
-        CacheReferences.alarmTimerController.SirenData.MusicPaths.Remove(_playlistNames[_playlistNameIndex]);
-        CacheReferences.alarmTimerController.SirenData.SelectedPlaylist = _renameBox.Text;
+        AlarmTimer.SirenData.MusicPaths.Add(_renameBox.Text,
+            AlarmTimer.SirenData.MusicPaths[_playlistNames[_playlistNameIndex]]);
+        AlarmTimer.SirenData.MusicPaths.Remove(_playlistNames[_playlistNameIndex]);
+        AlarmTimer.SirenData.SelectedPlaylist = _renameBox.Text;
         _playlistNames[_playlistNameIndex] = _renameBox.Text;
         CurrentPlaylistTitle.Content = _playlistNames[_playlistNameIndex];
         FetchPlaylist();
@@ -511,7 +514,7 @@ public sealed partial class MusicViewModel : ViewModelBase
 
     public void LoadMusicPaths()
     {
-        CacheReferences.alarmTimerController.SirenData = ConfController.LoadConf();
+        AlarmTimer.SirenData = ConfController.LoadConf();
     }
 
     #endregion musiccaller
@@ -602,14 +605,14 @@ public sealed partial class MusicViewModel : ViewModelBase
 
     public void SaveAndExit()
     {
-        ConfController.SaveConf(CacheReferences.alarmTimerController.SirenData);
-        SwitchToClockView(CacheReferences);
+        ConfController.SaveConf(AlarmTimer.SirenData);
+        Navigator.NavigateTo<ClockViewModel>();
     }
 
     private void Save2SirenData()
     {
         //haha! in 1 line
-        CacheReferences.alarmTimerController.SirenData.MusicPaths[_playlistNames[_playlistNameIndex]] = MusicItems.ToList();
+        AlarmTimer.SirenData.MusicPaths[_playlistNames[_playlistNameIndex]] = MusicItems.ToList();
     }
 
     public void AddToPlaylist()
@@ -659,16 +662,16 @@ public sealed partial class MusicViewModel : ViewModelBase
 
     public async void PlayStopMedia()
     {
-        if (CacheReferences.alarmTimerController.AudioController.IsPlaying())
+        if (AlarmTimer.AudioController.IsPlaying())
         {
-            CacheReferences.alarmTimerController.AudioController.Stop();
+            AlarmTimer.AudioController.Stop();
             //IsPlayButton = true;
         }
         else
         {
             if (Selected2Listen != null)
             {
-                await CacheReferences.alarmTimerController.AudioController.PlayAudio(Selected2Listen.FullPath);
+                await AlarmTimer.AudioController.PlayAudio(Selected2Listen.FullPath);
             }
             //is this even supposed to work like this? will it be responsive?
             //IsPlayButton = false;

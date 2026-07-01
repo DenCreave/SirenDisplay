@@ -7,10 +7,8 @@
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="480"
              x:DataType="viewModels:MusicViewModel"
              x:Class="SirenDisplay.Views.MusicView">
-    <UserControl.DataContext>
-        <viewModels:MusicViewModel />
-    </UserControl.DataContext>
-    <Grid x:Name="BackGroundGrid" Background="{DynamicResource PrimaryBackground}">
+    
+    <Grid x:Name="BackGroundGrid" Background="Transparent">
         <ContentControl Classes="main-frame" Content="{Binding Path=MainFrame}" />
         <Grid x:Name="MainGrid" RowDefinitions="*,3*,*" ColumnDefinitions="*">
             <Grid Grid.Row="0" ColumnDefinitions="*,*">
@@ -46,7 +44,7 @@
                         <Label Foreground="#ff901b" Classes="icon" Content="{Binding LabelData.DoubleRightLabel}"></Label>
                     </Viewbox>
                     <Viewbox Grid.Row="1" PointerPressed="PlayStopMedia"> 
-                        <Label Foreground="#ff901b" Classes="icon" Content="{Binding CacheReferences.alarmTimerController.AudioController.PlayButton}"></Label>
+                        <Label Foreground="#ff901b" Classes="icon" Content="{Binding AlarmTimer.AudioController.PlayButton}"></Label>
                     </Viewbox>
                     <!-- todo another class for handling audio, and this button -->
                     <Viewbox Grid.Row="2" PointerPressed="RemoveFromPlaylist">

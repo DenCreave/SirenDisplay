@@ -16,65 +16,56 @@ public partial class MusicView : UserControl
 
     public void DirectoryUp(object? sender, PointerPressedEventArgs e)
     {
-        var tmp = DataContext as MusicViewModel;
-        tmp.DirectoryUp();
+        if (DataContext is MusicViewModel tmp) tmp.DirectoryUp();
     }
 
     public void DirectoryDown(object? sender, PointerPressedEventArgs e)
     {
-        var tmp = DataContext as MusicViewModel;
-        tmp.DirectoryDown();
+        if (DataContext is MusicViewModel tmp) tmp.DirectoryDown();
     }
 
     public void MusicPathUp(object? sender, PointerPressedEventArgs e)
     {
-        var tmp = DataContext as MusicViewModel;
-        tmp.MusicPathUp();
+        if (DataContext is MusicViewModel tmp) tmp.MusicPathUp();
     }
 
     public void MusicPathDown(object? sender, PointerPressedEventArgs e)
     {
-        var tmp = DataContext as MusicViewModel;
-        tmp.MusicPathDown();
+        if (DataContext is MusicViewModel tmp) tmp.MusicPathDown();
     }
 
     public void MusicOrderUp(object? sender, PointerPressedEventArgs e)
     {
-        var tmp = DataContext as MusicViewModel;
-        tmp.MusicOrderUp();
+        if (DataContext is MusicViewModel tmp) tmp.MusicOrderUp();
     }
 
-    public void MusicOrderDown(object? sender, PointerPressedEventArgs e){
-        var tmp = DataContext as MusicViewModel;
-        tmp.MusicOrderDown();
+    public void MusicOrderDown(object? sender, PointerPressedEventArgs e)
+    {
+        if (DataContext is MusicViewModel tmp) tmp.MusicOrderDown();
     }
+
     public void SaveAndExit(object? sender, PointerPressedEventArgs e)
     {
-        var tmp = DataContext as MusicViewModel;
-        tmp.SaveAndExit();
+        if (DataContext is MusicViewModel tmp) tmp.SaveAndExit();
     }
 
     public void AddToPlaylist(object? sender, PointerPressedEventArgs e)
     {
-        var tmp = DataContext as MusicViewModel;
-        tmp.AddToPlaylist();
+        if (DataContext is MusicViewModel tmp) tmp.AddToPlaylist();
     }
 
     public void RemoveFromPlaylist(object? sender, PointerPressedEventArgs e)
     {
-        var tmp = DataContext as MusicViewModel;
-        tmp.RemoveFromPlaylist();
+        if (DataContext is MusicViewModel tmp) tmp.RemoveFromPlaylist();
     }
 
     public void PlayStopMedia(object? sender, PointerPressedEventArgs e)
     {
-        var tmp = DataContext as MusicViewModel;
-        tmp.PlayStopMedia();
+        if (DataContext is MusicViewModel tmp) tmp.PlayStopMedia();
     }
 
     private void UpADir(object? sender, PointerPressedEventArgs e)
     {
-        var tmp = DataContext as MusicViewModel;
-        tmp.UpADir();
+        if (DataContext is MusicViewModel tmp) tmp.UpADir();
     }
 }

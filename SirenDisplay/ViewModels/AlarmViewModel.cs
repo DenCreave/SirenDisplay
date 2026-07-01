@@ -9,29 +9,36 @@ using SirenDisplay.Classes.Digits;
 using SirenDisplay.Controllers;
 using SirenDisplay.Interfaces;
 using SirenDisplay.Model;
+using SirenDisplay.Services;
 
 namespace SirenDisplay.ViewModels;
 
 public sealed partial class AlarmViewModel : ViewModelBase, IAlarmTimeController
 {
+    private readonly AlarmTimerController _alarmTimer;
+    public NavigationService Navigator { get; }
     [ObservableProperty] private Path _mainFrame;
     [ObservableProperty] private Path _hourDecimalDigit;
     [ObservableProperty] private Path _minuteDecimalDigit;
     [ObservableProperty] private Path _hourDigit;
     [ObservableProperty] private Path _minuteDigit;
     private DigitLoader _digitLoader;
-    public CacheReferences CacheReferences { get; set; }
     public LabelData LabelData { get; }
     
-    public AlarmViewModel()
+    public AlarmViewModel(
+        AlarmTimerController alarmTimer,
+        NavigationService navigator)
     {
-        //todo constructor, tho might not even need it
-        //oh yea, init the mainframe and observeable digits
+        _alarmTimer = alarmTimer;
+        Navigator = navigator;
+        
         _digitLoader = new DigitLoader();
         LabelData = new LabelData();
+        
         InitDefaultDigits();
         FrameInitializer();
         
+        LoadIATC(); 
     }
 
     private void InitDefaultDigits()
@@ -76,10 +83,10 @@ public sealed partial class AlarmViewModel : ViewModelBase, IAlarmTimeController
     
     public void LoadIATC()
     {
-        IATCHours = CacheReferences.alarmTimerController.SirenData.UsualTime.Hours; //damn its so long
+        IATCHours = _alarmTimer.SirenData.UsualTime.Hours;
         IATCHoursDecimal = IATCHours / 10;
         IATCHours= IATCHours % 10;
-        IATCMinutes = CacheReferences.alarmTimerController.SirenData.UsualTime.Minutes;
+        IATCMinutes = _alarmTimer.SirenData.UsualTime.Minutes;
         IATCMinutesDecimal = IATCMinutes / 10;
         IATCMinutes = IATCMinutes % 10;
         
@@ -94,11 +101,10 @@ public sealed partial class AlarmViewModel : ViewModelBase, IAlarmTimeController
     {
         TimeSpan noni= new TimeSpan(IATCHoursDecimal*10+IATCHours, IATCMinutesDecimal*10+IATCMinutes, 0);
         Console.WriteLine("the timespan created after saving in SaveIATC is: "+noni.ToString());
-        CacheReferences.alarmTimerController.SirenData.UsualTime = noni;
-        ConfController.SaveConf(CacheReferences.alarmTimerController.SirenData);
+        _alarmTimer.SirenData.UsualTime = noni;
+        ConfController.SaveConf(_alarmTimer.SirenData);
     }
-
-    //todo continue from here:hours minutes decimal to show up on ui with digitloader and such
+    
     #region IAlarmTimeController
     public int IATCHours { get; set; }
     public int IATCHoursDecimal { get; set; }
@@ -185,5 +191,4 @@ public sealed partial class AlarmViewModel : ViewModelBase, IAlarmTimeController
     }
     #endregion IAlarmTimeController
     
-    //todo make a save and exit button and function, then i can start testing this page
 }

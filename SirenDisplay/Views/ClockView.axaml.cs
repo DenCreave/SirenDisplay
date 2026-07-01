@@ -16,18 +16,16 @@ public partial class ClockView : UserControl
     }
     private void ToggleAlarm(object? sender, PointerPressedEventArgs e)
     {
-        (DataContext as ClockViewModel)?.ActivateAlarmButton();
+        if (DataContext is ClockViewModel tmp) tmp.ActivateAlarmButton();
     }
 
     private void SetAlarm(object? sender, RoutedEventArgs e)
     {
-        var tmp = DataContext as ClockViewModel;
-        tmp.SwitchToAlarmView(tmp.CacheReferences);
+        if (DataContext is ClockViewModel tmp) tmp.Navigator.NavigateTo<AlarmViewModel>();
     }
 
     private void SetPlayList(object? sender, PointerPressedEventArgs e)
     {
-        var tmp = DataContext as ClockViewModel;
-        tmp.SwitchToMusicView(tmp.CacheReferences);
+        if (DataContext is ClockViewModel tmp) tmp.Navigator.NavigateTo<MusicViewModel>();
     }
 }
