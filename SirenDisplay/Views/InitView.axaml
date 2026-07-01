@@ -15,6 +15,7 @@
                                      STT="{Binding Stt}" 
                                      ClipToBounds="True"/>
         </Viewbox>
+        <Border Background="Black" Opacity="0.6" />
         <ContentControl Content="{Binding  Navigator.CurrentView}"/>
     </Grid>
 </Window>
