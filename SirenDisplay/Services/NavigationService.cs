@@ -20,6 +20,11 @@ public partial class NavigationService : ObservableObject
     // Generic method to switch views cleanly
     public void NavigateTo<TViewModel>() where TViewModel : ViewModelBase
     {
+        if (CurrentView is IDisposable disposableView)
+        {
+            disposableView.Dispose();
+        }
+        
         // Ask DI to build the ViewModel (which automatically injects its dependencies!)
         CurrentView = (ViewModelBase)_services.GetService(typeof(TViewModel));
     }

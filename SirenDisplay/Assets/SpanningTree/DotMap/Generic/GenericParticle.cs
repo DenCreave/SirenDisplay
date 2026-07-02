@@ -18,7 +18,7 @@ public class GenericParticle : IDotMapFactory<ParticleProps>
     {
         UniqueProps = new ParticleProps()
         {
-            DotLimit = 1000,
+            DotLimit = 500,
         };
     }
 

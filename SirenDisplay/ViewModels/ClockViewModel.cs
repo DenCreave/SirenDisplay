@@ -14,7 +14,7 @@ using Path = Avalonia.Controls.Shapes.Path;
 
 namespace SirenDisplay.ViewModels;
 
-public sealed partial class ClockViewModel : ViewModelBase
+public sealed partial class ClockViewModel : ViewModelBase, IDisposable
 {
     [ObservableProperty] private Path _mainFrame;
     [ObservableProperty] private Path _hourDecimalDigit;
@@ -58,6 +58,17 @@ public sealed partial class ClockViewModel : ViewModelBase
         AlarmButtonInitializer();
         
         LoadAlarmData();
+
+    }
+
+    public void Dispose()
+    {
+        if (_timer != null)
+        {
+            _timer.Stop();
+            _timer = null;
+            Console.WriteLine("ClockViewModel Disposed: Timer Stopped.");
+        }
 
     }
 

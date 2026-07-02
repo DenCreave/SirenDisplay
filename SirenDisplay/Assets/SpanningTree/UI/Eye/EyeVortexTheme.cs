@@ -132,22 +132,31 @@ public sealed class EyeVortexTheme(StyleArchive styleArchive) : ISTTheme
             activePen.EndFigure(isClosed: false);
         }
 
-        // 2. CLOSE CONTEXTS AND DRAW TO GPU
-        // for cleare bloom!
-        // A. Finalize all geometries first
-        if (sapphireArcPen != null) sapphireArcPen.Dispose();
-        if (rubyArcPen != null) rubyArcPen.Dispose();
-        if (rubyEdgePen != null) rubyEdgePen.Dispose();
+        // 2. CLOSE CONTEXTS AND DRAW TO GPU (Layered Z-Order)
+    
+        // Draw Sapphire (Background Connecting Chains)
+        if (sapphireArcPen != null)
+        {
+            sapphireArcPen.Dispose();
+            context.DrawGeometry(null, StyleArchive.EyeStyle.IrisConnectGlow, sapphireArcGeo);
+            context.DrawGeometry(null, StyleArchive.EyeStyle.IrisConnectCore, sapphireArcGeo);
+        }
 
-        // B. PASS 1: Draw ALL Glows (Background)
-        if (sapphireArcPen != null) context.DrawGeometry(null, StyleArchive.EyeStyle.IrisConnectGlow, sapphireArcGeo);
-        if (rubyArcPen != null) context.DrawGeometry(null, StyleArchive.EyeStyle.IrisArcGlow, rubyArcGeo);
-        if (rubyEdgePen != null) context.DrawGeometry(null, StyleArchive.EyeStyle.IrisEdgeGlow, rubyEdgeGeo);
+        // Draw Ruby Arcs (Midground)
+        if (rubyArcPen != null)
+        {
+            rubyArcPen.Dispose();
+            context.DrawGeometry(null, StyleArchive.EyeStyle.IrisArcGlow, rubyArcGeo);
+            context.DrawGeometry(null, StyleArchive.EyeStyle.IrisArcCore, rubyArcGeo);
+        }
 
-        // C. PASS 2: Draw ALL Cores (Foreground)
-        if (sapphireArcPen != null) context.DrawGeometry(null, StyleArchive.EyeStyle.IrisConnectCore, sapphireArcGeo);
-        if (rubyArcPen != null) context.DrawGeometry(null, StyleArchive.EyeStyle.IrisArcCore, rubyArcGeo);
-        if (rubyEdgePen != null) context.DrawGeometry(null, StyleArchive.EyeStyle.IrisEdgeCore, rubyEdgeGeo);
+        // Draw Ruby Edges (Foreground)
+        if (rubyEdgePen != null)
+        {
+            rubyEdgePen.Dispose();
+            context.DrawGeometry(null, StyleArchive.EyeStyle.IrisEdgeGlow, rubyEdgeGeo);
+            context.DrawGeometry(null, StyleArchive.EyeStyle.IrisEdgeCore, rubyEdgeGeo);
+        }
     }
 
     /// <summary>
@@ -274,22 +283,31 @@ public sealed class EyeVortexTheme(StyleArchive styleArchive) : ISTTheme
             activePen.EndFigure(isClosed: false);
         }
 
-        // 2. CLOSE CONTEXTS AND DRAW TO GPU
-        // for clearer bloom!
-        // A. Finalize all geometries first
-        if (emeraldPen != null) emeraldPen.Dispose();
-        if (amethystArcPen != null) amethystArcPen.Dispose();
-        if (amethystEdgePen != null) amethystEdgePen.Dispose();
+        // 2. CLOSE CONTEXTS AND DRAW TO GPU (Layered Z-Order)
+    
+        // Draw Emerald (Background Ring)
+        if (emeraldPen != null)
+        {
+            emeraldPen.Dispose(); 
+            context.DrawGeometry(null, StyleArchive.EyeStyle.EmeraldGlow, emeraldGeo);
+            context.DrawGeometry(null, StyleArchive.EyeStyle.EmeraldCore, emeraldGeo);
+        }
 
-        // B. PASS 1: Draw ALL Glows (Background)
-        if (emeraldPen != null) context.DrawGeometry(null, StyleArchive.EyeStyle.EmeraldGlow, emeraldGeo);
-        if (amethystArcPen != null) context.DrawGeometry(null, StyleArchive.EyeStyle.AmethystArcGlow, amethystArcGeo);
-        if (amethystEdgePen != null) context.DrawGeometry(null, StyleArchive.EyeStyle.AmethystEdgeGlow, amethystEdgeGeo);
+        // Draw Amethyst Arcs (Midground)
+        if (amethystArcPen != null)
+        {
+            amethystArcPen.Dispose();
+            context.DrawGeometry(null, StyleArchive.EyeStyle.AmethystArcGlow, amethystArcGeo);
+            context.DrawGeometry(null, StyleArchive.EyeStyle.AmethystArcCore, amethystArcGeo);
+        }
 
-        // C. PASS 2: Draw ALL Cores (Foreground)
-        if (emeraldPen != null) context.DrawGeometry(null, StyleArchive.EyeStyle.EmeraldCore, emeraldGeo);
-        if (amethystArcPen != null) context.DrawGeometry(null, StyleArchive.EyeStyle.AmethystArcCore, amethystArcGeo);
-        if (amethystEdgePen != null) context.DrawGeometry(null, StyleArchive.EyeStyle.AmethystEdgeCore, amethystEdgeGeo);
+        // Draw Amethyst Edges (Foreground)
+        if (amethystEdgePen != null)
+        {
+            amethystEdgePen.Dispose();
+            context.DrawGeometry(null, StyleArchive.EyeStyle.AmethystEdgeGlow, amethystEdgeGeo);
+            context.DrawGeometry(null, StyleArchive.EyeStyle.AmethystEdgeCore, amethystEdgeGeo);
+        }
     }
 
 
