@@ -133,26 +133,21 @@ public sealed class EyeVortexTheme(StyleArchive styleArchive) : ISTTheme
         }
 
         // 2. CLOSE CONTEXTS AND DRAW TO GPU
-        if (sapphireArcPen != null)
-        {
-            sapphireArcPen.Dispose();
-            context.DrawGeometry(null, StyleArchive.EyeStyle.IrisConnectGlow, sapphireArcGeo);
-            context.DrawGeometry(null, StyleArchive.EyeStyle.IrisConnectCore, sapphireArcGeo);
-        }
+        // for cleare bloom!
+        // A. Finalize all geometries first
+        if (sapphireArcPen != null) sapphireArcPen.Dispose();
+        if (rubyArcPen != null) rubyArcPen.Dispose();
+        if (rubyEdgePen != null) rubyEdgePen.Dispose();
 
-        if (rubyArcPen != null)
-        {
-            rubyArcPen.Dispose();
-            context.DrawGeometry(null, StyleArchive.EyeStyle.IrisArcGlow, rubyArcGeo);
-            context.DrawGeometry(null, StyleArchive.EyeStyle.IrisArcCore, rubyArcGeo);
-        }
+        // B. PASS 1: Draw ALL Glows (Background)
+        if (sapphireArcPen != null) context.DrawGeometry(null, StyleArchive.EyeStyle.IrisConnectGlow, sapphireArcGeo);
+        if (rubyArcPen != null) context.DrawGeometry(null, StyleArchive.EyeStyle.IrisArcGlow, rubyArcGeo);
+        if (rubyEdgePen != null) context.DrawGeometry(null, StyleArchive.EyeStyle.IrisEdgeGlow, rubyEdgeGeo);
 
-        if (rubyEdgePen != null)
-        {
-            rubyEdgePen.Dispose();
-            context.DrawGeometry(null, StyleArchive.EyeStyle.IrisEdgeGlow, rubyEdgeGeo);
-            context.DrawGeometry(null, StyleArchive.EyeStyle.IrisEdgeCore, rubyEdgeGeo);
-        }
+        // C. PASS 2: Draw ALL Cores (Foreground)
+        if (sapphireArcPen != null) context.DrawGeometry(null, StyleArchive.EyeStyle.IrisConnectCore, sapphireArcGeo);
+        if (rubyArcPen != null) context.DrawGeometry(null, StyleArchive.EyeStyle.IrisArcCore, rubyArcGeo);
+        if (rubyEdgePen != null) context.DrawGeometry(null, StyleArchive.EyeStyle.IrisEdgeCore, rubyEdgeGeo);
     }
 
     /// <summary>
@@ -280,26 +275,21 @@ public sealed class EyeVortexTheme(StyleArchive styleArchive) : ISTTheme
         }
 
         // 2. CLOSE CONTEXTS AND DRAW TO GPU
-        if (emeraldPen != null)
-        {
-            emeraldPen.Dispose(); // Finalizes the geometry
-            context.DrawGeometry(null, StyleArchive.EyeStyle.EmeraldGlow, emeraldGeo);
-            context.DrawGeometry(null, StyleArchive.EyeStyle.EmeraldCore, emeraldGeo);
-        }
+        // for clearer bloom!
+        // A. Finalize all geometries first
+        if (emeraldPen != null) emeraldPen.Dispose();
+        if (amethystArcPen != null) amethystArcPen.Dispose();
+        if (amethystEdgePen != null) amethystEdgePen.Dispose();
 
-        if (amethystArcPen != null)
-        {
-            amethystArcPen.Dispose();
-            context.DrawGeometry(null, StyleArchive.EyeStyle.AmethystArcGlow, amethystArcGeo);
-            context.DrawGeometry(null, StyleArchive.EyeStyle.AmethystArcCore, amethystArcGeo);
-        }
+        // B. PASS 1: Draw ALL Glows (Background)
+        if (emeraldPen != null) context.DrawGeometry(null, StyleArchive.EyeStyle.EmeraldGlow, emeraldGeo);
+        if (amethystArcPen != null) context.DrawGeometry(null, StyleArchive.EyeStyle.AmethystArcGlow, amethystArcGeo);
+        if (amethystEdgePen != null) context.DrawGeometry(null, StyleArchive.EyeStyle.AmethystEdgeGlow, amethystEdgeGeo);
 
-        if (amethystEdgePen != null)
-        {
-            amethystEdgePen.Dispose();
-            context.DrawGeometry(null, StyleArchive.EyeStyle.AmethystEdgeGlow, amethystEdgeGeo);
-            context.DrawGeometry(null, StyleArchive.EyeStyle.AmethystEdgeCore, amethystEdgeGeo);
-        }
+        // C. PASS 2: Draw ALL Cores (Foreground)
+        if (emeraldPen != null) context.DrawGeometry(null, StyleArchive.EyeStyle.EmeraldCore, emeraldGeo);
+        if (amethystArcPen != null) context.DrawGeometry(null, StyleArchive.EyeStyle.AmethystArcCore, amethystArcGeo);
+        if (amethystEdgePen != null) context.DrawGeometry(null, StyleArchive.EyeStyle.AmethystEdgeCore, amethystEdgeGeo);
     }
 
 
@@ -308,26 +298,21 @@ public sealed class EyeVortexTheme(StyleArchive styleArchive) : ISTTheme
         double x = StyleArchive.EyeStyle.ResolutionNote.X;
         double y = StyleArchive.EyeStyle.ResolutionNote.Y;
         double lengthSq = (x * x) + (y * y);
+        // bg bloom first then dots
         foreach (var dot in animap.Graph.Vertices)
         {
             if (!dot.IsEnabled) continue;
-
             var glowBrush = GetGlowBrush(dot, x, y, lengthSq);
-            var position = new Point(dot.Cox, dot.Coy);
+            context.DrawEllipse(glowBrush, null, new Point(dot.Cox, dot.Coy), 
+                StyleArchive.EyeStyle.DotGlowRadius, StyleArchive.EyeStyle.DotGlowRadius);
+        }
 
-            context.DrawEllipse(
-                brush: glowBrush,
-                pen: null,
-                center: position,
-                radiusX: StyleArchive.EyeStyle.DotGlowRadius,
-                radiusY: StyleArchive.EyeStyle.DotGlowRadius);
-
-            context.DrawEllipse(
-                brush: StyleArchive.EyeStyle.BGLayer,
-                pen: null,
-                center: position,
-                radiusX: StyleArchive.EyeStyle.DotRadius,
-                radiusY: StyleArchive.EyeStyle.DotRadius);
+        // bg bloom first, then dots.
+        foreach (var dot in animap.Graph.Vertices)
+        {
+            if (!dot.IsEnabled) continue;
+            context.DrawEllipse(StyleArchive.EyeStyle.BGLayer, null, new Point(dot.Cox, dot.Coy), 
+                StyleArchive.EyeStyle.DotRadius, StyleArchive.EyeStyle.DotRadius);
         }
     }
 

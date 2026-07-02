@@ -5,6 +5,7 @@ using Avalonia.Media;
 using Avalonia.Threading;
 using CommunityToolkit.Mvvm.ComponentModel;
 using SirenDisplay.Assets.Polygons.Frames;
+using SirenDisplay.Assets.SpanningTree.Controller;
 using SirenDisplay.Classes.Digits;
 using SirenDisplay.Controllers;
 using SirenDisplay.Model;
@@ -15,8 +16,6 @@ namespace SirenDisplay.ViewModels;
 
 public sealed partial class ClockViewModel : ViewModelBase
 {
-    
-    
     [ObservableProperty] private Path _mainFrame;
     [ObservableProperty] private Path _hourDecimalDigit;
     [ObservableProperty] private Path _minuteDecimalDigit;
@@ -25,28 +24,33 @@ public sealed partial class ClockViewModel : ViewModelBase
     private DigitLoader _digitLoader;
     private DispatcherTimer _timer;
     public LabelData LabelData { get; set; }
-    
+
     [ObservableProperty]
     [NotifyPropertyChangedFor( nameof(EnabledMe))]
-    private bool _isGoodMorning; 
+    private bool _isGoodMorning;
+
     public bool EnabledMe => !IsGoodMorning;
 
     [ObservableProperty]
     private string _alarmString;
-    
+
+
     [ObservableProperty] private string _selectedPlaylist;
-    
+
     public AlarmTimerController AlarmTimer { get; } // Public so XAML can bind to it!
     public NavigationService Navigator { get; }
+    private readonly SpanningTreeController _stc;
 
 
     public ClockViewModel(
         AlarmTimerController alarmTimer,
-        NavigationService navigator) 
+        NavigationService navigator,
+        SpanningTreeController stc) 
     {
         Console.WriteLine("ClockViewModel was instantiated.");
         AlarmTimer = alarmTimer;
         Navigator = navigator;
+        _stc = stc;
 
 
         FrameInitializer();
@@ -55,6 +59,11 @@ public sealed partial class ClockViewModel : ViewModelBase
         
         LoadAlarmData();
 
+    }
+
+    public void RestartSTC()
+    {
+        _stc.RequestRestart();
     }
     
     
@@ -75,7 +84,7 @@ public sealed partial class ClockViewModel : ViewModelBase
                     new BottomFrame().PathFigure
                 }
             },
-            Effect = Application.Current.FindResource("OffEffect") as DropShadowEffect
+            //Effect = Application.Current.FindResource("OffEffect") as DropShadowEffect
         };
     }
     

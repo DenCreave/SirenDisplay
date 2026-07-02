@@ -140,7 +140,7 @@ public sealed partial class STCViewModel :ViewModelBase
                     
                 }
             },
-            Effect = Application.Current.FindResource("OffEffect") as DropShadowEffect
+            //Effect = Application.Current.FindResource("OffEffect") as DropShadowEffect
         };
     }
 

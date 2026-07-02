@@ -147,7 +147,7 @@ public sealed partial class MusicViewModel : ViewModelBase
                     new BottomFrameSquare().PathFigure
                 }
             },
-            Effect = Application.Current.FindResource("OffEffect") as DropShadowEffect
+            //Effect = Application.Current.FindResource("OffEffect") as DropShadowEffect
         };
     }
 

@@ -16,6 +16,7 @@ public partial class ClockView : UserControl
     }
     private void ToggleAlarm(object? sender, PointerPressedEventArgs e)
     {
+        RestartSTC();
         if (DataContext is ClockViewModel tmp) tmp.ActivateAlarmButton();
     }
 
@@ -27,5 +28,10 @@ public partial class ClockView : UserControl
     private void SetPlayList(object? sender, PointerPressedEventArgs e)
     {
         if (DataContext is ClockViewModel tmp) tmp.Navigator.NavigateTo<MusicViewModel>();
+    }
+    
+    private void RestartSTC()
+    {
+        if (DataContext is ClockViewModel tmp) tmp.RestartSTC();
     }
 }
