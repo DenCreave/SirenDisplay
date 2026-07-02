@@ -5,17 +5,17 @@ using Avalonia.Media;
 using Avalonia.Threading;
 using CommunityToolkit.Mvvm.ComponentModel;
 using SirenDisplay.Assets.Polygons.Frames;
+using SirenDisplay.Assets.SpanningTree.Controller;
 using SirenDisplay.Classes.Digits;
 using SirenDisplay.Controllers;
 using SirenDisplay.Model;
+using SirenDisplay.Services;
 using Path = Avalonia.Controls.Shapes.Path;
 
 namespace SirenDisplay.ViewModels;
 
-public sealed partial class ClockViewModel : ViewModelBase
+public sealed partial class ClockViewModel : ViewModelBase, IDisposable
 {
-    
-    
     [ObservableProperty] private Path _mainFrame;
     [ObservableProperty] private Path _hourDecimalDigit;
     [ObservableProperty] private Path _minuteDecimalDigit;
@@ -24,24 +24,57 @@ public sealed partial class ClockViewModel : ViewModelBase
     private DigitLoader _digitLoader;
     private DispatcherTimer _timer;
     public LabelData LabelData { get; set; }
-    //todo put this to a different controller class, maybe make it a singleton
+
     [ObservableProperty]
     [NotifyPropertyChangedFor( nameof(EnabledMe))]
-    private bool _isGoodMorning; 
+    private bool _isGoodMorning;
+
     public bool EnabledMe => !IsGoodMorning;
-    public CacheReferences CacheReferences { get; set; }
 
     [ObservableProperty]
     private string _alarmString;
-    
-    [ObservableProperty] private string _selectedPlaylist ;
 
-    public ClockViewModel() 
+
+    [ObservableProperty] private string _selectedPlaylist;
+
+    public AlarmTimerController AlarmTimer { get; } // Public so XAML can bind to it!
+    public NavigationService Navigator { get; }
+    private readonly SpanningTreeController _stc;
+
+
+    public ClockViewModel(
+        AlarmTimerController alarmTimer,
+        NavigationService navigator,
+        SpanningTreeController stc) 
     {
         Console.WriteLine("ClockViewModel was instantiated.");
+        AlarmTimer = alarmTimer;
+        Navigator = navigator;
+        _stc = stc;
+
+
         FrameInitializer();
         ClockInitializer();
         AlarmButtonInitializer();
+        
+        LoadAlarmData();
+
+    }
+
+    public void Dispose()
+    {
+        if (_timer != null)
+        {
+            _timer.Stop();
+            _timer = null;
+            Console.WriteLine("ClockViewModel Disposed: Timer Stopped.");
+        }
+
+    }
+
+    public void RestartSTC()
+    {
+        _stc.RequestRestart();
     }
     
     
@@ -62,7 +95,7 @@ public sealed partial class ClockViewModel : ViewModelBase
                     new BottomFrame().PathFigure
                 }
             },
-            Effect = Application.Current.FindResource("OffEffect") as DropShadowEffect
+            //Effect = Application.Current.FindResource("OffEffect") as DropShadowEffect
         };
     }
     
@@ -140,14 +173,14 @@ public sealed partial class ClockViewModel : ViewModelBase
     }
     public void ActivateAlarmButton()
     {
-        CacheReferences.alarmTimerController.ActivateAlarmTimer();
+        AlarmTimer.ActivateAlarmTimer();
     }
 
-    public void PostLoad()
+    private void LoadAlarmData()
     {
-        var tmp=CacheReferences.alarmTimerController.SirenData;
+        var tmp=AlarmTimer.SirenData;
         AlarmString = $"{tmp.UsualTime.Hours}:{(tmp.UsualTime.Minutes>9?tmp.UsualTime.Minutes:(tmp.UsualTime.Minutes==0?"00":"0"+tmp.UsualTime.Minutes))}";
-        SelectedPlaylist = tmp.SelectedPlaylist=="" ? "Welcome to Siren Display" : tmp.SelectedPlaylist;
+        SelectedPlaylist = string.IsNullOrEmpty(tmp.SelectedPlaylist) ? "Welcome to Siren Display" : tmp.SelectedPlaylist;
     }
     
 }

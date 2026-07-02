@@ -3,9 +3,19 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:viewModels="clr-namespace:SirenDisplay.ViewModels"
+        xmlns:ui="clr-namespace:SirenDisplay.Assets.SpanningTree.UI"
         mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="480"
         x:Class="SirenDisplay.Views.InitView"
         Title="SirenDisplay"
         x:DataType="viewModels:InitViewModel">
-    <ContentControl Content="{Binding  CurrentView}"></ContentControl>
+    <Grid Background="Black">
+        <!-- The Viewbox will scale the 800x480 engine to fit ANY window size! -->
+        <Viewbox Stretch="Fill">
+            <ui:SpanningTreeRenderer STC="{Binding Stc}" 
+                                     STT="{Binding Stt}" 
+                                     ClipToBounds="True"/>
+        </Viewbox>
+        <Border Background="Black" Opacity="0.6" />
+        <ContentControl Content="{Binding  Navigator.CurrentView}"/>
+    </Grid>
 </Window>

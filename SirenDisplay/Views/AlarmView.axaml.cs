@@ -17,51 +17,50 @@ public partial class AlarmView : UserControl
 
     private void SaveAndExit(object? sender, PointerPressedEventArgs e)
     {
-        var tmp = this.DataContext as AlarmViewModel;
-        tmp.SaveIATC();
-        tmp.SwitchToClockView(tmp.CacheReferences);
+        if (this.DataContext is AlarmViewModel tmp)
+        {
+            tmp.SaveIATC();
+            tmp.Navigator.NavigateTo<ClockViewModel>();
+        }
     }
 
     private void IncreaseHourDecimal(object? sender, PointerPressedEventArgs e)
     {
-        var tmp = this.DataContext as AlarmViewModel;
-        tmp.IncreaseHourDecimal();
+        if (this.DataContext is AlarmViewModel tmp) tmp.IncreaseHourDecimal();
     }
 
     private void DecreaseHourDecimal(object? sender, PointerPressedEventArgs e)
     {
-        var tmp = this.DataContext as AlarmViewModel;
-        tmp.DecreaseHourDecimal();
+        if (this.DataContext is AlarmViewModel tmp) tmp.DecreaseHourDecimal();
     }
 
     private void IncreaseHour(object? sender, PointerPressedEventArgs e)
     {
-        var tmp = this.DataContext as AlarmViewModel;
-        tmp.IncreaseHour();
+        if (this.DataContext is AlarmViewModel tmp) tmp.IncreaseHour();
     }
+
     private void DecreaseHour(object? sender, PointerPressedEventArgs e)
     {
-        var tmp = this.DataContext as AlarmViewModel;
-        tmp.DecreaseHour();
+        if (this.DataContext is AlarmViewModel tmp) tmp.DecreaseHour();
     }
+
     private void IncreaseMinuteDecimal(object? sender, PointerPressedEventArgs e)
     {
-        var tmp = this.DataContext as AlarmViewModel;
-        tmp.IncreaseMinuteDecimal();
+        if (this.DataContext is AlarmViewModel tmp) tmp.IncreaseMinuteDecimal();
     }
+
     private void DecreaseMinuteDecimal(object? sender, PointerPressedEventArgs e)
     {
-        var tmp = this.DataContext as AlarmViewModel;
-        tmp.DecreaseMinuteDecimal();
+        if (this.DataContext is AlarmViewModel tmp) tmp.DecreaseMinuteDecimal();
     }
+
     private void IncreaseMinute(object? sender, PointerPressedEventArgs e)
     {
-        var tmp = this.DataContext as AlarmViewModel;
-        tmp.IncreaseMinute();
+        if (this.DataContext is AlarmViewModel tmp) tmp.IncreaseMinute();
     }
+
     private void DecreaseMinute(object? sender, PointerPressedEventArgs e)
     {
-        var tmp = this.DataContext as AlarmViewModel;
-        tmp.DecreaseMinute();
+        if (this.DataContext is AlarmViewModel tmp) tmp.DecreaseMinute();
     }
 }

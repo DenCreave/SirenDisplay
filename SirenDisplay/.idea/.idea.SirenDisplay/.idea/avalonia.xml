@@ -13,6 +13,7 @@
         <entry key="Views/InitView.axaml" value="SirenDisplay.csproj" />
         <entry key="Views/InitWindow.axaml" value="SirenDisplay.csproj" />
         <entry key="Views/MusicView.axaml" value="SirenDisplay.csproj" />
+        <entry key="Views/STCView.axaml" value="SirenDisplay.csproj" />
       </map>
     </option>
   </component>

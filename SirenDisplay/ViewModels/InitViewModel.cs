@@ -3,32 +3,31 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using Avalonia.Controls;
 using CommunityToolkit.Mvvm.ComponentModel;
+using SirenDisplay.Assets.SpanningTree.Controller;
+using SirenDisplay.Assets.SpanningTree.UI;
 using SirenDisplay.Controllers;
 using SirenDisplay.Model;
+using SirenDisplay.Services;
 using SirenDisplay.Views;
 
 namespace SirenDisplay.ViewModels;
 
 public sealed partial class InitViewModel : ViewModelBase
 {
-    [ObservableProperty] private ViewModelBase _currentView;
-    private CacheReferences _cacheReferences;
-    private AlarmTimerController _alarmTimerController; 
+    public SpanningTreeController Stc { get; }
+    public SpanningTreeTheme Stt { get; }
+    public NavigationService Navigator { get; }
     
-    public InitViewModel()
+    public InitViewModel(
+        SpanningTreeController stc,
+        SpanningTreeTheme stt,
+        NavigationService navigator)
     {
-        #region inits
-        _alarmTimerController = AlarmTimerController.Instance;
+        Stc = stc;
+        Stt = stt;
+        Navigator = navigator;
         
-        _cacheReferences = new CacheReferences()
-        {
-            InitViewModel = this,
-            alarmTimerController = _alarmTimerController
-        };
-        #endregion inits
-        
-
-        SwitchToClockView(_cacheReferences);
+        Navigator.NavigateTo<ClockViewModel>();
     }
     
 }

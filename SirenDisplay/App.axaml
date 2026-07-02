@@ -26,6 +26,11 @@
         <SolidColorBrush x:Key="S2">#e45e00</SolidColorBrush>
         <SolidColorBrush x:Key="S1">#9e0022</SolidColorBrush>
         
+        <SolidColorBrush x:Key="EdgeEffect" Color="#ff6d3d"/>
+        <SolidColorBrush x:Key="Edge" Color="#ff541c"/>
+        <SolidColorBrush x:Key="VertexEffect" Color="#ff3d7e"/>
+        <SolidColorBrush x:Key="Vertex" Color="#ff1c68"/>
+
 
         <LinearGradientBrush x:Key="OffColor" StartPoint="0%,100%" Opacity="0.8" EndPoint="100%,0%">
             <GradientStop Color="#ff0090" Offset="0.0"/>
@@ -44,8 +49,6 @@
         
         <DropShadowEffect x:Key="OffEffect" Color="#ff6533" Opacity="1" BlurRadius="500"/>
         <DropShadowEffect x:Key="SirenEffect" Color="#9e0022" Opacity="1" BlurRadius="500"/>
-        
-        
         
         <FontFamily x:Key="Phosphor">/Assets/Fonts/Phosphor.ttf#Phosphor</FontFamily>
         <FontFamily x:Key="Phosphor-Bold">/Assets/Fonts/Phosphor-Bold.ttf#Phosphor-Bold</FontFamily>

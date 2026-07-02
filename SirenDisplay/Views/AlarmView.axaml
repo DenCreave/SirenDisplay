@@ -6,10 +6,7 @@
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
              x:DataType="viewModels:AlarmViewModel"
              x:Class="SirenDisplay.Views.AlarmView">
-    <UserControl.DataContext>
-        <viewModels:AlarmViewModel />
-    </UserControl.DataContext>
-    <Grid x:Name="BackGroundGrid" Background="{DynamicResource PrimaryBackground}">
+    <Grid x:Name="BackGroundGrid" Background="Transparent">
         <ContentControl Classes="main-frame" Content="{Binding Path=MainFrame}" />
         <Grid x:Name="MainGrid" RowDefinitions="*,3*,*" ColumnDefinitions="*">
             <Label Grid.Row="0" Foreground="#ff901b" FontSize="40" HorizontalAlignment="Center"
