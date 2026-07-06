@@ -64,7 +64,6 @@ public sealed partial class AlarmTimerController : ObservableObject
 
     public void ArdentAlarm()
     {
-        //todo figure out to only play it once we are past the wake time, otherwise just start the timer
         if (SirenData.IsPending)
         {
             Console.WriteLine($"next siren time: {SirenData.NextSirenTime}, dateoffset now: {DateTimeOffset.Now}");
