@@ -1,7 +1,8 @@
 using Avalonia.Media;
+using SirenDisplay.Assets.Polygons.BasicHexaFigure;
 using SirenDisplay.Interfaces;
 
-namespace SirenDisplay.Classes.Digits;
+namespace SirenDisplay.Assets.Polygons.Digits;
 
 public sealed class MyDigit7 : IMyDigit
 {

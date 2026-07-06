@@ -4,12 +4,12 @@ using Avalonia.Controls;
 using Avalonia.Media;
 using Avalonia.Threading;
 using CommunityToolkit.Mvvm.ComponentModel;
+using SirenDisplay.Assets.Polygons.Digits;
 using SirenDisplay.Assets.Polygons.Frames;
-using SirenDisplay.Assets.SpanningTree.Controller;
-using SirenDisplay.Classes.Digits;
 using SirenDisplay.Controllers;
 using SirenDisplay.Model;
 using SirenDisplay.Services;
+using SirenDisplay.SpanningTree.Controller;
 using Path = Avalonia.Controls.Shapes.Path;
 
 namespace SirenDisplay.ViewModels;
