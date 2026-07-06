@@ -2,7 +2,7 @@ using Avalonia;
 using Avalonia.Media;
 using SirenDisplay.Interfaces;
 
-namespace SirenDisplay.Classes;
+namespace SirenDisplay.Assets.Polygons.BasicHexaFigure;
 
 public sealed class MyBottomLeftPathFigure : IMyPathfigure
 {

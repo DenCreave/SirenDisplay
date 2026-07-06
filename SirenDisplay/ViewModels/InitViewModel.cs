@@ -3,11 +3,11 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using Avalonia.Controls;
 using CommunityToolkit.Mvvm.ComponentModel;
-using SirenDisplay.Assets.SpanningTree.Controller;
-using SirenDisplay.Assets.SpanningTree.UI;
 using SirenDisplay.Controllers;
 using SirenDisplay.Model;
 using SirenDisplay.Services;
+using SirenDisplay.SpanningTree.Controller;
+using SirenDisplay.SpanningTree.UI;
 using SirenDisplay.Views;
 
 namespace SirenDisplay.ViewModels;

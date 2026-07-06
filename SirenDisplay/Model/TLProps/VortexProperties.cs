@@ -1,5 +1,5 @@
-using SirenDisplay.Assets.SpanningTree.Controller;
 using SirenDisplay.Interfaces;
+using SirenDisplay.SpanningTree.Controller;
 
 namespace SirenDisplay.Model.TLProps;
 

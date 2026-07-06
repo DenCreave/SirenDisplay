@@ -1,8 +1,7 @@
-using SirenDisplay.Assets.SpanningTree.Controller;
-using SirenDisplay.Assets.SpanningTree.Theme;
-using SirenDisplay.Assets.SpanningTree.TorrentLayer;
 using SirenDisplay.Controllers;
 using SirenDisplay.Model;
+using SirenDisplay.SpanningTree.Theme;
+using SirenDisplay.SpanningTree.TorrentLayer;
 
 namespace SirenDisplay.Interfaces;
 /// <summary>

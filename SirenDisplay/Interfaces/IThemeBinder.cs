@@ -1,4 +1,4 @@
-using SirenDisplay.Assets.SpanningTree.Theme;
+using SirenDisplay.SpanningTree.Theme;
 
 namespace SirenDisplay.Interfaces;
 

@@ -5,7 +5,7 @@ using System.Reflection;
 using Avalonia.Media;
 using SirenDisplay.Interfaces;
 
-namespace SirenDisplay.Classes.Digits;
+namespace SirenDisplay.Assets.Polygons.Digits;
 
 public sealed class DigitLoader
 {

@@ -6,10 +6,9 @@ using Avalonia.Controls.Shapes;
 using Avalonia.Media;
 using CommunityToolkit.Mvvm.ComponentModel;
 using SirenDisplay.Assets.Polygons.Frames;
-using SirenDisplay.Assets.SpanningTree.DotMap;
-using SirenDisplay.Assets.SpanningTree.TorrentLayer.Eye;
 using SirenDisplay.Controllers;
 using SirenDisplay.Model;
+using SirenDisplay.SpanningTree.TorrentLayer.Eye;
 
 namespace SirenDisplay.ViewModels;
 
