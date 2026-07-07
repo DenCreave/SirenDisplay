@@ -11,13 +11,15 @@ namespace SirenDisplay.Controllers;
 
 public sealed partial class AudioController : ObservableObject
 {
-    private LibVLC _libvlc { get; set; }
-    private Media _media { get; set; } 
-    private MediaPlayer _mediaplayer { get; set; }
-    private List<Media> _playlist { get; set; }
+    private readonly LibVLC _libvlc;
+    private readonly MediaPlayer _mediaplayer;
     
-    private int _playlistIndex { get; set; }
-    private LabelData LabelData { get; }
+    private Media? _currentMedia; 
+    private LinkedList<string>? _playlist;
+    private LinkedListNode<string>? _currentTrackPath;
+    private bool _isPlaylistMode;
+
+    public LabelData LabelData { get; }
     public string PlayButton => IsPlayButton ? LabelData.PlayLabel : LabelData.StopLabel;
 
     [ObservableProperty] 
@@ -27,86 +29,72 @@ public sealed partial class AudioController : ObservableObject
     public AudioController()
     {
         _libvlc = new LibVLC(enableDebugLogs: false);
+        _mediaplayer = new MediaPlayer(_libvlc);
+        
         LabelData = new LabelData();
         IsPlayButton = true;
+        
+        _mediaplayer.EndReached += OnMediaPlayerEndReached;
     }
-    
-    // c++ objects require direct cleanup. libvlc seems to be a c++ code 
-    // with c# wrapper around it. gc cant see it.
-    private void CleanupCurrentMedia()
-    {
-        if (_mediaplayer != null)
-        {
-            _mediaplayer.Stop();
-            _mediaplayer.EndReached -= ToPlayIconTrue;
-            _mediaplayer.EndReached -= PlayNextSiren;
-            _mediaplayer.Dispose(); // Kills the C++ Player
-            _mediaplayer = null;
-        }
 
-        if (_media != null)
+
+    private void DisposeCurrentMedia()
+    {
+        if (_currentMedia != null)
         {
-            _media.Dispose(); // Kills the C++ Media
-            _media = null;
+            _currentMedia.Dispose();
+            _currentMedia = null;
         }
     }
 
     public async Task PlayAudio(string path)
     {
-        CleanupCurrentMedia();
-
-        // 2. Create the new C++ objects
-        _media = new Media(_libvlc, path);
-        _mediaplayer = new MediaPlayer(_libvlc);
-        //Race condition 101 - always subscribe to events before calling them
-        _mediaplayer.EndReached += ToPlayIconTrue;
-        _mediaplayer.Play(_media);
+        _mediaplayer.Stop();
+        DisposeCurrentMedia();
+        _isPlaylistMode = false;
+        
+        _currentMedia = new Media(_libvlc, path);
+        _mediaplayer.Play(_currentMedia);
         IsPlayButton = false;
     }
 
     public async Task PlaySirenDisplay(List<DirectoryItem> paths)
     {
-        CleanupCurrentMedia();
-        if (_playlist != null)
-        {
-            foreach (var media in _playlist) media.Dispose();
-        }
-
-        _playlist = new List<Media>();
-        foreach (var path in paths)
-        {
-            _playlist.Add(new Media(_libvlc, path.FullPath));
-        }
-
-        _playlistIndex = 0;
-        _mediaplayer = new MediaPlayer(_libvlc); 
-        _mediaplayer.EndReached += PlayNextSiren;
+        if (paths == null || paths.Count == 0) return;
         
-        Console.WriteLine($"Playing Siren Display first song {_playlist.First()}");
-        _mediaplayer.Play(_playlist[_playlistIndex]);
-        ++_playlistIndex;
+        _mediaplayer.Stop();
+        DisposeCurrentMedia();
+
+        _isPlaylistMode = true;
+        _playlist = new LinkedList<string>(paths.Select(x => x.FullPath));
+        _currentTrackPath = _playlist.First;
+
+        if (_currentTrackPath != null)
+        {
+            Console.WriteLine($"Playing Siren Display first song: {_currentTrackPath.Value}");
+            
+            _currentMedia = new Media(_libvlc, _currentTrackPath.Value);
+            _mediaplayer.Play(_currentMedia);
+            
+            IsPlayButton = false;
+        }
     }
 
-    public void ToPlayIconTrue(object sender, EventArgs e)
+    
+    private void OnMediaPlayerEndReached(object? sender, EventArgs e)
     {
         // LibVLC events fire on a background thread. 
-        // this is how we tell Avalonia to update the UI on the main thread
+        // We MUST tell Avalonia to update the UI on the main thread!
         Dispatcher.UIThread.Post(() => 
         {
-            IsPlayButton = true;
-        });
-    }
-
-    public async void PlayNextSiren(object sender, EventArgs e)
-    {
-        // Dispatch to UI thread to prevent cross-thread crashes
-        Dispatcher.UIThread.Post(() => 
-        {
-            if (_playlistIndex < _playlist.Count)
+            if (_isPlaylistMode && _currentTrackPath?.Next != null)
             {
-                // We don't call CleanupCurrentMedia here because we want to reuse the player for the playlist
-                _mediaplayer.Play(_playlist[_playlistIndex]);
-                ++_playlistIndex;
+                _currentTrackPath = _currentTrackPath.Next;
+                DisposeCurrentMedia(); 
+                
+                Console.WriteLine($"Next song: {_currentTrackPath.Value}");
+                _currentMedia = new Media(_libvlc, _currentTrackPath.Value);
+                _mediaplayer.Play(_currentMedia);
             }
             else
             {
@@ -115,15 +103,13 @@ public sealed partial class AudioController : ObservableObject
         });
     }
 
-    public bool IsPlaying()
-    {
-        return _mediaplayer != null && _mediaplayer.IsPlaying;
-    }
+    public bool IsPlaying() => _mediaplayer.IsPlaying;
     
     public void Stop()
     {
-        CleanupCurrentMedia();
+        _mediaplayer.Stop();
         IsPlayButton = true;
-        Console.WriteLine("we stopped the music player in audiocontroller");
+        _isPlaylistMode = false;
+        Console.WriteLine("Music Player Stopped.");
     }
 }

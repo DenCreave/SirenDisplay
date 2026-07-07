@@ -1,13 +1,13 @@
 # SirenDisplay
 ### Stylish alarm clock for my raspberry pi. Play a song or a selected playlist as your new alarm sound.
 > #### Clock View
->![Clock View](SirenDisplay/Assets/Images/snapshot.png)
+>![Clock View](Previews/snapshot.png)
 
 > #### Playlist view
->![Playlist View](SirenDisplay/Assets/Images/snapmusic.png)
+>![Playlist View](Previews/snapmusic.png)
 
 > #### Alarm View
->![Alarm View](SirenDisplay/Assets/Images/snapalarm.png)
+>![Alarm View](Previews/snapalarm.png)
 
 > #### v1.1.0 Update: SpanningTreeBackground
 > https://github.com/user-attachments/assets/5e3731ab-1cda-46f8-a7ec-af62b0984e4b 

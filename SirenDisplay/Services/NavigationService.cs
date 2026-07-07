@@ -8,7 +8,6 @@ public partial class NavigationService : ObservableObject
 {
     [ObservableProperty] 
     private ViewModelBase _currentView;
-
     private readonly IServiceProvider _services;
 
     // We inject IServiceProvider here so the NavigationService can ask DI to build the ViewModels!
